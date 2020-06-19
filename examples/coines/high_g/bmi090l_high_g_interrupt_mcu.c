@@ -94,7 +94,7 @@ static void init_bmi090l(void)
 
         if (rslt == BMI090L_OK)
         {
-            bmi090ldev.accel_cfg.range = BMI090L_ACCEL_RANGE_6G;
+            bmi090ldev.accel_cfg.range = BMI090L_ACCEL_RANGE_24G;
             bmi090ldev.accel_cfg.odr = BMI090L_ACCEL_ODR_200_HZ;
             bmi090ldev.accel_cfg.bw = BMI090L_ACCEL_BW_NORMAL;
             bmi090la_set_meas_conf(&bmi090ldev);
@@ -111,9 +111,9 @@ static void configure_bmi090l_high_g_interrupt(void)
     bmi090la_get_high_g_config(&high_g_cfg, &bmi090ldev);
 
     /* Configure high-g settings */
-    high_g_cfg.threshold = 4000; /* ~2g */
-    high_g_cfg.hysteresis = 2000; /* ~1g */
-    high_g_cfg.duration = 30; /* 150 ms --> 150/5 */
+    high_g_cfg.threshold = 4000;  /* 4000*24g/32768 = 2.93g */
+    high_g_cfg.hysteresis = 2000; /* 2000*24g/32768 = 1.46g */
+    high_g_cfg.duration = 30;     /* 150 ms --> 150/5       */
     high_g_cfg.enable = 1;
     high_g_cfg.select_x = 1;
     high_g_cfg.select_y = 1;

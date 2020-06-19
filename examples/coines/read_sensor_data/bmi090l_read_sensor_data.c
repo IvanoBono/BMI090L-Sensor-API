@@ -80,6 +80,20 @@ static void init_bmi090l(void)
         bmi090lg_set_power_mode(&bmi090ldev);
     }
 
+    printf("Uploading config file !\n");
+    /*API uploads the bmi090l config file onto the device*/
+    rslt = bmi090la_apply_config_file(&bmi090ldev);
+
+    if (rslt == BMI090L_OK)
+    {
+        printf("Upload done !\n");
+    }
+    else
+    {
+        printf("Upload failure !\n");
+        exit(-1);
+    }
+
     bmi090ldev.accel_cfg.odr = BMI090L_ACCEL_ODR_100_HZ;
     bmi090ldev.accel_cfg.range = BMI090L_ACCEL_RANGE_3G;
 

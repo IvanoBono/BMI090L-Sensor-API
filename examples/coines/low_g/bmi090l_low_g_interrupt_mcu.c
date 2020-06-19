@@ -94,8 +94,8 @@ static void init_bmi090l(void)
 
         if (rslt == BMI090L_OK)
         {
-            bmi090ldev.accel_cfg.range = BMI090L_ACCEL_RANGE_6G;
-            bmi090ldev.accel_cfg.odr = BMI090L_ACCEL_ODR_200_HZ;
+            bmi090ldev.accel_cfg.range = BMI090L_ACCEL_RANGE_24G;
+            bmi090ldev.accel_cfg.odr = BMI090L_ACCEL_ODR_50_HZ;
             bmi090ldev.accel_cfg.bw = BMI090L_ACCEL_BW_NORMAL;
             bmi090la_set_meas_conf(&bmi090ldev);
         }
@@ -111,8 +111,8 @@ static void configure_bmi090l_low_g_interrupt(void)
     bmi090la_get_low_g_config(&low_g_cfg, &bmi090ldev);
 
     /* Configure low-g settings */
-    low_g_cfg.threshold = 512; /* 0.25g */
-    low_g_cfg.hysteresis = 256; /* 0.125g */
+    low_g_cfg.threshold = 512;  /* 512*24g/32768 = 0.375g */
+    low_g_cfg.hysteresis = 256; /* 256*24g/32768 = 0.187g */
     low_g_cfg.duration = 0;
     low_g_cfg.enable = 1;
     bmi090la_set_low_g_config(&low_g_cfg, &bmi090ldev);

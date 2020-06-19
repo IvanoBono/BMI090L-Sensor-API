@@ -17,6 +17,7 @@
 ### any_motion
 - Configures sensor to generate interrupt when sensor is moved.
 - Adjust threshold according to your application needs.
+- Recommended ODR - 50 Hz, Threshold range - 0 to 1.5g
 - Runs on APP2.0 and APP3.0 microcontroller
 
 ### data_sync
@@ -28,17 +29,20 @@
 - Configures sensor to generate interrupt when acceleration exceeds the set high-g threshold.
 - Move the sensor upwards to create condition of high-g
 - Increase hysteresis to reduce false triggers
+- Recommended ODR - 200 Hz, Threshold range - 0 to 24g, Hysteresis - 0 to 3g
 - Runs on APP2.0 and APP3.0 microcontroller
 
 ### low_g
 - Configures sensor to generate interrupt when acceleration value goes below the set low-g threshold.
 - Move the sensor downwards (or) put in a state of free fall to create condition of low-g 
 - Increase hysteresis to reduce false triggers
+- Recommended ODR - 50 Hz, Threshold range - 0 to 1.5g, Hysteresis - 0 to 0.75g
 - Runs on APP2.0 and APP3.0 microcontroller
 
 ### no_motion
 - Configures sensor to generate interrupt when sensor is stationary.
 - Adjust threshold according to your application needs.
+- Recommended ODR - 50 Hz, Threshold range - 0 to 1.5g
 - Runs on APP2.0 and APP3.0 microcontroller
 
 ### orientation

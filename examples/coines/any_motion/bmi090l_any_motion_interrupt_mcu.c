@@ -94,7 +94,7 @@ static void init_bmi090l(void)
 
         if (rslt == BMI090L_OK)
         {
-            bmi090ldev.accel_cfg.range = BMI090L_ACCEL_RANGE_6G;
+            bmi090ldev.accel_cfg.range = BMI090L_ACCEL_RANGE_24G;
             bmi090ldev.accel_cfg.odr = BMI090L_ACCEL_ODR_50_HZ;
             bmi090ldev.accel_cfg.bw = BMI090L_ACCEL_BW_NORMAL;
             bmi090la_set_meas_conf(&bmi090ldev);
@@ -109,8 +109,8 @@ static void configure_bmi090l_any_motion_interrupt(void)
     struct bmi090l_accel_int_channel_cfg no_motion_int_cfg = {};
 
     /* Configure any-motion settings */
-    any_motion_cfg.threshold = 0xAA; /* 83mg */
-    any_motion_cfg.duration = 5;
+    any_motion_cfg.threshold = 0xAA; /* (0.124g * 2^15)/24g = 0xAA */
+    any_motion_cfg.duration = 5;    /* 100ms/20 = 5 */
     any_motion_cfg.x_en = 1;
     any_motion_cfg.y_en = 1;
     any_motion_cfg.z_en = 1;

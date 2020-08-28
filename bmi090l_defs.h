@@ -31,8 +31,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @file       bmi090l_defs.h
- * @date       2020-06-18
- * @version    v1.0.0
+ * @date       2020-08-28
+ * @version    v1.0.2
  *
  */
 

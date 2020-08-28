@@ -31,8 +31,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @file       bmi090la.c
- * @date       2020-06-18
- * @version    v1.0.0
+ * @date       2020-08-28
+ * @version    v1.0.2
  *
  */
 
@@ -979,6 +979,7 @@ int8_t bmi090la_write_feature_config(uint8_t reg_addr,
     int8_t rslt;
     uint16_t read_length = (reg_addr * 2) + (len * 2);
     uint8_t feature_data[read_length];
+    uint8_t indx = 0;
 
     /* Check for null pointer in the device structure */
     rslt = null_ptr_check(dev);
@@ -990,7 +991,7 @@ int8_t bmi090la_write_feature_config(uint8_t reg_addr,
         if (rslt == BMI090L_OK)
         {
             /* Apply the given feature config. */
-            for (int indx = 0; indx < len; ++indx)
+            for (indx = 0; indx < len; ++indx)
             {
                 /* Be careful: the feature config space is 16bit aligned! */
                 feature_data[(reg_addr * 2) + (indx * 2)] = reg_data[indx] & 0xFF;
@@ -2171,14 +2172,23 @@ static int8_t set_accel_sync_data_ready_int(const struct bmi090l_accel_int_chann
 
         if (rslt == BMI090L_OK)
         {
+            rslt = get_regs(reg_addr, &data, 1, dev);
+
             if (int_config->int_pin_cfg.enable_int_pin == BMI090L_ENABLE)
             {
                 /* Interrupt A mapped to INT1/INT2 */
-                data = BMI090L_ACCEL_INTA_ENABLE;
+                data |= BMI090L_ACCEL_INTA_ENABLE;
+            }
+            else
+            {
+                data &= ~BMI090L_ACCEL_INTA_ENABLE;
             }
 
-            /* Write to interrupt map register */
-            rslt = set_regs(reg_addr, &data, 1, dev);
+            if (rslt == BMI090L_OK)
+            {
+                /* Write to interrupt map register */
+                rslt = set_regs(reg_addr, &data, 1, dev);
+            }
 
             if (rslt == BMI090L_OK)
             {
@@ -2242,14 +2252,23 @@ static int8_t set_accel_anymotion_int(const struct bmi090l_accel_int_channel_cfg
 
         if (rslt == BMI090L_OK)
         {
+            rslt = get_regs(reg_addr, &data, 1, dev);
+
             if (int_config->int_pin_cfg.enable_int_pin == BMI090L_ENABLE)
             {
                 /* Interrupt B mapped to INT1/INT2 */
-                data = BMI090L_ACCEL_INTB_ENABLE;
+                data |= BMI090L_ACCEL_INTB_ENABLE;
+            }
+            else
+            {
+                data &= ~BMI090L_ACCEL_INTB_ENABLE;
             }
 
-            /* Write to interrupt map register */
-            rslt = set_regs(reg_addr, &data, 1, dev);
+            if (rslt == BMI090L_OK)
+            {
+                /* Write to interrupt map register */
+                rslt = set_regs(reg_addr, &data, 1, dev);
+            }
 
             if (rslt == BMI090L_OK)
             {
@@ -2295,14 +2314,23 @@ static int8_t set_accel_high_g_int(const struct bmi090l_accel_int_channel_cfg *i
 
         if (rslt == BMI090L_OK)
         {
+            rslt = get_regs(reg_addr, &data, 1, dev);
+
             if (int_config->int_pin_cfg.enable_int_pin == BMI090L_ENABLE)
             {
                 /*interrupt B mapped to INT1/INT2 */
-                data = BMI090L_ACCEL_INTC_ENABLE;
+                data |= BMI090L_ACCEL_INTC_ENABLE;
+            }
+            else
+            {
+                data &= ~BMI090L_ACCEL_INTC_ENABLE;
             }
 
-            /* Write to interrupt map register */
-            rslt = set_regs(reg_addr, &data, 1, dev);
+            if (rslt == BMI090L_OK)
+            {
+                /* Write to interrupt map register */
+                rslt = set_regs(reg_addr, &data, 1, dev);
+            }
 
             if (rslt == BMI090L_OK)
             {
@@ -2347,14 +2375,23 @@ static int8_t set_accel_low_g_int(const struct bmi090l_accel_int_channel_cfg *in
 
         if (rslt == BMI090L_OK)
         {
+            rslt = get_regs(reg_addr, &data, 1, dev);
+
             if (int_config->int_pin_cfg.enable_int_pin == BMI090L_ENABLE)
             {
                 /*interrupt B mapped to INT1/INT2 */
-                data = BMI090L_ACCEL_INTD_ENABLE;
+                data |= BMI090L_ACCEL_INTD_ENABLE;
+            }
+            else
+            {
+                data &= ~BMI090L_ACCEL_INTD_DISABLE;
             }
 
-            /* Write to interrupt map register */
-            rslt = set_regs(reg_addr, &data, 1, dev);
+            if (rslt == BMI090L_OK)
+            {
+                /* Write to interrupt map register */
+                rslt = set_regs(reg_addr, &data, 1, dev);
+            }
 
             if (rslt == BMI090L_OK)
             {
@@ -2400,14 +2437,23 @@ static int8_t set_accel_orient_int(const struct bmi090l_accel_int_channel_cfg *i
 
         if (rslt == BMI090L_OK)
         {
+            rslt = get_regs(reg_addr, &data, 1, dev);
+
             if (int_config->int_pin_cfg.enable_int_pin == BMI090L_ENABLE)
             {
                 /*interrupt B mapped to INT1/INT2 */
-                data = BMI090L_ACCEL_INTE_ENABLE;
+                data |= BMI090L_ACCEL_INTE_ENABLE;
+            }
+            else
+            {
+                data &= ~BMI090L_ACCEL_INTE_ENABLE;
             }
 
-            /* Write to interrupt map register */
-            rslt = set_regs(reg_addr, &data, 1, dev);
+            if (rslt == BMI090L_OK)
+            {
+                /* Write to interrupt map register */
+                rslt = set_regs(reg_addr, &data, 1, dev);
+            }
 
             if (rslt == BMI090L_OK)
             {
@@ -2453,14 +2499,23 @@ static int8_t set_accel_no_motion_int(const struct bmi090l_accel_int_channel_cfg
 
         if (rslt == BMI090L_OK)
         {
+            rslt = get_regs(reg_addr, &data, 1, dev);
+
             if (int_config->int_pin_cfg.enable_int_pin == BMI090L_ENABLE)
             {
                 /*interrupt B mapped to INT1/INT2 */
-                data = BMI090L_ACCEL_INTF_ENABLE;
+                data |= BMI090L_ACCEL_INTF_ENABLE;
+            }
+            else
+            {
+                data &= ~BMI090L_ACCEL_INTF_ENABLE;
             }
 
-            /* Write to interrupt map register */
-            rslt = set_regs(reg_addr, &data, 1, dev);
+            if (rslt == BMI090L_OK)
+            {
+                /* Write to interrupt map register */
+                rslt = set_regs(reg_addr, &data, 1, dev);
+            }
 
             if (rslt == BMI090L_OK)
             {

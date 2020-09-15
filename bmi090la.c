@@ -31,8 +31,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @file       bmi090la.c
- * @date       2020-08-28
- * @version    v1.0.2
+ * @date       2020-09-04
+ * @version    v1.0.3
  *
  */
 
@@ -809,7 +809,7 @@ int8_t bmi090la_init(struct bmi090l_dev *dev)
             dev->dummy_byte = BMI090L_ENABLE;
 
             /* Dummy read of Chip-ID in SPI mode */
-            rslt = get_regs(BMI090L_ACCEL_CHIP_ID_REG, &chip_id, 1, dev);
+            rslt = get_regs(BMI090L_REG_ACCEL_CHIP_ID, &chip_id, 1, dev);
         }
         else
         {
@@ -819,7 +819,7 @@ int8_t bmi090la_init(struct bmi090l_dev *dev)
 
         if (rslt == BMI090L_OK)
         {
-            rslt = get_regs(BMI090L_ACCEL_CHIP_ID_REG, &chip_id, 1, dev);
+            rslt = get_regs(BMI090L_REG_ACCEL_CHIP_ID, &chip_id, 1, dev);
 
             if (rslt == BMI090L_OK)
             {
@@ -892,13 +892,13 @@ int8_t bmi090la_write_config_file(const struct bmi090l_dev *dev)
         if (dev->read_write_len > 0)
         {
             /* Deactivate accel, otherwise post processing can not be enabled safely */
-            rslt = get_regs(BMI090L_ACCEL_PWR_CTRL_REG, &current_acc_pwr_ctrl, 1, dev);
+            rslt = get_regs(BMI090L_REG_ACCEL_PWR_CTRL, &current_acc_pwr_ctrl, 1, dev);
             if (rslt != BMI090L_OK)
             {
                 return rslt;
             }
 
-            rslt = set_regs(BMI090L_ACCEL_PWR_CTRL_REG, &config_load, 1, dev);
+            rslt = set_regs(BMI090L_REG_ACCEL_PWR_CTRL, &config_load, 1, dev);
             if (rslt == BMI090L_OK)
             {
                 /* Delay required to switch power modes */
@@ -910,7 +910,7 @@ int8_t bmi090la_write_config_file(const struct bmi090l_dev *dev)
             }
 
             /* Disable config load */
-            rslt = set_regs(BMI090L_ACCEL_INIT_CTRL_REG, &config_load, 1, dev);
+            rslt = set_regs(BMI090L_REG_ACCEL_INIT_CTRL, &config_load, 1, dev);
 
             if (rslt == BMI090L_OK)
             {
@@ -926,7 +926,7 @@ int8_t bmi090la_write_config_file(const struct bmi090l_dev *dev)
                     /* Enable config loading and FIFO mode */
                     config_load = BMI090L_ENABLE;
 
-                    rslt = set_regs(BMI090L_ACCEL_INIT_CTRL_REG, &config_load, 1, dev);
+                    rslt = set_regs(BMI090L_REG_ACCEL_INIT_CTRL, &config_load, 1, dev);
 
                     if (rslt == BMI090L_OK)
                     {
@@ -934,7 +934,7 @@ int8_t bmi090la_write_config_file(const struct bmi090l_dev *dev)
                         dev->delay_us(BMI090L_ASIC_INIT_TIME_MS * 1000, dev->intf_ptr);
 
                         /* Check for config initialization status (1 = OK) */
-                        rslt = get_regs(BMI090L_ACCEL_INTERNAL_STAT_REG, &reg_data, 1, dev);
+                        rslt = get_regs(BMI090L_REG_ACCEL_INTERNAL_STAT, &reg_data, 1, dev);
                     }
 
                     if (rslt == BMI090L_OK && reg_data != 1)
@@ -944,7 +944,7 @@ int8_t bmi090la_write_config_file(const struct bmi090l_dev *dev)
                     else
                     {
                         /* Reactivate accel */
-                        rslt = set_regs(BMI090L_ACCEL_PWR_CTRL_REG, &current_acc_pwr_ctrl, 1, dev);
+                        rslt = set_regs(BMI090L_REG_ACCEL_PWR_CTRL, &current_acc_pwr_ctrl, 1, dev);
                         if (rslt == BMI090L_OK)
                         {
                             /* Delay required to switch power modes */
@@ -986,7 +986,7 @@ int8_t bmi090la_write_feature_config(uint8_t reg_addr,
     if (rslt == BMI090L_OK)
     {
         /* Read feature space up to the given feature position */
-        rslt = bmi090la_get_regs(BMI090L_ACCEL_FEATURE_CFG_REG, &feature_data[0], read_length, dev);
+        rslt = bmi090la_get_regs(BMI090L_REG_ACCEL_FEATURE_CFG, &feature_data[0], read_length, dev);
 
         if (rslt == BMI090L_OK)
         {
@@ -999,7 +999,7 @@ int8_t bmi090la_write_feature_config(uint8_t reg_addr,
             }
 
             /* Write back updated feature space */
-            rslt = bmi090la_set_regs(BMI090L_ACCEL_FEATURE_CFG_REG, &feature_data[0], read_length, dev);
+            rslt = bmi090la_set_regs(BMI090L_REG_ACCEL_FEATURE_CFG, &feature_data[0], read_length, dev);
         }
     }
 
@@ -1086,7 +1086,7 @@ int8_t bmi090la_get_error_status(struct bmi090l_err_reg *err_reg, const struct b
         if (err_reg != NULL)
         {
             /* Read the error codes */
-            rslt = get_regs(BMI090L_ACCEL_ERR_REG, &data, 1, dev);
+            rslt = get_regs(BMI090L_REG_ACCEL_ERR, &data, 1, dev);
 
             if (rslt == BMI090L_OK)
             {
@@ -1121,7 +1121,7 @@ int8_t bmi090la_get_status(uint8_t *status, const struct bmi090l_dev *dev)
     if ((rslt == BMI090L_OK) && (status != NULL))
     {
         /* Read the status */
-        rslt = get_regs(BMI090L_ACCEL_STATUS_REG, &data, 1, dev);
+        rslt = get_regs(BMI090L_REG_ACCEL_STATUS, &data, 1, dev);
 
         if (rslt == BMI090L_OK)
         {
@@ -1154,7 +1154,7 @@ int8_t bmi090la_soft_reset(const struct bmi090l_dev *dev)
         data = BMI090L_SOFT_RESET_CMD;
 
         /* Reset accel device */
-        rslt = set_regs(BMI090L_ACCEL_SOFTRESET_REG, &data, 1, dev);
+        rslt = set_regs(BMI090L_REG_ACCEL_SOFTRESET, &data, 1, dev);
 
         if (rslt == BMI090L_OK)
         {
@@ -1167,7 +1167,7 @@ int8_t bmi090la_soft_reset(const struct bmi090l_dev *dev)
             if (dev->intf == BMI090L_SPI_INTF)
             {
                 /* Dummy SPI read operation of Chip-ID */
-                rslt = get_regs(BMI090L_ACCEL_CHIP_ID_REG, &data, 1, dev);
+                rslt = get_regs(BMI090L_REG_ACCEL_CHIP_ID, &data, 1, dev);
             }
         }
     }
@@ -1191,7 +1191,7 @@ int8_t bmi090la_get_meas_conf(struct bmi090l_dev *dev)
     /* Proceed if null check is fine */
     if (rslt == BMI090L_OK)
     {
-        rslt = get_regs(BMI090L_ACCEL_CONF_REG, data, 2, dev);
+        rslt = get_regs(BMI090L_REG_ACCEL_CONF, data, 2, dev);
 
         if (rslt == BMI090L_OK)
         {
@@ -1250,7 +1250,7 @@ int8_t bmi090la_set_meas_conf(const struct bmi090l_dev *dev)
         if ((!is_odr_invalid) && (!is_bw_invalid) && (!is_range_invalid))
         {
             /* Read accel config. register */
-            rslt = get_regs(BMI090L_ACCEL_CONF_REG, data, 2, dev);
+            rslt = get_regs(BMI090L_REG_ACCEL_CONF, data, 2, dev);
             if (rslt == BMI090L_OK)
             {
                 /* Update data with new odr and bw values */
@@ -1261,7 +1261,7 @@ int8_t bmi090la_set_meas_conf(const struct bmi090l_dev *dev)
                 data[1] = BMI090L_SET_BITS_POS_0(data[1], BMI090L_ACCEL_RANGE, range);
 
                 /* Write accel range to register */
-                rslt = set_regs(BMI090L_ACCEL_CONF_REG, data, 2, dev);
+                rslt = set_regs(BMI090L_REG_ACCEL_CONF, data, 2, dev);
             }
         }
         else
@@ -1289,7 +1289,7 @@ int8_t bmi090la_get_power_mode(struct bmi090l_dev *dev)
     /* Proceed if null check is fine */
     if (rslt == BMI090L_OK)
     {
-        rslt = get_regs(BMI090L_ACCEL_PWR_CONF_REG, &data, 1, dev);
+        rslt = get_regs(BMI090L_REG_ACCEL_PWR_CONF, &data, 1, dev);
 
         if (rslt == BMI090L_OK)
         {
@@ -1338,7 +1338,7 @@ int8_t bmi090la_set_power_mode(const struct bmi090l_dev *dev)
         if (rslt == BMI090L_OK)
         {
             /* Enable accel sensor */
-            rslt = set_regs(BMI090L_ACCEL_PWR_CONF_REG, &data[0], 1, dev);
+            rslt = set_regs(BMI090L_REG_ACCEL_PWR_CONF, &data[0], 1, dev);
 
             if (rslt == BMI090L_OK)
             {
@@ -1346,7 +1346,7 @@ int8_t bmi090la_set_power_mode(const struct bmi090l_dev *dev)
                 dev->delay_us(BMI090L_POWER_CONFIG_DELAY * 1000, dev->intf_ptr);
 
                 /* Write to accel power configuration register */
-                rslt = set_regs(BMI090L_ACCEL_PWR_CTRL_REG, &data[1], 1, dev);
+                rslt = set_regs(BMI090L_REG_ACCEL_PWR_CTRL, &data[1], 1, dev);
 
                 if (rslt == BMI090L_OK)
                 {
@@ -1379,7 +1379,7 @@ int8_t bmi090la_get_data(struct bmi090l_sensor_data *accel, const struct bmi090l
     if ((rslt == BMI090L_OK) && (accel != NULL))
     {
         /* Read accel sensor data */
-        rslt = get_regs(BMI090L_ACCEL_X_LSB_REG, data, 6, dev);
+        rslt = get_regs(BMI090L_REG_ACCEL_X_LSB, data, 6, dev);
 
         if (rslt == BMI090L_OK)
         {
@@ -1509,7 +1509,7 @@ int8_t bmi090la_get_sensor_temperature(const struct bmi090l_dev *dev, int32_t *s
     if ((rslt == BMI090L_OK) && (sensor_temp != NULL))
     {
         /* Read sensor temperature */
-        rslt = get_regs(BMI090L_TEMP_MSB_REG, data, 2, dev);
+        rslt = get_regs(BMI090L_REG_TEMP_MSB, data, 2, dev);
 
         if (rslt == BMI090L_OK)
         {
@@ -1555,7 +1555,7 @@ int8_t bmi090la_get_sensor_time(const struct bmi090l_dev *dev, uint32_t *sensor_
     if ((rslt == BMI090L_OK) && (sensor_time != NULL))
     {
         /* Read 3-byte sensor time */
-        rslt = get_regs(BMI090L_ACCEL_SENSORTIME_0_REG, data, 3, dev);
+        rslt = get_regs(BMI090L_REG_ACCEL_SENSORTIME_0, data, 3, dev);
 
         if (rslt == BMI090L_OK)
         {
@@ -2046,12 +2046,12 @@ static int8_t set_int_pin_config(const struct bmi090l_accel_int_channel_cfg *int
         case BMI090L_INT_CHANNEL_1:
 
             /* Update reg_addr based on channel inputs */
-            reg_addr = BMI090L_ACCEL_INT1_IO_CONF_REG;
+            reg_addr = BMI090L_REG_ACCEL_INT1_IO_CONF;
             break;
         case BMI090L_INT_CHANNEL_2:
 
             /* Update reg_addr based on channel inputs */
-            reg_addr = BMI090L_ACCEL_INT2_IO_CONF_REG;
+            reg_addr = BMI090L_REG_ACCEL_INT2_IO_CONF;
             break;
         default:
             is_channel_invalid = TRUE;
@@ -2103,7 +2103,7 @@ static int8_t set_accel_data_ready_int(const struct bmi090l_accel_int_channel_cf
     uint8_t data = 0, conf;
 
     /* Read interrupt map register */
-    rslt = get_regs(BMI090L_ACCEL_INT1_INT2_MAP_DATA_REG, &data, 1, dev);
+    rslt = get_regs(BMI090L_REG_ACCEL_INT1_INT2_MAP_DATA, &data, 1, dev);
 
     if (rslt == BMI090L_OK)
     {
@@ -2134,7 +2134,7 @@ static int8_t set_accel_data_ready_int(const struct bmi090l_accel_int_channel_cf
             if (rslt == BMI090L_OK)
             {
                 /* Write to interrupt map register */
-                rslt = set_regs(BMI090L_ACCEL_INT1_INT2_MAP_DATA_REG, &data, 1, dev);
+                rslt = set_regs(BMI090L_REG_ACCEL_INT1_INT2_MAP_DATA, &data, 1, dev);
             }
         }
     }
@@ -2160,10 +2160,10 @@ static int8_t set_accel_sync_data_ready_int(const struct bmi090l_accel_int_chann
         switch (int_config->int_channel)
         {
             case BMI090L_INT_CHANNEL_1:
-                reg_addr = BMI090L_ACCEL_INT1_MAP_REG;
+                reg_addr = BMI090L_REG_ACCEL_INT1_MAP;
                 break;
             case BMI090L_INT_CHANNEL_2:
-                reg_addr = BMI090L_ACCEL_INT2_MAP_REG;
+                reg_addr = BMI090L_REG_ACCEL_INT2_MAP;
                 break;
             default:
                 rslt = BMI090L_E_INVALID_INPUT;
@@ -2238,11 +2238,11 @@ static int8_t set_accel_anymotion_int(const struct bmi090l_accel_int_channel_cfg
         switch (int_config->int_channel)
         {
             case BMI090L_INT_CHANNEL_1:
-                reg_addr = BMI090L_ACCEL_INT1_MAP_REG;
+                reg_addr = BMI090L_REG_ACCEL_INT1_MAP;
                 break;
 
             case BMI090L_INT_CHANNEL_2:
-                reg_addr = BMI090L_ACCEL_INT2_MAP_REG;
+                reg_addr = BMI090L_REG_ACCEL_INT2_MAP;
                 break;
 
             default:
@@ -2300,11 +2300,11 @@ static int8_t set_accel_high_g_int(const struct bmi090l_accel_int_channel_cfg *i
         switch (int_config->int_channel)
         {
             case BMI090L_INT_CHANNEL_1:
-                reg_addr = BMI090L_ACCEL_INT1_MAP_REG;
+                reg_addr = BMI090L_REG_ACCEL_INT1_MAP;
                 break;
 
             case BMI090L_INT_CHANNEL_2:
-                reg_addr = BMI090L_ACCEL_INT2_MAP_REG;
+                reg_addr = BMI090L_REG_ACCEL_INT2_MAP;
                 break;
 
             default:
@@ -2361,11 +2361,11 @@ static int8_t set_accel_low_g_int(const struct bmi090l_accel_int_channel_cfg *in
         switch (int_config->int_channel)
         {
             case BMI090L_INT_CHANNEL_1:
-                reg_addr = BMI090L_ACCEL_INT1_MAP_REG;
+                reg_addr = BMI090L_REG_ACCEL_INT1_MAP;
                 break;
 
             case BMI090L_INT_CHANNEL_2:
-                reg_addr = BMI090L_ACCEL_INT2_MAP_REG;
+                reg_addr = BMI090L_REG_ACCEL_INT2_MAP;
                 break;
 
             default:
@@ -2423,11 +2423,11 @@ static int8_t set_accel_orient_int(const struct bmi090l_accel_int_channel_cfg *i
         switch (int_config->int_channel)
         {
             case BMI090L_INT_CHANNEL_1:
-                reg_addr = BMI090L_ACCEL_INT1_MAP_REG;
+                reg_addr = BMI090L_REG_ACCEL_INT1_MAP;
                 break;
 
             case BMI090L_INT_CHANNEL_2:
-                reg_addr = BMI090L_ACCEL_INT2_MAP_REG;
+                reg_addr = BMI090L_REG_ACCEL_INT2_MAP;
                 break;
 
             default:
@@ -2485,11 +2485,11 @@ static int8_t set_accel_no_motion_int(const struct bmi090l_accel_int_channel_cfg
         switch (int_config->int_channel)
         {
             case BMI090L_INT_CHANNEL_1:
-                reg_addr = BMI090L_ACCEL_INT1_MAP_REG;
+                reg_addr = BMI090L_REG_ACCEL_INT1_MAP;
                 break;
 
             case BMI090L_INT_CHANNEL_2:
-                reg_addr = BMI090L_ACCEL_INT2_MAP_REG;
+                reg_addr = BMI090L_REG_ACCEL_INT2_MAP;
                 break;
 
             default:
@@ -2538,16 +2538,16 @@ static int8_t stream_transfer_write(const uint8_t *stream_data, uint16_t indx, c
     uint8_t asic_lsb = ((indx / 2) & 0x0F);
 
     /* Write to feature config register */
-    rslt = set_regs(BMI090L_ACCEL_RESERVED_5B_REG, &asic_lsb, 1, dev);
+    rslt = set_regs(BMI090L_REG_ACCEL_RESERVED_5B, &asic_lsb, 1, dev);
     if (rslt == BMI090L_OK)
     {
         /* Write to feature config register */
-        rslt = set_regs(BMI090L_ACCEL_RESERVED_5C_REG, &asic_msb, 1, dev);
+        rslt = set_regs(BMI090L_REG_ACCEL_RESERVED_5C, &asic_msb, 1, dev);
 
         if (rslt == BMI090L_OK)
         {
             /* Write to feature config registers */
-            rslt = set_regs(BMI090L_ACCEL_FEATURE_CFG_REG, (uint8_t *)stream_data, dev->read_write_len, dev);
+            rslt = set_regs(BMI090L_REG_ACCEL_FEATURE_CFG, (uint8_t *)stream_data, dev->read_write_len, dev);
         }
     }
 
@@ -2597,7 +2597,7 @@ static int8_t positive_excited_accel(struct bmi090l_sensor_data *accel_pos, cons
     uint8_t reg_data = BMI090L_ACCEL_POSITIVE_SELF_TEST;
 
     /* Enable positive excitation for all 3 axes */
-    rslt = set_regs(BMI090L_ACCEL_SELF_TEST_REG, &reg_data, 1, dev);
+    rslt = set_regs(BMI090L_REG_ACCEL_SELF_TEST, &reg_data, 1, dev);
     if (rslt == BMI090L_OK)
     {
         /* Read accel data after 50ms delay */
@@ -2617,7 +2617,7 @@ static int8_t negative_excited_accel(struct bmi090l_sensor_data *accel_neg, cons
     uint8_t reg_data = BMI090L_ACCEL_NEGATIVE_SELF_TEST;
 
     /* Enable negative excitation for all 3 axes */
-    rslt = set_regs(BMI090L_ACCEL_SELF_TEST_REG, &reg_data, 1, dev);
+    rslt = set_regs(BMI090L_REG_ACCEL_SELF_TEST, &reg_data, 1, dev);
     if (rslt == BMI090L_OK)
     {
         /* Read accel data after 50ms delay */
@@ -2628,7 +2628,7 @@ static int8_t negative_excited_accel(struct bmi090l_sensor_data *accel_neg, cons
         {
             /* Disable self-test */
             reg_data = BMI090L_ACCEL_SWITCH_OFF_SELF_TEST;
-            rslt = set_regs(BMI090L_ACCEL_SELF_TEST_REG, &reg_data, 1, dev);
+            rslt = set_regs(BMI090L_REG_ACCEL_SELF_TEST, &reg_data, 1, dev);
         }
     }
 
@@ -2669,7 +2669,7 @@ static int8_t validate_accel_self_test(const struct bmi090l_sensor_data *accel_p
     else
     {
         /* Updating Error status */
-        rslt = BMI090L_W_SELF_TEST_FAIL;
+        rslt = BMI090L_E_SELF_TEST;
     }
 
     return rslt;
@@ -2992,7 +2992,7 @@ static int8_t set_accel_fifo_wm_int(const struct bmi090l_accel_int_channel_cfg *
     uint8_t data = 0, conf;
 
     /* Read interrupt map register */
-    rslt = get_regs(BMI090L_ACCEL_INT1_INT2_MAP_DATA_REG, &data, 1, dev);
+    rslt = get_regs(BMI090L_REG_ACCEL_INT1_INT2_MAP_DATA, &data, 1, dev);
 
     if (rslt == BMI090L_OK)
     {
@@ -3025,7 +3025,7 @@ static int8_t set_accel_fifo_wm_int(const struct bmi090l_accel_int_channel_cfg *
             if (rslt == BMI090L_OK)
             {
                 /* Write to interrupt map register */
-                rslt = set_regs(BMI090L_ACCEL_INT1_INT2_MAP_DATA_REG, &data, 1, dev);
+                rslt = set_regs(BMI090L_REG_ACCEL_INT1_INT2_MAP_DATA, &data, 1, dev);
             }
         }
     }
@@ -3043,7 +3043,7 @@ static int8_t set_accel_fifo_full_int(const struct bmi090l_accel_int_channel_cfg
     uint8_t data = 0, conf;
 
     /* Read interrupt map register */
-    rslt = get_regs(BMI090L_ACCEL_INT1_INT2_MAP_DATA_REG, &data, 1, dev);
+    rslt = get_regs(BMI090L_REG_ACCEL_INT1_INT2_MAP_DATA, &data, 1, dev);
 
     if (rslt == BMI090L_OK)
     {
@@ -3076,7 +3076,7 @@ static int8_t set_accel_fifo_full_int(const struct bmi090l_accel_int_channel_cfg
             if (rslt == BMI090L_OK)
             {
                 /* Write to interrupt map register */
-                rslt = set_regs(BMI090L_ACCEL_INT1_INT2_MAP_DATA_REG, &data, 1, dev);
+                rslt = set_regs(BMI090L_REG_ACCEL_INT1_INT2_MAP_DATA, &data, 1, dev);
             }
         }
     }
@@ -3197,13 +3197,13 @@ int8_t bmi090la_get_synchronized_data(struct bmi090l_sensor_data *accel,
     if ((rslt == BMI090L_OK) && (accel != NULL) && (gyro != NULL))
     {
         /* Read accel x,y sensor data */
-        reg_addr = BMI090L_ACCEL_GP_0_REG;
+        reg_addr = BMI090L_REG_ACCEL_GP_0;
         rslt = bmi090la_get_regs(reg_addr, &data[0], 4, dev);
 
         if (rslt == BMI090L_OK)
         {
             /* Read accel sensor data */
-            reg_addr = BMI090L_ACCEL_GP_4_REG;
+            reg_addr = BMI090L_REG_ACCEL_GP_4;
             rslt = bmi090la_get_regs(reg_addr, &data[4], 2, dev);
 
             if (rslt == BMI090L_OK)
@@ -3282,7 +3282,7 @@ int8_t bmi090la_set_high_g_config(const struct bmi090l_high_g_cfg *config, const
     /* Array to define the feature configuration */
     uint16_t feature_config[BMI090L_HIGH_G_START_ADR + 3] = { 0 };
 
-    rslt = bmi090la_get_regs(BMI090L_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config, sizeof(feature_config), dev);
+    rslt = bmi090la_get_regs(BMI090L_REG_ACCEL_FEATURE_CFG, (uint8_t *)feature_config, sizeof(feature_config), dev);
 
     if (rslt == BMI090L_OK)
     {
@@ -3314,7 +3314,7 @@ int8_t bmi090la_set_high_g_config(const struct bmi090l_high_g_cfg *config, const
         /* Set output configuration */
         feature_config[idx + 2] = BMI090L_SET_BITS(feature_config[idx + 2], BMI090L_HIGH_G_OUT_CONF, config->out_conf);
 
-        rslt = bmi090la_set_regs(BMI090L_ACCEL_FEATURE_CFG_REG, (uint8_t*) feature_config, 32, dev);
+        rslt = bmi090la_set_regs(BMI090L_REG_ACCEL_FEATURE_CFG, (uint8_t*) feature_config, 32, dev);
     }
 
     return rslt;
@@ -3332,7 +3332,7 @@ int8_t bmi090la_get_high_g_config(struct bmi090l_high_g_cfg *config, const struc
     /* Array to define the feature configuration */
     uint16_t feature_config[BMI090L_HIGH_G_START_ADR + 3] = { 0 };
 
-    rslt = bmi090la_get_regs(BMI090L_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config, sizeof(feature_config), dev);
+    rslt = bmi090la_get_regs(BMI090L_REG_ACCEL_FEATURE_CFG, (uint8_t *)feature_config, sizeof(feature_config), dev);
 
     if (rslt == BMI090L_OK)
     {
@@ -3379,7 +3379,7 @@ int8_t bmi090la_set_low_g_config(const struct bmi090l_low_g_cfg *config, const s
     /* Array to define the feature configuration */
     uint16_t feature_config[BMI090L_LOW_G_START_ADR + 3] = { 0 };
 
-    rslt = bmi090la_get_regs(BMI090L_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config, sizeof(feature_config), dev);
+    rslt = bmi090la_get_regs(BMI090L_REG_ACCEL_FEATURE_CFG, (uint8_t *)feature_config, sizeof(feature_config), dev);
 
     if (rslt == BMI090L_OK)
     {
@@ -3398,7 +3398,7 @@ int8_t bmi090la_set_low_g_config(const struct bmi090l_low_g_cfg *config, const s
         /* Set duration */
         feature_config[idx + 2] = BMI090L_SET_BITS_POS_0(feature_config[idx + 2], BMI090L_LOW_G_DUR, config->duration);
 
-        rslt = bmi090la_set_regs(BMI090L_ACCEL_FEATURE_CFG_REG, (uint8_t*) feature_config, sizeof(feature_config), dev);
+        rslt = bmi090la_set_regs(BMI090L_REG_ACCEL_FEATURE_CFG, (uint8_t*) feature_config, sizeof(feature_config), dev);
     }
 
     return rslt;
@@ -3416,7 +3416,7 @@ int8_t bmi090la_get_low_g_config(struct bmi090l_low_g_cfg *config, const struct 
     /* Array to define the feature configuration */
     uint16_t feature_config[BMI090L_LOW_G_START_ADR + 3] = { 0 };
 
-    rslt = bmi090la_get_regs(BMI090L_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config, sizeof(feature_config), dev);
+    rslt = bmi090la_get_regs(BMI090L_REG_ACCEL_FEATURE_CFG, (uint8_t *)feature_config, sizeof(feature_config), dev);
 
     if (rslt == BMI090L_OK)
     {
@@ -3453,7 +3453,7 @@ int8_t bmi090la_set_orient_config(const struct bmi090l_orient_cfg *config, const
     /* Array to define the feature configuration */
     uint16_t feature_config[BMI090L_ORIENT_START_ADR + 2] = { 0 };
 
-    rslt = bmi090la_get_regs(BMI090L_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config, sizeof(feature_config), dev);
+    rslt = bmi090la_get_regs(BMI090L_REG_ACCEL_FEATURE_CFG, (uint8_t *)feature_config, sizeof(feature_config), dev);
 
     if (rslt == BMI090L_OK)
     {
@@ -3480,7 +3480,7 @@ int8_t bmi090la_set_orient_config(const struct bmi090l_orient_cfg *config, const
                                                          BMI090L_ORIENT_HYST,
                                                          config->hysteresis);
 
-        rslt = bmi090la_set_regs(BMI090L_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config, sizeof(feature_config), dev);
+        rslt = bmi090la_set_regs(BMI090L_REG_ACCEL_FEATURE_CFG, (uint8_t *)feature_config, sizeof(feature_config), dev);
 
     }
 
@@ -3500,7 +3500,7 @@ int8_t bmi090la_get_orient_config(struct bmi090l_orient_cfg *config, const struc
     /* Array to define the feature configuration */
     uint16_t feature_config[BMI090L_ORIENT_START_ADR + 2] = { 0 };
 
-    rslt = bmi090la_get_regs(BMI090L_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config, sizeof(feature_config), dev);
+    rslt = bmi090la_get_regs(BMI090L_REG_ACCEL_FEATURE_CFG, (uint8_t *)feature_config, sizeof(feature_config), dev);
 
     if (rslt == BMI090L_OK)
     {
@@ -3541,7 +3541,7 @@ int8_t bmi090la_set_no_motion_config(const struct bmi090l_no_motion_cfg *config,
     /* Array to define the feature configuration */
     uint16_t feature_config[BMI090L_NO_MOTION_START_ADR + 2] = { 0 };
 
-    rslt = bmi090la_get_regs(BMI090L_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config, sizeof(feature_config), dev);
+    rslt = bmi090la_get_regs(BMI090L_REG_ACCEL_FEATURE_CFG, (uint8_t *)feature_config, sizeof(feature_config), dev);
 
     if (rslt == BMI090L_OK)
     {
@@ -3563,7 +3563,7 @@ int8_t bmi090la_set_no_motion_config(const struct bmi090l_no_motion_cfg *config,
 
         feature_config[idx + 1] = BMI090L_SET_BITS(feature_config[idx + 1], BMI090L_NO_MOTION_Z_EN, config->select_z);
 
-        rslt = bmi090la_set_regs(BMI090L_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config, sizeof(feature_config), dev);
+        rslt = bmi090la_set_regs(BMI090L_REG_ACCEL_FEATURE_CFG, (uint8_t *)feature_config, sizeof(feature_config), dev);
     }
 
     return rslt;
@@ -3577,7 +3577,7 @@ int8_t bmi090la_get_no_motion_config(struct bmi090l_no_motion_cfg *config, const
     /* Array to define the feature configuration */
     uint16_t feature_config[BMI090L_NO_MOTION_START_ADR + 2] = { 0 };
 
-    rslt = bmi090la_get_regs(BMI090L_ACCEL_FEATURE_CFG_REG, (uint8_t *)feature_config, sizeof(feature_config), dev);
+    rslt = bmi090la_get_regs(BMI090L_REG_ACCEL_FEATURE_CFG, (uint8_t *)feature_config, sizeof(feature_config), dev);
 
     if (rslt == BMI090L_OK)
     {
@@ -3612,11 +3612,59 @@ int8_t bmi090la_get_orient_output(struct bmi090l_orient_out *orient_out, const s
     uint8_t data;
 
     /* Search for orientation output feature and extract its configuration details */
-    rslt = bmi090la_get_regs(BMI090L_ORIENT_RES_REG, &data, 1, dev);
+    rslt = bmi090la_get_regs(BMI090L_REG_ORIENT_RES, &data, 1, dev);
     if (rslt == BMI090L_OK)
     {
         orient_out->portrait_landscape = BMI090L_GET_BITS_POS_0(data, BMI090L_ORIENT_PORTRAIT_LANDSCAPE);
         orient_out->faceup_down = BMI090L_GET_BITS(data, BMI090L_ORIENT_FACEUP_DOWN);
+    }
+
+    return rslt;
+}
+
+/*!
+ * @brief This internal API gets accel data ready interrupt status
+ */
+int8_t bmi090la_get_data_int_status(uint8_t *int_status, const struct bmi090l_dev *dev)
+{
+    int8_t rslt;
+    uint8_t status = 0;
+
+    if (int_status != NULL)
+    {
+        rslt = bmi090la_get_regs(BMI090L_REG_ACCEL_INT_STAT_1, &status, 1, dev);
+        if (rslt == BMI090L_OK)
+        {
+            (*int_status) = status;
+        }
+    }
+    else
+    {
+        rslt = BMI090L_E_NULL_PTR;
+    }
+
+    return rslt;
+}
+
+/*!
+ * @brief This internal API gets accel feature interrupt status
+ */
+int8_t bmi090la_get_feat_int_status(uint8_t *int_status, const struct bmi090l_dev *dev)
+{
+    int8_t rslt;
+    uint8_t status = 0;
+
+    if (int_status != NULL)
+    {
+        rslt = bmi090la_get_regs(BMI090L_REG_ACCEL_INT_STAT_0, &status, 1, dev);
+        if (rslt == BMI090L_OK)
+        {
+            (*int_status) = status;
+        }
+    }
+    else
+    {
+        rslt = BMI090L_E_NULL_PTR;
     }
 
     return rslt;

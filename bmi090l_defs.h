@@ -31,8 +31,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @file       bmi090l_defs.h
- * @date       2020-08-28
- * @version    v1.0.2
+ * @date       2020-09-04
+ * @version    v1.0.3
  *
  */
 
@@ -108,103 +108,108 @@
 /* Accel registers */
 
 /**\name    Accel Chip Id register */
-#define BMI090L_ACCEL_CHIP_ID_REG                    UINT8_C(0x00)
+#define BMI090L_REG_ACCEL_CHIP_ID                    UINT8_C(0x00)
 
 /**\name    Accel Error condition register */
-#define BMI090L_ACCEL_ERR_REG                        UINT8_C(0x02)
+#define BMI090L_REG_ACCEL_ERR                        UINT8_C(0x02)
 
 /**\name    Accel Status flag register */
-#define BMI090L_ACCEL_STATUS_REG                     UINT8_C(0x03)
+#define BMI090L_REG_ACCEL_STATUS                     UINT8_C(0x03)
 
 /**\name    Accel X LSB data register */
-#define BMI090L_ACCEL_X_LSB_REG                      UINT8_C(0x12)
+#define BMI090L_REG_ACCEL_X_LSB                      UINT8_C(0x12)
 
 /**\name    Accel X MSB data register */
-#define BMI090L_ACCEL_X_MSB_REG                      UINT8_C(0x13)
+#define BMI090L_REG_ACCEL_X_MSB                      UINT8_C(0x13)
 
 /**\name    Accel Y LSB data register */
-#define BMI090L_ACCEL_Y_LSB_REG                      UINT8_C(0x14)
+#define BMI090L_REG_ACCEL_Y_LSB                      UINT8_C(0x14)
 
 /**\name    Accel Y MSB data register */
-#define BMI090L_ACCEL_Y_MSB_REG                      UINT8_C(0x15)
+#define BMI090L_REG_ACCEL_Y_MSB                      UINT8_C(0x15)
 
 /**\name    Accel Z LSB data register */
-#define BMI090L_ACCEL_Z_LSB_REG                      UINT8_C(0x16)
+#define BMI090L_REG_ACCEL_Z_LSB                      UINT8_C(0x16)
 
 /**\name    Accel Z MSB data register */
-#define BMI090L_ACCEL_Z_MSB_REG                      UINT8_C(0x17)
+#define BMI090L_REG_ACCEL_Z_MSB                      UINT8_C(0x17)
 
 /**\name    Sensor time byte 0 register */
-#define BMI090L_ACCEL_SENSORTIME_0_REG               UINT8_C(0x18)
+#define BMI090L_REG_ACCEL_SENSORTIME_0               UINT8_C(0x18)
 
 /**\name    Sensor time byte 1 register */
-#define BMI090L_ACCEL_SENSORTIME_1_REG               UINT8_C(0x19)
+#define BMI090L_REG_ACCEL_SENSORTIME_1               UINT8_C(0x19)
 
 /**\name    Sensor time byte 2 register */
-#define BMI090L_ACCEL_SENSORTIME_2_REG               UINT8_C(0x1A)
+#define BMI090L_REG_ACCEL_SENSORTIME_2               UINT8_C(0x1A)
 
 /**\name    Accel Interrupt status0 register */
-#define BMI090L_ACCEL_INT_STAT_0_REG                 UINT8_C(0x1C)
+#define BMI090L_REG_ACCEL_INT_STAT_0                 UINT8_C(0x1C)
 
 /**\name    Accel Interrupt status1 register */
-#define BMI090L_ACCEL_INT_STAT_1_REG                 UINT8_C(0x1D)
+#define BMI090L_REG_ACCEL_INT_STAT_1                 UINT8_C(0x1D)
 
 /**\name    Accel general purpose register 0*/
-#define BMI090L_ACCEL_GP_0_REG                       UINT8_C(0x1E)
+#define BMI090L_REG_ACCEL_GP_0                       UINT8_C(0x1E)
 
 /**\name    Sensor temperature MSB data register */
-#define BMI090L_TEMP_MSB_REG                         UINT8_C(0x22)
+#define BMI090L_REG_TEMP_MSB                         UINT8_C(0x22)
 
 /**\name    Sensor temperature LSB data register */
-#define BMI090L_TEMP_LSB_REG                         UINT8_C(0x23)
+#define BMI090L_REG_TEMP_LSB                         UINT8_C(0x23)
 
 /**\name    Accel general purpose register 4*/
-#define BMI090L_ACCEL_GP_4_REG                       UINT8_C(0x27)
+#define BMI090L_REG_ACCEL_GP_4                       UINT8_C(0x27)
 
 /**\name    Orientation result register*/
-#define BMI090L_ORIENT_RES_REG                       UINT8_C(0x29)
+#define BMI090L_REG_ORIENT_RES                       UINT8_C(0x29)
 
 /**\name    Accel Internal status register */
-#define BMI090L_ACCEL_INTERNAL_STAT_REG              UINT8_C(0x2A)
+#define BMI090L_REG_ACCEL_INTERNAL_STAT              UINT8_C(0x2A)
 
 /**\name    Accel configuration register */
-#define BMI090L_ACCEL_CONF_REG                       UINT8_C(0x40)
+#define BMI090L_REG_ACCEL_CONF                       UINT8_C(0x40)
 
 /**\name    Accel range setting register */
-#define BMI090L_ACCEL_RANGE_REG                      UINT8_C(0x41)
+#define BMI090L_REG_ACCEL_RANGE                      UINT8_C(0x41)
 
 /**\name    Accel Interrupt pin 1 configuration register */
-#define BMI090L_ACCEL_INT1_IO_CONF_REG               UINT8_C(0x53)
+#define BMI090L_REG_ACCEL_INT1_IO_CONF               UINT8_C(0x53)
 
 /**\name    Accel Interrupt pin 2 configuration register */
-#define BMI090L_ACCEL_INT2_IO_CONF_REG               UINT8_C(0x54)
+#define BMI090L_REG_ACCEL_INT2_IO_CONF               UINT8_C(0x54)
 
 /**\name    Accel Interrupt latch configuration register */
-#define BMI090L_ACCEL_INT_LATCH_CONF_REG             UINT8_C(0x55)
+#define BMI090L_REG_ACCEL_INT_LATCH_CONF             UINT8_C(0x55)
 
 /**\name    Accel Interrupt pin1 mapping register */
-#define BMI090L_ACCEL_INT1_MAP_REG                   UINT8_C(0x56)
+#define BMI090L_REG_ACCEL_INT1_MAP                   UINT8_C(0x56)
 
 /**\name    Accel Interrupt pin2 mapping register */
-#define BMI090L_ACCEL_INT2_MAP_REG                   UINT8_C(0x57)
+#define BMI090L_REG_ACCEL_INT2_MAP                   UINT8_C(0x57)
 
 /**\name    Accel Interrupt map register */
-#define BMI090L_ACCEL_INT1_INT2_MAP_DATA_REG         UINT8_C(0x58)
+#define BMI090L_REG_ACCEL_INT1_INT2_MAP_DATA         UINT8_C(0x58)
 
 /**\name    Accel Init control register */
-#define BMI090L_ACCEL_INIT_CTRL_REG                  UINT8_C(0x59)
+#define BMI090L_REG_ACCEL_INIT_CTRL                  UINT8_C(0x59)
 
 /**\name    Accel self-test register */
-#define BMI090L_ACCEL_SELF_TEST_REG                  UINT8_C(0x6D)
+#define BMI090L_REG_ACCEL_SELF_TEST                  UINT8_C(0x6D)
 
 /**\name    Accel Power mode configuration register */
-#define BMI090L_ACCEL_PWR_CONF_REG                   UINT8_C(0x7C)
+#define BMI090L_REG_ACCEL_PWR_CONF                   UINT8_C(0x7C)
 
 /**\name    Accel Power control (switch on or off ) register */
-#define BMI090L_ACCEL_PWR_CTRL_REG                   UINT8_C(0x7D)
+#define BMI090L_REG_ACCEL_PWR_CTRL                   UINT8_C(0x7D)
 
 /**\name    Accel soft-reset register */
-#define BMI090L_ACCEL_SOFTRESET_REG                  UINT8_C(0x7E)
+#define BMI090L_REG_ACCEL_SOFTRESET                  UINT8_C(0x7E)
+
+/**\name    Feature Config related Registers */
+#define BMI090L_REG_ACCEL_RESERVED_5B                UINT8_C(0x5B)
+#define BMI090L_REG_ACCEL_RESERVED_5C                UINT8_C(0x5C)
+#define BMI090L_REG_ACCEL_FEATURE_CFG                UINT8_C(0x5E)
 
 /**\name    BMI09 Accel unique chip identifier */
 #define BMI090L_ACCEL_CHIP_ID                        UINT8_C(0x1A)
@@ -213,13 +218,18 @@
 #define BMI090L_ACCEL_I2C_ADDR_PRIMARY               UINT8_C(0x18)
 #define BMI090L_ACCEL_I2C_ADDR_SECONDARY             UINT8_C(0x19)
 
-/**\name    Feature Config related Registers */
-#define BMI090L_ACCEL_RESERVED_5B_REG                UINT8_C(0x5B)
-#define BMI090L_ACCEL_RESERVED_5C_REG                UINT8_C(0x5C)
-#define BMI090L_ACCEL_FEATURE_CFG_REG                UINT8_C(0x5E)
-
 /**\name    Interrupt masks */
 #define BMI090L_ACCEL_DATA_READY_INT                 UINT8_C(0x80)
+#define BMI090L_ACCEL_FIFO_WM_INT                    UINT8_C(0x02)
+#define BMI090L_ACCEL_FIFO_FULL_INT                  UINT8_C(0x01)
+#define BMI090L_ACCEL_DATA_SYNC_INT                  UINT8_C(0x01)
+#define BMI090L_ACCEL_ANY_MOT_INT                    UINT8_C(0x02)
+#define BMI090L_ACCEL_HIGH_G_INT                     UINT8_C(0x04)
+#define BMI090L_ACCEL_LOW_G_INT                      UINT8_C(0x08)
+#define BMI090L_ACCEL_ORIENT_INT                     UINT8_C(0x16)
+#define BMI090L_ACCEL_NO_MOT_INT                     UINT8_C(0x32)
+
+#define BMI090L_GYRO_DATA_READY_INT                  UINT8_C(0x80)
 
 /**\name    Accel Bandwidth */
 #define BMI090L_ACCEL_BW_OSR4                        UINT8_C(0x00)
@@ -272,6 +282,9 @@
 /**\name    Accel soft-reset delay */
 #define BMI090L_ACCEL_SOFTRESET_DELAY_MS             UINT8_C(1)
 
+/**\name    Asic Initialization value */
+#define BMI090L_ASIC_INITIALIZED                     UINT8_C(0x01)
+
 /**\name    Mask definitions for ACCEL_ERR_REG register */
 #define BMI090L_FATAL_ERR_MASK                       UINT8_C(0x01)
 #define BMI090L_ERR_CODE_MASK                        UINT8_C(0x1C)
@@ -322,60 +335,57 @@
 #define BMI090L_ACCEL_INT1_DRDY_POS                  UINT8_C(2)
 #define BMI090L_ACCEL_INT2_DRDY_POS                  UINT8_C(6)
 
-/**\name    Asic Initialization value */
-#define BMI090L_ASIC_INITIALIZED                     UINT8_C(0x01)
-
 /*************************** BMI09 Gyroscope Macros *****************************/
 /** Register map */
 /* Gyro registers */
 
 /**\name    Gyro Chip Id register */
-#define BMI090L_GYRO_CHIP_ID_REG                     UINT8_C(0x00)
+#define BMI090L_REG_GYRO_CHIP_ID                     UINT8_C(0x00)
 
 /**\name    Gyro X LSB data register */
-#define BMI090L_GYRO_X_LSB_REG                       UINT8_C(0x02)
+#define BMI090L_REG_GYRO_X_LSB                       UINT8_C(0x02)
 
 /**\name    Gyro X MSB data register */
-#define BMI090L_GYRO_X_MSB_REG                       UINT8_C(0x03)
+#define BMI090L_REG_GYRO_X_MSB                       UINT8_C(0x03)
 
 /**\name    Gyro Y LSB data register */
-#define BMI090L_GYRO_Y_LSB_REG                       UINT8_C(0x04)
+#define BMI090L_REG_GYRO_Y_LSB                       UINT8_C(0x04)
 
 /**\name    Gyro Y MSB data register */
-#define BMI090L_GYRO_Y_MSB_REG                       UINT8_C(0x05)
+#define BMI090L_REG_GYRO_Y_MSB                       UINT8_C(0x05)
 
 /**\name    Gyro Z LSB data register */
-#define BMI090L_GYRO_Z_LSB_REG                       UINT8_C(0x06)
+#define BMI090L_REG_GYRO_Z_LSB                       UINT8_C(0x06)
 
 /**\name    Gyro Z MSB data register */
-#define BMI090L_GYRO_Z_MSB_REG                       UINT8_C(0x07)
+#define BMI090L_REG_GYRO_Z_MSB                       UINT8_C(0x07)
 
 /**\name    Gyro Interrupt status register */
-#define BMI090L_GYRO_INT_STAT_1_REG                  UINT8_C(0x0A)
+#define BMI090L_REG_GYRO_INT_STAT_1                  UINT8_C(0x0A)
 
 /**\name    Gyro Range register */
-#define BMI090L_GYRO_RANGE_REG                       UINT8_C(0x0F)
+#define BMI090L_REG_GYRO_RANGE                       UINT8_C(0x0F)
 
 /**\name    Gyro Bandwidth register */
-#define BMI090L_GYRO_BANDWIDTH_REG                   UINT8_C(0x10)
+#define BMI090L_REG_GYRO_BANDWIDTH                   UINT8_C(0x10)
 
 /**\name    Gyro Power register */
-#define BMI090L_GYRO_LPM1_REG                        UINT8_C(0x11)
+#define BMI090L_REG_GYRO_LPM1                        UINT8_C(0x11)
 
 /**\name    Gyro soft-reset register */
-#define BMI090L_GYRO_SOFTRESET_REG                   UINT8_C(0x14)
+#define BMI090L_REG_GYRO_SOFTRESET                   UINT8_C(0x14)
 
 /**\name    Gyro Interrupt control register */
-#define BMI090L_GYRO_INT_CTRL_REG                    UINT8_C(0x15)
+#define BMI090L_REG_GYRO_INT_CTRL                    UINT8_C(0x15)
 
 /**\name    Gyro Interrupt Pin configuration register */
-#define BMI090L_GYRO_INT3_INT4_IO_CONF_REG           UINT8_C(0x16)
+#define BMI090L_REG_GYRO_INT3_INT4_IO_CONF           UINT8_C(0x16)
 
 /**\name    Gyro Interrupt Map register */
-#define BMI090L_GYRO_INT3_INT4_IO_MAP_REG            UINT8_C(0x18)
+#define BMI090L_REG_GYRO_INT3_INT4_IO_MAP            UINT8_C(0x18)
 
 /**\name    Gyro self-test register */
-#define BMI090L_GYRO_SELF_TEST_REG                   UINT8_C(0x3C)
+#define BMI090L_REG_GYRO_SELF_TEST                   UINT8_C(0x3C)
 
 /**\name    Gyro unique chip identifier */
 #define BMI090L_GYRO_CHIP_ID                         UINT8_C(0x0F)
@@ -505,9 +515,7 @@
 #define BMI090L_E_RD_WR_LENGTH_INVALID               INT8_C(-7)
 #define BMI090L_E_INVALID_CONFIG                     INT8_C(-8)
 #define BMI090L_E_FEATURE_NOT_SUPPORTED              INT8_C(-9)
-
-/**\name API warning codes */
-#define BMI090L_W_SELF_TEST_FAIL                     INT8_C(1)
+#define BMI090L_E_SELF_TEST                          INT8_C(-10)
 
 /***\name    Soft-reset Value */
 #define BMI090L_SOFT_RESET_CMD                       UINT8_C(0xB6)

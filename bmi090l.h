@@ -31,8 +31,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @file       bmi090l.h
- * @date       2020-08-28
- * @version    v1.0.2
+ * @date       2020-09-04
+ * @version    v1.0.3
  *
  */
 
@@ -80,8 +80,8 @@ extern "C" {
  *  @note : Refer user guide for detailed info.
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_init(struct bmi090l_dev *dev);
 
@@ -102,8 +102,8 @@ int8_t bmi090la_init(struct bmi090l_dev *dev);
  *  @param[in] dev : Structure instance of bmi090l_dev.
  *
  *  @return Result of API execution status
- * @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_write_config_file(const struct bmi090l_dev *dev);
 
@@ -131,8 +131,8 @@ int8_t bmi090la_write_config_file(const struct bmi090l_dev *dev);
  *  @param[in] dev : Structure instance of bmi090l_dev.
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_write_feature_config(uint8_t reg_addr,
                                      const uint16_t *reg_data,
@@ -159,8 +159,8 @@ int8_t bmi090la_write_feature_config(uint8_t reg_addr,
  *  @param[in] dev       : Structure instance of bmi090l_dev.
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, const struct bmi090l_dev *dev);
 
@@ -180,8 +180,8 @@ int8_t bmi090la_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, cons
  *  @param[in] dev       : Structure instance of bmi090l_dev.
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_set_regs(uint8_t reg_addr, const uint8_t *reg_data, uint16_t len, const struct bmi090l_dev *dev);
 
@@ -222,8 +222,8 @@ int8_t bmi090la_set_regs(uint8_t reg_addr, const uint8_t *reg_data, uint16_t len
  *  @param[in] dev : Structure instance of bmi090l_dev.
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_get_error_status(struct bmi090l_err_reg *err_reg, const struct bmi090l_dev *dev);
 
@@ -256,8 +256,8 @@ int8_t bmi090la_get_error_status(struct bmi090l_err_reg *err_reg, const struct b
  *  @param[in] dev : Structure instance of bmi090l_dev.
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  *
  */
 int8_t bmi090la_get_status(uint8_t *status, const struct bmi090l_dev *dev);
@@ -279,8 +279,8 @@ int8_t bmi090la_get_status(uint8_t *status, const struct bmi090l_dev *dev);
  *  @param[in] dev  : Structure instance of bmi090l_dev.
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_soft_reset(const struct bmi090l_dev *dev);
 
@@ -302,9 +302,8 @@ int8_t bmi090la_soft_reset(const struct bmi090l_dev *dev);
  *  @param[in,out]  dev : Structure instance of bmi090l_dev.
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
- *
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_get_meas_conf(struct bmi090l_dev *dev);
 
@@ -333,8 +332,8 @@ int8_t bmi090la_get_meas_conf(struct bmi090l_dev *dev);
  *  @note : Refer user guide for detailed info.
  *
  *  @return Result of API execution status
- * @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_set_meas_conf(const struct bmi090l_dev *dev);
 
@@ -356,8 +355,8 @@ int8_t bmi090la_set_meas_conf(const struct bmi090l_dev *dev);
  *  @param[in,out]  dev : Structure instance of bmi090l_dev.
  *
  *  @return Result of API execution status
- *  @retval zero -> Success / -ve value -> Error
- *
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_get_power_mode(struct bmi090l_dev *dev);
 
@@ -372,8 +371,8 @@ int8_t bmi090la_get_power_mode(struct bmi090l_dev *dev);
  *  @param[in] dev  : Structure instance of bmi090l_dev.
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_set_power_mode(const struct bmi090l_dev *dev);
 
@@ -398,8 +397,8 @@ int8_t bmi090la_set_power_mode(const struct bmi090l_dev *dev);
  *
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_get_data(struct bmi090l_sensor_data *accel, const struct bmi090l_dev *dev);
 
@@ -424,8 +423,8 @@ int8_t bmi090la_get_data(struct bmi090l_sensor_data *accel, const struct bmi090l
  *  @note : Refer user guide for detailed info.
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_set_int_config(const struct bmi090l_accel_int_channel_cfg *int_config, const struct bmi090l_dev *dev);
 
@@ -451,8 +450,8 @@ int8_t bmi090la_set_int_config(const struct bmi090l_accel_int_channel_cfg *int_c
  *  Consider sensor_temp = 19520 , Then the actual temperature is 19.520 degree Celsius
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_get_sensor_temperature(const struct bmi090l_dev *dev, int32_t *sensor_temp);
 
@@ -474,8 +473,8 @@ int8_t bmi090la_get_sensor_temperature(const struct bmi090l_dev *dev, int32_t *s
  *  @param[out] sensor_time     : Pointer to store sensor time
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_get_sensor_time(const struct bmi090l_dev *dev, uint32_t *sensor_time);
 
@@ -496,9 +495,9 @@ int8_t bmi090la_get_sensor_time(const struct bmi090l_dev *dev, uint32_t *sensor_
  *
  *  @param[in] dev    : Structure instance of bmi090l_dev
  *
- *  @return results of self test
- * @retval      BMI090L_OK                  Self test success
- * @retval      BMI090L_W_SELF_TEST_FAIL    Self test fail
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_perform_selftest(struct bmi090l_dev *dev);
 
@@ -519,8 +518,8 @@ int8_t bmi090la_perform_selftest(struct bmi090l_dev *dev);
  *  @param[in,out] dev  : Structure instance of bmi090l_dev.
  *
  *  @return Result of API execution status
- * @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_apply_config_file(struct bmi090l_dev *dev);
 
@@ -543,8 +542,8 @@ int8_t bmi090la_apply_config_file(struct bmi090l_dev *dev);
  *  @param[in] dev : Structure instance of bmi090l_dev.
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_configure_data_synchronization(struct bmi090l_data_sync_cfg sync_cfg, struct bmi090l_dev *dev);
 
@@ -567,8 +566,8 @@ int8_t bmi090la_configure_data_synchronization(struct bmi090l_data_sync_cfg sync
  *  @param[in] dev : Structure instance of bmi090l_dev.
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_configure_anymotion(struct bmi090l_anymotion_cfg anymotion_cfg, const struct bmi090l_dev *dev);
 
@@ -597,8 +596,8 @@ int8_t bmi090la_configure_anymotion(struct bmi090l_anymotion_cfg anymotion_cfg, 
  *
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_get_synchronized_data(struct bmi090l_sensor_data *accel,
                                       struct bmi090l_sensor_data *gyro,
@@ -625,10 +624,250 @@ int8_t bmi090la_get_synchronized_data(struct bmi090l_sensor_data *accel,
  *  @note : Refer user guide for detailed info.
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_set_data_sync_int_config(const struct bmi090l_int_cfg *int_config, const struct bmi090l_dev *dev);
+
+/*!
+ * \ingroup bmi090laApiInt
+ * \page bmi090la_api_bmi090la_set_high_g_config bmi090la_set_high_g_config
+ * \code
+ * int8_t bmi090la_set_high_g_config(const struct bmi090l_high_g_cfg *config, const struct bmi090l_dev *dev);
+ * \endcode
+ * @details This API sets high-g configurations like threshold,
+ * hysteresis and duration.
+ *
+ * @param[in] config : Structure to hold low-g settings
+ * @param[in] dev    : Structure instance of bmi090l_dev.
+ *
+ * @return Result of API execution status
+ *
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
+ */
+int8_t bmi090la_set_high_g_config(const struct bmi090l_high_g_cfg *config, const struct bmi090l_dev *dev);
+
+/*!
+ * \ingroup bmi090laApiInt
+ * \page bmi090la_api_bmi090la_get_high_g_config bmi090la_get_high_g_config
+ * \code
+ * int8_t bmi090la_get_high_g_config(struct bmi090l_high_g_cfg *config, const struct bmi090l_dev *dev);
+ * \endcode
+ * @details This API gets high-g configurations like threshold,
+ * hysteresis and duration.
+ *
+ * @param[in] config : Structure to hold high-g settings
+ * @param[in] dev    : Structure instance of bmi090l_dev.
+ *
+ * @return Result of API execution status
+ *
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
+ */
+int8_t bmi090la_get_high_g_config(struct bmi090l_high_g_cfg *config, const struct bmi090l_dev *dev);
+
+/*!
+ * \ingroup bmi090laApiInt
+ * \page bmi090la_api_bmi090la_set_low_g_config bmi090la_set_low_g_config
+ * \code
+ * int8_t bmi090la_set_low_g_config(const struct bmi090l_low_g_cfg *config, const struct bmi090l_dev *dev);
+ * \endcode
+ * @details This API sets low-g configurations like threshold,
+ * hysteresis and duration.
+ *
+ * @param[in] config : Structure to hold low-g settings
+ * @param[in] dev    : Structure instance of bmi090l_dev.
+ *
+ * @return Result of API execution status
+ *
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
+ */
+int8_t bmi090la_set_low_g_config(const struct bmi090l_low_g_cfg *config, const struct bmi090l_dev *dev);
+
+/*!
+ * \ingroup bmi090laApiInt
+ * \page bmi090la_api_bmi090la_get_low_g_config bmi090la_get_low_g_config
+ * \code
+ * int8_t bmi090la_get_low_g_config(struct bmi090l_low_g_cfg *config, const struct bmi090l_dev *dev);
+ * \endcode
+ * @details This API gets low-g configurations like threshold,
+ * hysteresis and duration.
+ *
+ * @param[in] config : Structure to hold low-g settings
+ * @param[in] dev    : Structure instance of bmi090l_dev.
+ *
+ * @return Result of API execution status
+ *
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
+ */
+int8_t bmi090la_get_low_g_config(struct bmi090l_low_g_cfg *config, const struct bmi090l_dev *dev);
+
+/*!
+ * \ingroup bmi090laApiInt
+ * \page bmi090la_api_bmi090la_set_no_motion_config bmi090la_set_no_motion_config
+ * \code
+ * int8_t bmi090la_set_no_motion_config(const struct bmi090l_no_motion_cfg *config, const struct bmi090l_dev *dev);
+ * \endcode
+ * @details This API sets and enables no-motion parameters like threshold,
+ * duration,etc .,
+ *
+ * @param[in] config : Structure to hold no-motion settings
+ * @param[in] dev    : Structure instance of bmi090l_dev.
+ *
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
+ */
+int8_t bmi090la_set_no_motion_config(const struct bmi090l_no_motion_cfg *config, const struct bmi090l_dev *dev);
+
+/*!
+ * \ingroup bmi090laApiInt
+ * \page bmi090la_api_bmi090la_get_no_motion_config bmi090la_get_no_motion_config
+ * \code
+ * int8_t bmi090la_get_no_motion_config(struct bmi090l_no_motion_cfg *config, const struct bmi090l_dev *dev);
+ * \endcode
+ * @details This API gets no-motion parameters like threshold,
+ * duration,etc .,
+ *
+ * @param[in] config : Structure to hold no-motion settings
+ * @param[in] dev    : Structure instance of bmi090l_dev.
+ *
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
+ */
+int8_t bmi090la_get_no_motion_config(struct bmi090l_no_motion_cfg *config, const struct bmi090l_dev *dev);
+
+/*!
+ * \ingroup bmi090laApiInt
+ * \page bmi090la_api_bmi090la_set_orient_config bmi090la_set_orient_config
+ * \code
+ * int8_t bmi090la_set_orient_config(const struct bmi090l_orient_cfg *config, const struct bmi090l_dev *dev);
+ * \endcode
+ * @details This API sets orientation parameters like mode, hysteresis, theta, etc.,
+ *
+ * @param[in] config : Structure to hold orientation feature settings
+ * @param[in] dev    : Structure instance of bmi090l_dev.
+ *
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
+ */
+int8_t bmi090la_set_orient_config(const struct bmi090l_orient_cfg *config, const struct bmi090l_dev *dev);
+
+/*!
+ * \ingroup bmi090laApiInt
+ * \page bmi090la_api_bmi090la_get_orient_config bmi090la_get_orient_config
+ * \code
+ * int8_t bmi090la_get_orient_config(struct bmi090l_orient_cfg *config, const struct bmi090l_dev *dev);
+ * \endcode
+ * @details This API gets orientation parameters like mode, hysteresis, theta, etc.,
+ *
+ * @param[in] config : Structure to hold orientation feature settings
+ * @param[in] dev    : Structure instance of bmi090l_dev.
+ *
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
+ */
+int8_t bmi090la_get_orient_config(struct bmi090l_orient_cfg *config, const struct bmi090l_dev *dev);
+
+/*!
+ * \ingroup bmi090laApiInt
+ * \page bmi090la_api_bmi090la_get_orient_output bmi090la_get_orient_output
+ * \code
+ * int8_t bmi090la_get_orient_output(struct bmi090l_orient_out *orient_out, const struct bmi090l_dev *dev);
+ * \endcode
+ * @details This internal API gets the output values of orientation: portrait-
+ * landscape and face up-down.
+ *
+ * @param[out] orient_out      : Structure pointer to the orientation data.
+ * @param[in]  dev             : Structure instance of bmi090l_dev.
+ *
+ *
+ * portrait   |
+ * landscape  |  Output
+ * -----------|------------
+ * 0x00       |  PORTRAIT_UPRIGHT
+ * 0x01       |  LANDSCAPE_LEFT
+ * 0x02       |  PORTRAIT_UPSIDE_DOWN
+ * 0x03       |  LANDSCAPE_RIGHT
+ *
+ * Face       |
+ * up-down    |  Output
+ * -----------|------------
+ * 0x00       |  FACE_UP
+ * 0x01       |  FACE_DOWN
+ *
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
+ */
+int8_t bmi090la_get_orient_output(struct bmi090l_orient_out *orient_out, const struct bmi090l_dev *dev);
+
+/*!
+ * \ingroup bmi090laApiInt
+ * \page bmi090la_api_bmi090la_get_data_int_status bmi090la_get_data_int_status
+ * \code
+ * int8_t bmi090la_get_data_int_status(uint8_t *int_status, struct bmi090l_dev *dev);
+ * \endcode
+ * @details This API is to get accel data ready interrupt status
+ *
+ * @param[out] int_status      : Variable to store interrupt status
+ * @param[in]  dev             : Structure instance of bmi090l_dev
+ *
+ *@verbatim
+ *-----------------------------------------
+ *   int_status    |     Interrupt
+ *-----------------------------------------
+ *      0x01       |    Fifo watermark
+ *      0x02       |    Fifo full
+ *      0x08       |    Accel data ready
+ *------------------------------------------
+ *@endverbatim
+ *
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
+ */
+int8_t bmi090la_get_data_int_status(uint8_t *int_status, const struct bmi090l_dev *dev);
+
+/*!
+ * \ingroup bmi090laApiInt
+ * \page bmi090la_api_bmi090la_get_feat_int_status bmi090la_get_feat_int_status
+ * \code
+ * int8_t bmi090la_get_feat_int_status(uint8_t *int_status, struct bmi090l_dev *dev);
+ * \endcode
+ * @details This API is to get accel feature interrupt status
+ *
+ * @param[out] int_status      : Variable to store interrupt status
+ * @param[in]  dev             : Structure instance of bmi090l_dev
+ *
+ *@verbatim
+ *-----------------------------------------
+ *   int_status    |     Interrupt
+ *-----------------------------------------
+ *      0x01       |    Data sync
+ *      0x02       |    Any-Motion
+ *      0x04       |    High-g
+ *      0x08       |     Low-g
+ *      0x16       |     Orient
+ *      0x32       |     No-motion
+ *------------------------------------------
+ *@endverbatim
+ *
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
+ */
+int8_t bmi090la_get_feat_int_status(uint8_t *int_status, const struct bmi090l_dev *dev);
 
 /**
  * \ingroup bmi090l
@@ -647,11 +886,9 @@ int8_t bmi090la_set_data_sync_int_config(const struct bmi090l_int_cfg *int_confi
  * @param[in] config        : Structure instance of FIFO configurations.
  * @param[in] dev           : Structure instance of bmi090l_dev.
  *
- * @return Result of API execution status
- *
- * @retval BMI090L_OK - Success.
- * @retval BMI090L_E_NULL_PTR - Error: Null pointer error
- * @retval BMI090L_E_COM_FAIL - Error: Communication fail
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_set_fifo_config(const struct bmi090l_accel_fifo_config *config, const struct bmi090l_dev *dev);
 
@@ -666,9 +903,9 @@ int8_t bmi090la_set_fifo_config(const struct bmi090l_accel_fifo_config *config, 
  * @param[out] config   : Structure instance to get FIFO configuration value.
  * @param[in]  dev      : Structure instance of bmi090l_dev.
  *
- * @retval BMI090L_OK - Success.
- * @retval BMI090L_E_NULL_PTR - Error: Null pointer error
- * @retval BMI090L_E_COM_FAIL - Error: Communication fail
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_get_fifo_config(struct bmi090l_accel_fifo_config *config, const struct bmi090l_dev *dev);
 
@@ -685,11 +922,9 @@ int8_t bmi090la_get_fifo_config(struct bmi090l_accel_fifo_config *config, const 
  *
  * @note APS has to be disabled before calling this function.
  *
- * @return Result of API execution status
- *
- * @retval BMI090L_OK - Success.
- * @retval BMI090L_E_NULL_PTR - Error: Null pointer error
- * @retval BMI090L_E_COM_FAIL - Error: Communication fail
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_read_fifo_data(struct bmi090l_fifo_frame *fifo, const struct bmi090l_dev *dev);
 
@@ -709,11 +944,9 @@ int8_t bmi090la_read_fifo_data(struct bmi090l_fifo_frame *fifo, const struct bmi
  * @note The byte counter is updated each time a complete frame is read or
  * written.
  *
- * @return Result of API execution status
- *
- * @retval BMI090L_OK - Success.
- * @retval BMI090L_E_NULL_PTR - Error: Null pointer error
- * @retval BMI090L_E_COM_FAIL - Error: Communication fail
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_get_fifo_length(uint16_t *fifo_length, const struct bmi090l_dev *dev);
 
@@ -728,11 +961,9 @@ int8_t bmi090la_get_fifo_length(uint16_t *fifo_length, const struct bmi090l_dev 
  * @param[out] wm        : Pointer variable to store FIFO water-mark level.
  * @param[in]  dev            : Structure instance of bmi090l_dev.
  *
- * @return Result of API execution status
- *
- * @retval BMI090L_OK - Success.
- * @retval BMI090L_E_NULL_PTR - Error: Null pointer error
- * @retval BMI090L_E_COM_FAIL - Error: Communication fail
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_get_fifo_wm(uint16_t *wm, const struct bmi090l_dev *dev);
 
@@ -747,11 +978,9 @@ int8_t bmi090la_get_fifo_wm(uint16_t *wm, const struct bmi090l_dev *dev);
  * @param[out] wm        : Pointer variable to store FIFO water-mark level.
  * @param[in]  dev            : Structure instance of bmi090l_dev.
  *
- * @return Result of API execution status
- *
- * @retval BMI090L_OK - Success.
- * @retval BMI090L_E_NULL_PTR - Error: Null pointer error
- * @retval BMI090L_E_COM_FAIL - Error: Communication fail
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_set_fifo_wm(uint16_t wm, const struct bmi090l_dev *dev);
 
@@ -775,12 +1004,9 @@ int8_t bmi090la_set_fifo_wm(uint16_t wm, const struct bmi090l_dev *dev);
  * @param[in,out] fifo         : Structure instance of bmi090l_fifo_frame.
  * @param[in]     dev          : Structure instance of bmi090l_dev.
  *
- * @return Result of API execution status
- *
- * @retval BMI090L_OK - Success.
- * @retval BMI090L_E_NULL_PTR - Error: Null pointer error
- * @retval BMI090L_W_FIFO_EMPTY - Warning : FIFO is empty
- * @retval BMI090L_W_PARTIAL_READ - Warning : There are more frames to be read
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_extract_accel(struct bmi090l_sensor_data *accel_data,
                               uint16_t *accel_length,
@@ -799,13 +1025,10 @@ int8_t bmi090la_extract_accel(struct bmi090l_sensor_data *accel_data,
  * @param[out] fifo_downs : Pointer variable to store the down sampling rate
  * @param[in]  dev            : Structure instance of bmi090l_dev.
  *
- * @return Result of API execution status
- *
- * @retval BMI090L_OK - Success.
- * @retval BMI090L_E_NULL_PTR - Error: Null pointer error
- * @retval BMI090L_E_COM_FAIL - Error: Communication fail
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
-
 int8_t bmi090la_get_fifo_down_sample(uint8_t *fifo_downs, const struct bmi090l_dev *dev);
 
 /*!
@@ -819,12 +1042,9 @@ int8_t bmi090la_get_fifo_down_sample(uint8_t *fifo_downs, const struct bmi090l_d
  * @param[in] fifo_downs : Variable to set the down sampling rate.
  * @param[in] dev            : Structure instance of bmi090l_dev.
  *
- * @return Result of API execution status
- *
- * @retval BMI090L_OK - Success.
- * @retval BMI090L_E_NULL_PTR - Error: Null pointer error
- * @retval BMI090L_E_COM_FAIL - Error: Communication fail
- * @retval BMI090L_E_OUT_OF_RANGE - Error: Out of range
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090la_set_fifo_down_sample(uint8_t fifo_downs, const struct bmi090l_dev *dev);
 
@@ -850,8 +1070,8 @@ int8_t bmi090la_set_fifo_down_sample(uint8_t fifo_downs, const struct bmi090l_de
  *  @note : Refer user guide for detailed info.
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090lg_init(struct bmi090l_dev *dev);
 
@@ -875,8 +1095,8 @@ int8_t bmi090lg_init(struct bmi090l_dev *dev);
  *  @param[in] dev       : Structure instance of bmi090l_dev.
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090lg_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, const struct bmi090l_dev *dev);
 
@@ -896,8 +1116,8 @@ int8_t bmi090lg_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, cons
  *  @param[in] dev       : Structure instance of bmi090l_dev.
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090lg_set_regs(uint8_t reg_addr, const uint8_t *reg_data, uint16_t len, const struct bmi090l_dev *dev);
 
@@ -918,8 +1138,8 @@ int8_t bmi090lg_set_regs(uint8_t reg_addr, const uint8_t *reg_data, uint16_t len
  *  @param[in] dev : Structure instance of bmi090l_dev.
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090lg_soft_reset(const struct bmi090l_dev *dev);
 
@@ -944,9 +1164,9 @@ int8_t bmi090lg_soft_reset(const struct bmi090l_dev *dev);
  *  @note : band width also updated, which is same as odr
  *          Refer user guide for detailed info.
  *
- * @return Result of API execution status
- * @retval Zero Success
- * @retval Negative Error
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090lg_get_meas_conf(struct bmi090l_dev *dev);
 
@@ -967,8 +1187,8 @@ int8_t bmi090lg_get_meas_conf(struct bmi090l_dev *dev);
  *          Refer user guide for detailed info.
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090lg_set_meas_conf(const struct bmi090l_dev *dev);
 
@@ -990,8 +1210,8 @@ int8_t bmi090lg_set_meas_conf(const struct bmi090l_dev *dev);
  *  @param[in] dev : Structure instance of bmi090l_dev.
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090lg_get_power_mode(struct bmi090l_dev *dev);
 
@@ -1006,8 +1226,8 @@ int8_t bmi090lg_get_power_mode(struct bmi090l_dev *dev);
  *  @param[in] dev : Structure instance of bmi090l_dev.
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090lg_set_power_mode(const struct bmi090l_dev *dev);
 
@@ -1031,8 +1251,8 @@ int8_t bmi090lg_set_power_mode(const struct bmi090l_dev *dev);
  *  @param[in] dev     : Structure instance of bmi090l_dev.
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090lg_get_data(struct bmi090l_sensor_data *gyro, const struct bmi090l_dev *dev);
 
@@ -1057,8 +1277,8 @@ int8_t bmi090lg_get_data(struct bmi090l_sensor_data *gyro, const struct bmi090l_
  *  @note : Refer user guide for detailed info.
  *
  *  @return Result of API execution status
- *  @retval Zero Success
- * @retval Negative Error
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090lg_set_int_config(const struct bmi090l_gyro_int_channel_cfg *int_config, const struct bmi090l_dev *dev);
 
@@ -1080,158 +1300,41 @@ int8_t bmi090lg_set_int_config(const struct bmi090l_gyro_int_channel_cfg *int_co
  *  @param[in]  dev : Structure instance of bmi090l_dev.
  *
  *  @return Result of API execution status
- *  @retval     BMI090L_OK                  Self test success
- *  @retval     BMI090L_W_SELF_TEST_FAIL    Self test fail
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
 int8_t bmi090lg_perform_selftest(const struct bmi090l_dev *dev);
 
-/*!
- * @brief This API sets high-g configurations like threshold,
- * hysteresis and duration.
- *
- * @param[in] config : Structure to hold low-g settings
- * @param[in] dev    : Structure instance of bmi090l_dev.
- *
- * @return Result of API execution status
- *
- * @retval BMI090L_OK - Success.
- * @retval BMI090L_E_NULL_PTR - Error: Null pointer error
- * @retval BMI090L_E_COM_FAIL - Error: Communication fail
+/**
+ * \ingroup bmi090l
+ * \defgroup bmi090lgInt Gyro Interrupt
+ * @brief Get gyro data ready interrupt status
  */
-int8_t bmi090la_set_high_g_config(const struct bmi090l_high_g_cfg *config, const struct bmi090l_dev *dev);
 
 /*!
- * @brief This API gets high-g configurations like threshold,
- * hysteresis and duration.
+ * \ingroup bmi090laApiInt
+ * \page bmi090la_api_bmi090lg_get_data_int_status bmi090lg_get_data_int_status
+ * \code
+ * int8_t bmi090lg_get_data_int_status(uint8_t *int_status, struct bmi090l_dev *dev);
+ * \endcode
+ * @details This API is to get gyro data ready interrupt status
  *
- * @param[in] config : Structure to hold high-g settings
- * @param[in] dev    : Structure instance of bmi090l_dev.
+ * @param[out] int_status      : Variable to store interrupt status
+ * @param[in]  dev             : Structure instance of bmi090l_dev
  *
- * @return Result of API execution status
+ *@verbatim
+ *-----------------------------------------
+ *   int_status    |     Interrupt
+ *-----------------------------------------
+ *      0x08       |    Gyro data ready
+ *------------------------------------------
+ *@endverbatim
  *
- * @retval BMI090L_OK - Success.
- * @retval BMI090L_E_NULL_PTR - Error: Null pointer error
- * @retval BMI090L_E_COM_FAIL - Error: Communication fail
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
  */
-int8_t bmi090la_get_high_g_config(struct bmi090l_high_g_cfg *config, const struct bmi090l_dev *dev);
-
-/*!
- * @brief This API sets low-g configurations like threshold,
- * hysteresis and duration.
- *
- * @param[in] config : Structure to hold low-g settings
- * @param[in] dev    : Structure instance of bmi090l_dev.
- *
- * @return Result of API execution status
- *
- * @retval BMI090L_OK - Success.
- * @retval BMI090L_E_NULL_PTR - Error: Null pointer error
- * @retval BMI090L_E_COM_FAIL - Error: Communication fail
- */
-int8_t bmi090la_set_low_g_config(const struct bmi090l_low_g_cfg *config, const struct bmi090l_dev *dev);
-
-/*!
- * @brief This API gets low-g configurations like threshold,
- * hysteresis and duration.
- *
- * @param[in] config : Structure to hold low-g settings
- * @param[in] dev    : Structure instance of bmi090l_dev.
- *
- * @return Result of API execution status
- *
- * @retval BMI090L_OK - Success.
- * @retval BMI090L_E_NULL_PTR - Error: Null pointer error
- * @retval BMI090L_E_COM_FAIL - Error: Communication fail
- */
-int8_t bmi090la_get_low_g_config(struct bmi090l_low_g_cfg *config, const struct bmi090l_dev *dev);
-
-/*!
- * @brief This API sets and enables no-motion parameters like threshold,
- * duration,etc .,
- *
- * @param[in] config : Structure to hold no-motion settings
- * @param[in] dev    : Structure instance of bmi090l_dev.
- *
- * @return Result of API execution status
- *
- * @retval BMI090L_OK - Success.
- * @retval BMI090L_E_NULL_PTR - Error: Null pointer error
- * @retval BMI090L_E_COM_FAIL - Error: Communication fail
- */
-int8_t bmi090la_set_no_motion_config(const struct bmi090l_no_motion_cfg *config, const struct bmi090l_dev *dev);
-
-/*!
- * @brief This API gets no-motion parameters like threshold,
- * duration,etc .,
- *
- * @param[in] config : Structure to hold no-motion settings
- * @param[in] dev    : Structure instance of bmi090l_dev.
- *
- * @return Result of API execution status
- *
- * @retval BMI090L_OK - Success.
- * @retval BMI090L_E_NULL_PTR - Error: Null pointer error
- * @retval BMI090L_E_COM_FAIL - Error: Communication fail
- */
-int8_t bmi090la_get_no_motion_config(struct bmi090l_no_motion_cfg *config, const struct bmi090l_dev *dev);
-
-/*!
- * @brief This API sets orientation parameters like mode, hysteresis, theta, etc.,
- *
- * @param[in] config : Structure to hold orientation feature settings
- * @param[in] dev    : Structure instance of bmi090l_dev.
- *
- * @return Result of API execution status
- *
- * @retval BMI090L_OK - Success.
- * @retval BMI090L_E_NULL_PTR - Error: Null pointer error
- * @retval BMI090L_E_COM_FAIL - Error: Communication fail
- */
-int8_t bmi090la_set_orient_config(const struct bmi090l_orient_cfg *config, const struct bmi090l_dev *dev);
-
-/*!
- * @brief This API gets orientation parameters like mode, hysteresis, theta, etc.,
- *
- * @param[in] config : Structure to hold orientation feature settings
- * @param[in] dev    : Structure instance of bmi090l_dev.
- *
- * @return Result of API execution status
- *
- * @retval BMI090L_OK - Success.
- * @retval BMI090L_E_NULL_PTR - Error: Null pointer error
- * @retval BMI090L_E_COM_FAIL - Error: Communication fail
- */
-int8_t bmi090la_get_orient_config(struct bmi090l_orient_cfg *config, const struct bmi090l_dev *dev);
-
-/*!
- * @brief This internal API gets the output values of orientation: portrait-
- * landscape and face up-down.
- *
- * @param[out] orient_out      : Structure pointer to the orientation data.
- * @param[in]  dev             : Structure instance of bmi090l_dev.
- *
- *
- * portrait   |
- * landscape  |  Output
- * -----------|------------
- * 0x00       |  PORTRAIT_UPRIGHT
- * 0x01       |  LANDSCAPE_LEFT
- * 0x02       |  PORTRAIT_UPSIDE_DOWN
- * 0x03       |  LANDSCAPE_RIGHT
- *
- * Face       |
- * up-down    |  Output
- * -----------|------------
- * 0x00       |  FACE_UP
- * 0x01       |  FACE_DOWN
- *
- * @return Result of API execution status
- *
- * @retval BMI090L_OK - Success.
- * @retval BMI090L_E_NULL_PTR - Error: Null pointer error
- * @retval BMI090L_E_COM_FAIL - Error: Communication fail
- */
-int8_t bmi090la_get_orient_output(struct bmi090l_orient_out *orient_out, const struct bmi090l_dev *dev);
+int8_t bmi090lg_get_data_int_status(uint8_t *int_status, const struct bmi090l_dev *dev);
 
 #ifdef __cplusplus
 }

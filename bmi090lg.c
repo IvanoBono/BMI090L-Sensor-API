@@ -31,8 +31,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @file       bmi090lg.c
- * @date       2020-08-28
- * @version    v1.0.2
+ * @date       2020-09-04
+ * @version    v1.0.3
  *
  */
 
@@ -169,7 +169,7 @@ int8_t bmi090lg_init(struct bmi090l_dev *dev)
     if (rslt == BMI090L_OK)
     {
         /* Read gyro chip id */
-        rslt = get_regs(BMI090L_GYRO_CHIP_ID_REG, &chip_id, 1, dev);
+        rslt = get_regs(BMI090L_REG_GYRO_CHIP_ID, &chip_id, 1, dev);
 
         if (rslt == BMI090L_OK)
         {
@@ -268,7 +268,7 @@ int8_t bmi090lg_soft_reset(const struct bmi090l_dev *dev)
     {
         /* Reset gyro device */
         data = BMI090L_SOFT_RESET_CMD;
-        rslt = set_regs(BMI090L_GYRO_SOFTRESET_REG, &data, 1, dev);
+        rslt = set_regs(BMI090L_REG_GYRO_SOFTRESET, &data, 1, dev);
 
         if (rslt == BMI090L_OK)
         {
@@ -295,7 +295,7 @@ int8_t bmi090lg_get_meas_conf(struct bmi090l_dev *dev)
     /* Proceed if null check is fine */
     if (rslt == BMI090L_OK)
     {
-        rslt = get_regs(BMI090L_GYRO_RANGE_REG, data, 2, dev);
+        rslt = get_regs(BMI090L_REG_GYRO_RANGE, data, 2, dev);
 
         if (rslt == BMI090L_OK)
         {
@@ -344,26 +344,26 @@ int8_t bmi090lg_set_meas_conf(const struct bmi090l_dev *dev)
         if ((!is_odr_invalid) && (!is_range_invalid))
         {
             /* Read range value from the range register */
-            rslt = get_regs(BMI090L_GYRO_BANDWIDTH_REG, &data, 1, dev);
+            rslt = get_regs(BMI090L_REG_GYRO_BANDWIDTH, &data, 1, dev);
 
             if (rslt == BMI090L_OK)
             {
                 data = BMI090L_SET_BITS_POS_0(data, BMI090L_GYRO_BW, odr);
 
                 /* Write odr value to odr register */
-                rslt = set_regs(BMI090L_GYRO_BANDWIDTH_REG, &data, 1, dev);
+                rslt = set_regs(BMI090L_REG_GYRO_BANDWIDTH, &data, 1, dev);
 
                 if (rslt == BMI090L_OK)
                 {
                     /* Read range value from the range register */
-                    rslt = get_regs(BMI090L_GYRO_RANGE_REG, &data, 1, dev);
+                    rslt = get_regs(BMI090L_REG_GYRO_RANGE, &data, 1, dev);
 
                     if (rslt == BMI090L_OK)
                     {
                         data = BMI090L_SET_BITS_POS_0(data, BMI090L_GYRO_RANGE, range);
 
                         /* Write range value to range register */
-                        rslt = set_regs(BMI090L_GYRO_RANGE_REG, &data, 1, dev);
+                        rslt = set_regs(BMI090L_REG_GYRO_RANGE, &data, 1, dev);
                     }
                 }
             }
@@ -395,7 +395,7 @@ int8_t bmi090lg_get_power_mode(struct bmi090l_dev *dev)
     /* Proceed if null check is fine */
     if (rslt == BMI090L_OK)
     {
-        rslt = get_regs(BMI090L_GYRO_LPM1_REG, &data, 1, dev);
+        rslt = get_regs(BMI090L_REG_GYRO_LPM1, &data, 1, dev);
 
         if (rslt == BMI090L_OK)
         {
@@ -423,7 +423,7 @@ int8_t bmi090lg_set_power_mode(const struct bmi090l_dev *dev)
     if (rslt == BMI090L_OK)
     {
         /* Read the previous power state */
-        rslt = get_regs(BMI090L_GYRO_LPM1_REG, &data, 1, dev);
+        rslt = get_regs(BMI090L_REG_GYRO_LPM1, &data, 1, dev);
 
         if (rslt == BMI090L_OK)
         {
@@ -449,7 +449,7 @@ int8_t bmi090lg_set_power_mode(const struct bmi090l_dev *dev)
             if (is_power_switching_mode_valid)
             {
                 /* Write power to power register */
-                rslt = set_regs(BMI090L_GYRO_LPM1_REG, &power_mode, 1, dev);
+                rslt = set_regs(BMI090L_REG_GYRO_LPM1, &power_mode, 1, dev);
 
                 if (rslt == BMI090L_OK)
                 {
@@ -487,7 +487,7 @@ int8_t bmi090lg_get_data(struct bmi090l_sensor_data *gyro, const struct bmi090l_
     if ((rslt == BMI090L_OK) && (gyro != NULL))
     {
         /* read gyro sensor data */
-        rslt = get_regs(BMI090L_GYRO_X_LSB_REG, data, 6, dev);
+        rslt = get_regs(BMI090L_REG_GYRO_X_LSB, data, 6, dev);
 
         if (rslt == BMI090L_OK)
         {
@@ -574,7 +574,7 @@ int8_t bmi090lg_perform_selftest(const struct bmi090l_dev *dev)
             while (loop_break)
             {
                 /* Read self-test register to check if self-test ready bit is set */
-                rslt = get_regs(BMI090L_GYRO_SELF_TEST_REG, &data, 1, dev);
+                rslt = get_regs(BMI090L_REG_GYRO_SELF_TEST, &data, 1, dev);
 
                 if (rslt == BMI090L_OK)
                 {
@@ -596,7 +596,7 @@ int8_t bmi090lg_perform_selftest(const struct bmi090l_dev *dev)
             if (rslt == BMI090L_OK)
             {
                 /* Read self-test register to check for self-test Ok bit */
-                rslt = get_regs(BMI090L_GYRO_SELF_TEST_REG, &data, 1, dev);
+                rslt = get_regs(BMI090L_REG_GYRO_SELF_TEST, &data, 1, dev);
 
                 if (rslt == BMI090L_OK)
                 {
@@ -612,6 +612,30 @@ int8_t bmi090lg_perform_selftest(const struct bmi090l_dev *dev)
                 }
             }
         }
+    }
+
+    return rslt;
+}
+
+/*!
+ * @brief This internal API gets gyro data ready interrupt status
+ */
+int8_t bmi090lg_get_data_int_status(uint8_t *int_status, const struct bmi090l_dev *dev)
+{
+    int8_t rslt;
+    uint8_t status = 0;
+
+    if (int_status != NULL)
+    {
+        rslt = bmi090lg_get_regs(BMI090L_REG_GYRO_INT_STAT_1, &status, 1, dev);
+        if (rslt == BMI090L_OK)
+        {
+            (*int_status) = status;
+        }
+    }
+    else
+    {
+        rslt = BMI090L_E_NULL_PTR;
     }
 
     return rslt;
@@ -709,7 +733,7 @@ static int8_t set_gyro_data_ready_int(const struct bmi090l_gyro_int_channel_cfg 
     uint8_t conf, data[2] = { 0 };
 
     /* Read interrupt map register */
-    rslt = get_regs(BMI090L_GYRO_INT3_INT4_IO_MAP_REG, &data[0], 1, dev);
+    rslt = get_regs(BMI090L_REG_GYRO_INT3_INT4_IO_MAP, &data[0], 1, dev);
 
     if (rslt == BMI090L_OK)
     {
@@ -750,7 +774,7 @@ static int8_t set_gyro_data_ready_int(const struct bmi090l_gyro_int_channel_cfg 
             }
 
             /* Write data to interrupt map register */
-            rslt = set_regs(BMI090L_GYRO_INT3_INT4_IO_MAP_REG, &data[0], 1, dev);
+            rslt = set_regs(BMI090L_REG_GYRO_INT3_INT4_IO_MAP, &data[0], 1, dev);
 
             if (rslt == BMI090L_OK)
             {
@@ -760,7 +784,7 @@ static int8_t set_gyro_data_ready_int(const struct bmi090l_gyro_int_channel_cfg 
                 if (rslt == BMI090L_OK)
                 {
                     /* Write data to interrupt control register */
-                    rslt = set_regs(BMI090L_GYRO_INT_CTRL_REG, &data[1], 1, dev);
+                    rslt = set_regs(BMI090L_REG_GYRO_INT_CTRL, &data[1], 1, dev);
                 }
             }
         }
@@ -779,7 +803,7 @@ static int8_t set_int_pin_config(const struct bmi090l_gyro_int_channel_cfg *int_
     uint8_t data;
 
     /* Read interrupt configuration register */
-    rslt = get_regs(BMI090L_GYRO_INT3_INT4_IO_CONF_REG, &data, 1, dev);
+    rslt = get_regs(BMI090L_REG_GYRO_INT3_INT4_IO_CONF, &data, 1, dev);
 
     if (rslt == BMI090L_OK)
     {
@@ -805,7 +829,7 @@ static int8_t set_int_pin_config(const struct bmi090l_gyro_int_channel_cfg *int_
         }
 
         /* Write to interrupt configuration register */
-        rslt = set_regs(BMI090L_GYRO_INT3_INT4_IO_CONF_REG, &data, 1, dev);
+        rslt = set_regs(BMI090L_REG_GYRO_INT3_INT4_IO_CONF, &data, 1, dev);
     }
 
     return rslt;
@@ -824,7 +848,7 @@ static int8_t set_gyro_selftest(uint8_t selftest, const struct bmi090l_dev *dev)
     if ((selftest == BMI090L_ENABLE) || (selftest == BMI090L_DISABLE))
     {
         /* Read self test register */
-        rslt = get_regs(BMI090L_GYRO_SELF_TEST_REG, &data, 1, dev);
+        rslt = get_regs(BMI090L_REG_GYRO_SELF_TEST, &data, 1, dev);
 
         if (rslt == BMI090L_OK)
         {
@@ -832,7 +856,7 @@ static int8_t set_gyro_selftest(uint8_t selftest, const struct bmi090l_dev *dev)
             data = BMI090L_SET_BITS_POS_0(data, BMI090L_GYRO_SELF_TEST_EN, selftest);
 
             /* Write self test input value to self-test register */
-            rslt = set_regs(BMI090L_GYRO_SELF_TEST_REG, &data, 1, dev);
+            rslt = set_regs(BMI090L_REG_GYRO_SELF_TEST, &data, 1, dev);
         }
     }
     else

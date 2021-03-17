@@ -1,8 +1,8 @@
 COINES_INSTALL_PATH ?= ../../../..
 
-EXAMPLE_FILE = fifo_watermark.c
+EXAMPLE_FILE = data_sync_mcu.c
 
-API_LOCATION = ../..
+API_LOCATION ?= ../..
 
 C_SRCS += \
 $(API_LOCATION)/bmi090la.c \

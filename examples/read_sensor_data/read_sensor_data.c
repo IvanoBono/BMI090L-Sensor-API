@@ -3,7 +3,7 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
- * @file    bmi090l_read_sensor_data.c
+ * @file    read_sensor_data.c
  * @brief   Test code to read BMI090L accel and gyro sensor data
  *
  */
@@ -16,7 +16,14 @@
 #include "common.h"
 
 /*********************************************************************/
-/* global variables */
+/*                              Macros                               */
+/*********************************************************************/
+
+/*! Earth's gravity in m/s^2 */
+#define GRAVITY_EARTH  (9.80665f)
+
+/*********************************************************************/
+/*                        Global variables                           */
 /*********************************************************************/
 
 struct bmi090l_sensor_data bmi090l_accel;
@@ -24,18 +31,45 @@ struct bmi090l_sensor_data bmi090l_accel;
 struct bmi090l_sensor_data bmi090l_gyro;
 
 /*********************************************************************/
-/* function declarations */
+/*                       Function Declarations                       */
 /*********************************************************************/
 
 /*!
- * @brief    This internal API is used to initialize the bmi090l sensor
+ * @brief This internal API is used to initialize the bmi090l sensor
  */
 static void init_bmi090l(struct bmi090l_dev *bmi090ldev);
 
+/*!
+ * @brief This internal API is used to configure accel and gyro data ready interrupts
+ */
 static void configure_accel_gyro_data_ready_interrupts(struct bmi090l_dev *bmi090ldev);
 
+/*!
+ *  @brief This function converts lsb to meter per second squared for 16 bit accelerometer at
+ *  range 2G, 4G, 8G or 16G.
+ *
+ *  @param[in] val       : LSB from each axis.
+ *  @param[in] g_range   : Gravity range.
+ *  @param[in] bit_width : Resolution for accel.
+ *
+ *  @return Value in Meter Per second squared.
+ */
+static float lsb_to_mps2(int16_t val, float g_range, uint8_t bit_width);
+
+/*!
+ *  @brief This function converts lsb to degree per second for 16 bit gyro at
+ *  range 125, 250, 500, 1000 or 2000dps.
+ *
+ *  @param[in] val       : LSB from each axis.
+ *  @param[in] dps       : Degree per second.
+ *  @param[in] bit_width : Resolution for gyro.
+ *
+ *  @return Value in Degree Per Second.
+ */
+static float lsb_to_dps(int16_t val, float dps, uint8_t bit_width);
+
 /*********************************************************************/
-/* functions */
+/*                          Functions                                */
 /*********************************************************************/
 
 /*!
@@ -102,9 +136,7 @@ static void init_bmi090l(struct bmi090l_dev *bmi090ldev)
     bmi090ldev->accel_cfg.bw = BMI090L_ACCEL_BW_NORMAL; /* Bandwidth and OSR are same */
 
     bmi090la_set_power_mode(bmi090ldev);
-    coines_delay_msec(10);
     bmi090la_set_meas_conf(bmi090ldev);
-    coines_delay_msec(10);
 
     bmi090ldev->gyro_cfg.odr = BMI090L_GYRO_BW_32_ODR_100_HZ;
     bmi090ldev->gyro_cfg.range = BMI090L_GYRO_RANGE_2000_DPS;
@@ -112,9 +144,7 @@ static void init_bmi090l(struct bmi090l_dev *bmi090ldev)
     bmi090ldev->gyro_cfg.power = BMI090L_GYRO_PM_NORMAL;
 
     bmi090lg_set_power_mode(bmi090ldev);
-    coines_delay_msec(10);
     bmi090lg_set_meas_conf(bmi090ldev);
-    coines_delay_msec(10);
 
 }
 
@@ -138,7 +168,7 @@ static void configure_accel_gyro_data_ready_interrupts(struct bmi090l_dev *bmi09
     {
         /* Configure the Interrupt configurations for gyro */
         gyro_int_config.int_channel = BMI090L_INT_CHANNEL_3;
-        gyro_int_config.int_type = BMI090L_GYRO_DATA_RDY_INT;
+        gyro_int_config.int_type = BMI090L_GYRO_INT_DATA_RDY;
         gyro_int_config.int_pin_cfg.enable_int_pin = BMI090L_ENABLE;
         gyro_int_config.int_pin_cfg.lvl = BMI090L_INT_ACTIVE_HIGH;
         gyro_int_config.int_pin_cfg.output_mode = BMI090L_INT_MODE_PUSH_PULL;
@@ -151,6 +181,28 @@ static void configure_accel_gyro_data_ready_interrupts(struct bmi090l_dev *bmi09
         printf("Failure in interrupt configurations \n");
         exit(COINES_E_FAILURE);
     }
+}
+
+/*!
+ * @brief This function converts lsb to meter per second squared for 16 bit accelerometer at
+ * range 2G, 4G, 8G or 16G.
+ */
+static float lsb_to_mps2(int16_t val, float g_range, uint8_t bit_width)
+{
+    float half_scale = ((float)(1 << bit_width) / 2.0f);
+
+    return (GRAVITY_EARTH * val * g_range) / half_scale;
+}
+
+/*!
+ * @brief This function converts lsb to degree per second for 16 bit gyro at
+ * range 125, 250, 500, 1000 or 2000dps.
+ */
+static float lsb_to_dps(int16_t val, float dps, uint8_t bit_width)
+{
+    float half_scale = ((float)(1 << bit_width) / 2.0f);
+
+    return (dps / ((half_scale) + BMI090L_GYRO_RANGE_2000_DPS)) * (val);
 }
 
 /*!
@@ -167,13 +219,14 @@ int main(int argc, char *argv[])
     struct bmi090l_dev bmi090l;
     uint8_t status = 0;
     int8_t rslt;
+    float x, y, z;
     uint8_t times_to_read = 0;
 
     /* Interface reference is given as a parameter
      *         For I2C : BMI090L_I2C_INTF
      *         For SPI : BMI090L_SPI_INTF
      */
-    rslt = bmi090l_interface_init(&bmi090l, BMI090L_SPI_INTF);
+    rslt = bmi090l_interface_init(&bmi090l, BMI090L_I2C_INTF);
     bmi090l_check_rslt("bmi090l_interface_init", rslt);
 
     /* Initialize the sensors */
@@ -190,10 +243,19 @@ int main(int argc, char *argv[])
         {
             bmi090la_get_data(&bmi090l_accel, &bmi090l);
 
-            printf("Accel  x: %+.3f\t y: %+.3f\t z: %+.3f\n",
-                   (float)bmi090l_accel.x / 32768. * 3 * pow(2, BMI090L_ACCEL_RANGE_3G),
-                   (float)bmi090l_accel.y / 32768. * 3 * pow(2, BMI090L_ACCEL_RANGE_3G),
-                   (float)bmi090l_accel.z / 32768. * 3 * pow(2, BMI090L_ACCEL_RANGE_3G));
+            printf("\nAccel Data set : %d\n", times_to_read);
+
+            printf("\nAcc_X = %d\t", bmi090l_accel.x);
+            printf("Acc_Y = %d\t", bmi090l_accel.y);
+            printf("Acc_Z = %d", bmi090l_accel.z);
+
+            /* Converting lsb to meter per second squared for 16 bit accelerometer at 3G range. */
+            x = lsb_to_mps2((float)bmi090l_accel.x, 3, 16);
+            y = lsb_to_mps2((float)bmi090l_accel.y, 3, 16);
+            z = lsb_to_mps2((float)bmi090l_accel.z, 3, 16);
+
+            /* Print the data in m/s2. */
+            printf("\nAcc_ms2_X = %4.2f, Acc_ms2_Y = %4.2f, Acc_ms2_Z = %4.2f\n", x, y, z);
 
             times_to_read++;
         }
@@ -205,16 +267,22 @@ int main(int argc, char *argv[])
         {
             bmi090lg_get_data(&bmi090l_gyro, &bmi090l);
 
-            printf("Gyro  x: %+07.1f  y: %+07.1f  z: %+07.1f\n",
-                   (float)bmi090l_gyro.x / 32768. * 2000 / pow(2, BMI090L_GYRO_RANGE_2000_DPS),
-                   (float)bmi090l_gyro.y / 32768. * 2000 / pow(2, BMI090L_GYRO_RANGE_2000_DPS),
-                   (float)bmi090l_gyro.z / 32768. * 2000 / pow(2, BMI090L_GYRO_RANGE_2000_DPS));
+            printf("\nGyro Data set : %d\n", times_to_read);
+
+            printf("\nGyr_X = %d\t", bmi090l_gyro.x);
+            printf("Gyr_Y = %d\t", bmi090l_gyro.y);
+            printf("Gyr_Z = %d\n", bmi090l_gyro.z);
+
+            /* Converting lsb to degree per second for 16 bit gyro at 2000dps range. */
+            x = lsb_to_dps((float)bmi090l_gyro.x, 2000, 16);
+            y = lsb_to_dps((float)bmi090l_gyro.y, 2000, 16);
+            z = lsb_to_dps((float)bmi090l_gyro.z, 2000, 16);
+
+            /* Print the data in dps. */
+            printf("Gyro_DPS_X = %4.2f, Gyro_DPS_Y = %4.2f, Gyro_DPS_Z = %4.2f\n", x, y, z);
 
             times_to_read++;
         }
-
-        fflush(stdout);
-        coines_delay_msec(10); /* Since accel. and gyro. ODR is set to 100 Hz */
 
         if (times_to_read == 50)
         {

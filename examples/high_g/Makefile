@@ -2,7 +2,7 @@ COINES_INSTALL_PATH ?= ../../../..
 
 EXAMPLE_FILE = high_g.c
 
-API_LOCATION = ../..
+API_LOCATION ?= ../..
 
 C_SRCS += \
 $(API_LOCATION)/bmi090la.c \

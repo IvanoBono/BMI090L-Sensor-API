@@ -1,6 +1,6 @@
 COINES_INSTALL_PATH ?= ../../../..
 
-EXAMPLE_FILE = no_motion.c
+EXAMPLE_FILE ?= gyro_fifo_watermark.c
 
 API_LOCATION ?= ../..
 

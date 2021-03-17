@@ -3,19 +3,18 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
- * @file    bmi090l_any_motion_interrupt.c
+ * @file    any_motion.c
  * @brief   Test code to demonstrate on how to configure and use any-motion feature
  *
  */
 
 #include <stdio.h>
-#include "coines.h"
 #include <stdlib.h>
 #include "bmi090l.h"
 #include "common.h"
 
 /*********************************************************************/
-/* function declarations */
+/*                       Function Declarations                       */
 /*********************************************************************/
 
 /*!
@@ -24,7 +23,7 @@
 static void init_bmi090l(struct bmi090l_dev *bmi090ldev);
 
 /*********************************************************************/
-/* functions */
+/*                          Functions                                */
 /*********************************************************************/
 
 /*!
@@ -95,6 +94,7 @@ static void configure_bmi090l_any_motion_interrupt(struct bmi090l_dev *bmi090lde
     /* Configure any-motion settings */
     any_motion_cfg.threshold = 0xAA; /* (0.124g * 2^15)/24g = 0xAA */
     any_motion_cfg.duration = 5; /* 100ms/20 = 5 */
+    any_motion_cfg.enable = 1;
     any_motion_cfg.x_en = 1;
     any_motion_cfg.y_en = 1;
     any_motion_cfg.z_en = 1;
@@ -148,6 +148,7 @@ int main(int argc, char *argv[])
             interrupt_count++;
             if (interrupt_count == 10)
             {
+                printf("Any-motion testing done. Exiting! \n");
                 break;
             }
         }

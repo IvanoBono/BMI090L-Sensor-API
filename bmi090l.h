@@ -31,8 +31,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @file       bmi090l.h
- * @date       2020-09-04
- * @version    v1.0.3
+ * @date       2021-03-17
+ * @version    v1.1.3
  *
  */
 
@@ -87,28 +87,6 @@ int8_t bmi090la_init(struct bmi090l_dev *dev);
 
 /**
  * \ingroup bmi090l
- * \defgroup bmi090laApiWconfig Accel Write binary configuration
- * @brief Writes binary configuration in the sensor
- */
-
-/*!
- * \ingroup bmi090laApiWconfig
- * \page bmi090la_api_bmi090la_write_config_file bmi090la_write_config_file
- * \code
- * int8_t bmi090la_write_config_file(const struct bmi090l_dev *dev);
- * \endcode
- * @details This API is used to write the binary configuration in the sensor
- *
- *  @param[in] dev : Structure instance of bmi090l_dev.
- *
- *  @return Result of API execution status
- *  @retval 0 -> Success
- *  @retval < 0 -> Fail
- */
-int8_t bmi090la_write_config_file(const struct bmi090l_dev *dev);
-
-/**
- * \ingroup bmi090l
  * \defgroup bmi090laWFconfig Accel Feature config
  * @brief Writes feature configuration to the accel sensor
  */
@@ -120,7 +98,7 @@ int8_t bmi090la_write_config_file(const struct bmi090l_dev *dev);
  * int8_t bmi090la_write_feature_config(uint8_t reg_addr,
  *                                    const uint16_t *reg_data,
  *                                    uint8_t len,
- *                                    const struct bmi090l_dev *dev);
+ *                                    struct bmi090l_dev *dev);
  *
  * \endcode
  * @details This API writes the feature configuration to the accel sensor.
@@ -134,10 +112,7 @@ int8_t bmi090la_write_config_file(const struct bmi090l_dev *dev);
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_write_feature_config(uint8_t reg_addr,
-                                     const uint16_t *reg_data,
-                                     uint8_t len,
-                                     const struct bmi090l_dev *dev);
+int8_t bmi090la_write_feature_config(uint8_t reg_addr, const uint16_t *reg_data, uint8_t len, struct bmi090l_dev *dev);
 
 /**
  * \ingroup bmi090l
@@ -149,7 +124,7 @@ int8_t bmi090la_write_feature_config(uint8_t reg_addr,
  * \ingroup bmi090laApiRegs
  * \page bmi090la_api_bmi090la_get_regs bmi090la_get_regs
  * \code
- * int8_t bmi090la_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint32_t len, struct bmi090l_dev *dev);
  * \endcode
  * @details This API reads the data from the given register address of accel sensor.
  *
@@ -162,13 +137,13 @@ int8_t bmi090la_write_feature_config(uint8_t reg_addr,
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, const struct bmi090l_dev *dev);
+int8_t bmi090la_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint32_t len, struct bmi090l_dev *dev);
 
 /*!
  * \ingroup bmi090laApiRegs
  * \page bmi090la_api_bmi090la_set_regs bmi090la_set_regs
  * \code
- * int8_t bmi090la_set_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_set_regs(uint8_t reg_addr, const uint8_t *reg_data, uint16_t len, struct bmi090l_dev *dev);
  * \endcode
  * @details This API writes the given data to the register address
  *  of accel sensor.
@@ -183,7 +158,7 @@ int8_t bmi090la_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, cons
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_set_regs(uint8_t reg_addr, const uint8_t *reg_data, uint16_t len, const struct bmi090l_dev *dev);
+int8_t bmi090la_set_regs(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len, struct bmi090l_dev *dev);
 
 /**
  * \ingroup bmi090l
@@ -195,7 +170,7 @@ int8_t bmi090la_set_regs(uint8_t reg_addr, const uint8_t *reg_data, uint16_t len
  * \ingroup bmi090laApiEstatus
  * \page bmi090la_api_bmi090la_get_error_status bmi090la_get_error_status
  * \code
- * int8_t bmi090la_get_error_status(struct bmi090l_err_reg *err_reg, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_get_error_status(struct bmi090l_err_reg *err_reg, struct bmi090l_dev *dev);
  * \endcode
  * @details This API reads the error status from the accel sensor.
  *
@@ -225,7 +200,7 @@ int8_t bmi090la_set_regs(uint8_t reg_addr, const uint8_t *reg_data, uint16_t len
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_get_error_status(struct bmi090l_err_reg *err_reg, const struct bmi090l_dev *dev);
+int8_t bmi090la_get_error_status(struct bmi090l_err_reg *err_reg, struct bmi090l_dev *dev);
 
 /**
  * \ingroup bmi090l
@@ -237,7 +212,7 @@ int8_t bmi090la_get_error_status(struct bmi090l_err_reg *err_reg, const struct b
  * \ingroup bmi090laApiStatus
  * \page bmi090la_api_bmi090la_get_status bmi090la_get_status
  * \code
- * int8_t bmi090la_get_status(uint8_t *status, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_get_status(uint8_t *status, struct bmi090l_dev *dev);
  * \endcode
  * @details This API reads the status of the accel sensor.
  *
@@ -260,7 +235,7 @@ int8_t bmi090la_get_error_status(struct bmi090l_err_reg *err_reg, const struct b
  *  @retval < 0 -> Fail
  *
  */
-int8_t bmi090la_get_status(uint8_t *status, const struct bmi090l_dev *dev);
+int8_t bmi090la_get_status(uint8_t *status, struct bmi090l_dev *dev);
 
 /**
  * \ingroup bmi090l
@@ -272,7 +247,7 @@ int8_t bmi090la_get_status(uint8_t *status, const struct bmi090l_dev *dev);
  * \ingroup bmi090laApiSoftreset
  * \page bmi090la_api_bmi090la_soft_reset bmi090la_soft_reset
  * \code
- * int8_t bmi090la_soft_reset(const struct bmi090l_dev *dev);
+ * int8_t bmi090la_soft_reset(struct bmi090l_dev *dev);
  * \endcode
  * @details This API resets the accel sensor.
  *
@@ -282,7 +257,7 @@ int8_t bmi090la_get_status(uint8_t *status, const struct bmi090l_dev *dev);
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_soft_reset(const struct bmi090l_dev *dev);
+int8_t bmi090la_soft_reset(struct bmi090l_dev *dev);
 
 /**
  * \ingroup bmi090l
@@ -311,7 +286,7 @@ int8_t bmi090la_get_meas_conf(struct bmi090l_dev *dev);
  * \ingroup bmi090laApiConfig
  * \page bmi090la_api_bmi090la_set_meas_conf bmi090la_set_meas_conf
  * \code
- * int8_t bmi090la_set_meas_conf(const struct bmi090l_dev *dev);
+ * int8_t bmi090la_set_meas_conf(struct bmi090l_dev *dev);
  * \endcode
  * @details This API sets the Output data rate, range and bandwidth
  *  of accel sensor.
@@ -335,7 +310,7 @@ int8_t bmi090la_get_meas_conf(struct bmi090l_dev *dev);
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_set_meas_conf(const struct bmi090l_dev *dev);
+int8_t bmi090la_set_meas_conf(struct bmi090l_dev *dev);
 
 /**
  * \ingroup bmi090l
@@ -364,7 +339,7 @@ int8_t bmi090la_get_power_mode(struct bmi090l_dev *dev);
  * \ingroup bmi090laApiPowermode
  * \page bmi090la_api_bmi090la_set_power_mode bmi090la_set_power_mode
  * \code
- * int8_t bmi090la_set_power_mode(const struct bmi090l_dev *dev);
+ * int8_t bmi090la_set_power_mode(struct bmi090l_dev *dev);
  * \endcode
  * @details This API sets the power mode of the accel sensor.
  *
@@ -374,7 +349,7 @@ int8_t bmi090la_get_power_mode(struct bmi090l_dev *dev);
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_set_power_mode(const struct bmi090l_dev *dev);
+int8_t bmi090la_set_power_mode(struct bmi090l_dev *dev);
 
 /**
  * \ingroup bmi090l
@@ -386,7 +361,7 @@ int8_t bmi090la_set_power_mode(const struct bmi090l_dev *dev);
  * \ingroup bmi090laApiData
  * \page bmi090la_api_bmi090la_get_data bmi090la_get_data
  * \code
- * int8_t bmi090la_get_data(struct bmi090l_sensor_data *accel, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_get_data(struct bmi090l_sensor_data *accel, struct bmi090l_dev *dev);
  * \endcode
  * @details This API reads the accel data from the sensor,
  *  store it in the bmi090l_sensor_data structure instance
@@ -400,7 +375,7 @@ int8_t bmi090la_set_power_mode(const struct bmi090l_dev *dev);
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_get_data(struct bmi090l_sensor_data *accel, const struct bmi090l_dev *dev);
+int8_t bmi090la_get_data(struct bmi090l_sensor_data *accel, struct bmi090l_dev *dev);
 
 /**
  * \ingroup bmi090l
@@ -412,7 +387,7 @@ int8_t bmi090la_get_data(struct bmi090l_sensor_data *accel, const struct bmi090l
  * \ingroup bmi090laApiIntConfig
  * \page bmi090la_api_bmi090la_set_int_config bmi090la_set_int_config
  * \code
- * int8_t bmi090la_set_int_config(const struct bmi090l_accel_int_channel_cfg *int_config, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_set_int_config(const struct bmi090l_accel_int_channel_cfg *int_config, struct bmi090l_dev *dev);
  * \endcode
  * @details This API configures the necessary accel interrupt
  *  based on the user settings in the bmi090l_accel_int_channel_cfg
@@ -426,7 +401,7 @@ int8_t bmi090la_get_data(struct bmi090l_sensor_data *accel, const struct bmi090l
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_set_int_config(const struct bmi090l_accel_int_channel_cfg *int_config, const struct bmi090l_dev *dev);
+int8_t bmi090la_set_int_config(const struct bmi090l_accel_int_channel_cfg *int_config, struct bmi090l_dev *dev);
 
 /**
  * \ingroup bmi090l
@@ -438,7 +413,7 @@ int8_t bmi090la_set_int_config(const struct bmi090l_accel_int_channel_cfg *int_c
  * \ingroup bmi090laApiATemp
  * \page bmi090la_api_bmi090la_get_sensor_temperature bmi090la_get_sensor_temperature
  * \code
- * int8_t bmi090la_get_sensor_temperature(const struct bmi090l_dev *dev, int32_t *sensor_temp);
+ * int8_t bmi090la_get_sensor_temperature(struct bmi090l_dev *dev, int32_t *sensor_temp);
  * \endcode
  * @details This API reads the temperature of the sensor in degree Celcius.
  *
@@ -453,7 +428,7 @@ int8_t bmi090la_set_int_config(const struct bmi090l_accel_int_channel_cfg *int_c
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_get_sensor_temperature(const struct bmi090l_dev *dev, int32_t *sensor_temp);
+int8_t bmi090la_get_sensor_temperature(struct bmi090l_dev *dev, int32_t *sensor_temp);
 
 /**
  * \ingroup bmi090l
@@ -465,7 +440,7 @@ int8_t bmi090la_get_sensor_temperature(const struct bmi090l_dev *dev, int32_t *s
  * \ingroup bmi090laApiSensortime
  * \page bmi090la_api_bmi090la_get_sensor_time bmi090la_get_sensor_time
  * \code
- * int8_t bmi090la_get_sensor_time(const struct bmi090l_dev *dev, uint32_t *sensor_time);
+ * int8_t bmi090la_get_sensor_time(struct bmi090l_dev *dev, uint32_t *sensor_time);
  * \endcode
  * @details This API reads the sensor time of the accel sensor.
  *
@@ -476,7 +451,7 @@ int8_t bmi090la_get_sensor_temperature(const struct bmi090l_dev *dev, int32_t *s
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_get_sensor_time(const struct bmi090l_dev *dev, uint32_t *sensor_time);
+int8_t bmi090la_get_sensor_time(struct bmi090l_dev *dev, uint32_t *sensor_time);
 
 /**
  * \ingroup bmi090l
@@ -557,7 +532,7 @@ int8_t bmi090la_configure_data_synchronization(struct bmi090l_data_sync_cfg sync
  * \ingroup bmi090laApiAnymotion
  * \page bmi090la_api_bmi090la_configure_anymotion bmi090la_configure_anymotion
  * \code
- * int8_t bmi090la_configure_anymotion(struct bmi090l_anymotion_cfg anymotion_cfg, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_configure_anymotion(struct bmi090l_anymotion_cfg anymotion_cfg, struct bmi090l_dev *dev);
  * \endcode
  * @details This API is used to enable/disable and configure the anymotion
  *  feature.
@@ -569,7 +544,7 @@ int8_t bmi090la_configure_data_synchronization(struct bmi090l_data_sync_cfg sync
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_configure_anymotion(struct bmi090l_anymotion_cfg anymotion_cfg, const struct bmi090l_dev *dev);
+int8_t bmi090la_configure_anymotion(struct bmi090l_anymotion_cfg anymotion_cfg, struct bmi090l_dev *dev);
 
 /**
  * \ingroup bmi090l
@@ -583,7 +558,7 @@ int8_t bmi090la_configure_anymotion(struct bmi090l_anymotion_cfg anymotion_cfg, 
  * \code
  * int8_t bmi090la_get_synchronized_data(struct bmi090l_sensor_data *accel,
  *                                     struct bmi090l_sensor_data *gyro,
- *                                     const struct bmi090l_dev *dev);
+ *                                     struct bmi090l_dev *dev);
  *
  * \endcode
  * @details This API reads the synchronized accel & gyro data from the sensor,
@@ -601,7 +576,7 @@ int8_t bmi090la_configure_anymotion(struct bmi090l_anymotion_cfg anymotion_cfg, 
  */
 int8_t bmi090la_get_synchronized_data(struct bmi090l_sensor_data *accel,
                                       struct bmi090l_sensor_data *gyro,
-                                      const struct bmi090l_dev *dev);
+                                      struct bmi090l_dev *dev);
 
 /**
  * \ingroup bmi090l
@@ -613,7 +588,7 @@ int8_t bmi090la_get_synchronized_data(struct bmi090l_sensor_data *accel,
  * \ingroup bmi090laApiInt
  * \page bmi090la_api_bmi090la_set_data_sync_int_config bmi090la_set_data_sync_int_config
  * \code
- * int8_t bmi090la_set_data_sync_int_config(const struct bmi090l_int_cfg *int_config, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_set_data_sync_int_config(const struct bmi090l_int_cfg *int_config, struct bmi090l_dev *dev);
  * \endcode
  * @details This API configures the synchronization interrupt
  *  based on the user settings in the bmi090l_int_cfg
@@ -627,13 +602,13 @@ int8_t bmi090la_get_synchronized_data(struct bmi090l_sensor_data *accel,
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_set_data_sync_int_config(const struct bmi090l_int_cfg *int_config, const struct bmi090l_dev *dev);
+int8_t bmi090la_set_data_sync_int_config(const struct bmi090l_int_cfg *int_config, struct bmi090l_dev *dev);
 
 /*!
  * \ingroup bmi090laApiInt
  * \page bmi090la_api_bmi090la_set_high_g_config bmi090la_set_high_g_config
  * \code
- * int8_t bmi090la_set_high_g_config(const struct bmi090l_high_g_cfg *config, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_set_high_g_config(const struct bmi090l_high_g_cfg *config, struct bmi090l_dev *dev);
  * \endcode
  * @details This API sets high-g configurations like threshold,
  * hysteresis and duration.
@@ -647,13 +622,13 @@ int8_t bmi090la_set_data_sync_int_config(const struct bmi090l_int_cfg *int_confi
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_set_high_g_config(const struct bmi090l_high_g_cfg *config, const struct bmi090l_dev *dev);
+int8_t bmi090la_set_high_g_config(const struct bmi090l_high_g_cfg *config, struct bmi090l_dev *dev);
 
 /*!
  * \ingroup bmi090laApiInt
  * \page bmi090la_api_bmi090la_get_high_g_config bmi090la_get_high_g_config
  * \code
- * int8_t bmi090la_get_high_g_config(struct bmi090l_high_g_cfg *config, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_get_high_g_config(struct bmi090l_high_g_cfg *config, struct bmi090l_dev *dev);
  * \endcode
  * @details This API gets high-g configurations like threshold,
  * hysteresis and duration.
@@ -667,13 +642,13 @@ int8_t bmi090la_set_high_g_config(const struct bmi090l_high_g_cfg *config, const
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_get_high_g_config(struct bmi090l_high_g_cfg *config, const struct bmi090l_dev *dev);
+int8_t bmi090la_get_high_g_config(struct bmi090l_high_g_cfg *config, struct bmi090l_dev *dev);
 
 /*!
  * \ingroup bmi090laApiInt
  * \page bmi090la_api_bmi090la_set_low_g_config bmi090la_set_low_g_config
  * \code
- * int8_t bmi090la_set_low_g_config(const struct bmi090l_low_g_cfg *config, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_set_low_g_config(const struct bmi090l_low_g_cfg *config, struct bmi090l_dev *dev);
  * \endcode
  * @details This API sets low-g configurations like threshold,
  * hysteresis and duration.
@@ -687,13 +662,13 @@ int8_t bmi090la_get_high_g_config(struct bmi090l_high_g_cfg *config, const struc
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_set_low_g_config(const struct bmi090l_low_g_cfg *config, const struct bmi090l_dev *dev);
+int8_t bmi090la_set_low_g_config(const struct bmi090l_low_g_cfg *config, struct bmi090l_dev *dev);
 
 /*!
  * \ingroup bmi090laApiInt
  * \page bmi090la_api_bmi090la_get_low_g_config bmi090la_get_low_g_config
  * \code
- * int8_t bmi090la_get_low_g_config(struct bmi090l_low_g_cfg *config, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_get_low_g_config(struct bmi090l_low_g_cfg *config, struct bmi090l_dev *dev);
  * \endcode
  * @details This API gets low-g configurations like threshold,
  * hysteresis and duration.
@@ -707,13 +682,13 @@ int8_t bmi090la_set_low_g_config(const struct bmi090l_low_g_cfg *config, const s
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_get_low_g_config(struct bmi090l_low_g_cfg *config, const struct bmi090l_dev *dev);
+int8_t bmi090la_get_low_g_config(struct bmi090l_low_g_cfg *config, struct bmi090l_dev *dev);
 
 /*!
  * \ingroup bmi090laApiInt
  * \page bmi090la_api_bmi090la_set_no_motion_config bmi090la_set_no_motion_config
  * \code
- * int8_t bmi090la_set_no_motion_config(const struct bmi090l_no_motion_cfg *config, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_set_no_motion_config(const struct bmi090l_no_motion_cfg *config, struct bmi090l_dev *dev);
  * \endcode
  * @details This API sets and enables no-motion parameters like threshold,
  * duration,etc .,
@@ -725,13 +700,13 @@ int8_t bmi090la_get_low_g_config(struct bmi090l_low_g_cfg *config, const struct 
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_set_no_motion_config(const struct bmi090l_no_motion_cfg *config, const struct bmi090l_dev *dev);
+int8_t bmi090la_set_no_motion_config(const struct bmi090l_no_motion_cfg *config, struct bmi090l_dev *dev);
 
 /*!
  * \ingroup bmi090laApiInt
  * \page bmi090la_api_bmi090la_get_no_motion_config bmi090la_get_no_motion_config
  * \code
- * int8_t bmi090la_get_no_motion_config(struct bmi090l_no_motion_cfg *config, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_get_no_motion_config(struct bmi090l_no_motion_cfg *config, struct bmi090l_dev *dev);
  * \endcode
  * @details This API gets no-motion parameters like threshold,
  * duration,etc .,
@@ -743,13 +718,13 @@ int8_t bmi090la_set_no_motion_config(const struct bmi090l_no_motion_cfg *config,
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_get_no_motion_config(struct bmi090l_no_motion_cfg *config, const struct bmi090l_dev *dev);
+int8_t bmi090la_get_no_motion_config(struct bmi090l_no_motion_cfg *config, struct bmi090l_dev *dev);
 
 /*!
  * \ingroup bmi090laApiInt
  * \page bmi090la_api_bmi090la_set_orient_config bmi090la_set_orient_config
  * \code
- * int8_t bmi090la_set_orient_config(const struct bmi090l_orient_cfg *config, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_set_orient_config(const struct bmi090l_orient_cfg *config, struct bmi090l_dev *dev);
  * \endcode
  * @details This API sets orientation parameters like mode, hysteresis, theta, etc.,
  *
@@ -760,13 +735,13 @@ int8_t bmi090la_get_no_motion_config(struct bmi090l_no_motion_cfg *config, const
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_set_orient_config(const struct bmi090l_orient_cfg *config, const struct bmi090l_dev *dev);
+int8_t bmi090la_set_orient_config(const struct bmi090l_orient_cfg *config, struct bmi090l_dev *dev);
 
 /*!
  * \ingroup bmi090laApiInt
  * \page bmi090la_api_bmi090la_get_orient_config bmi090la_get_orient_config
  * \code
- * int8_t bmi090la_get_orient_config(struct bmi090l_orient_cfg *config, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_get_orient_config(struct bmi090l_orient_cfg *config, struct bmi090l_dev *dev);
  * \endcode
  * @details This API gets orientation parameters like mode, hysteresis, theta, etc.,
  *
@@ -777,18 +752,18 @@ int8_t bmi090la_set_orient_config(const struct bmi090l_orient_cfg *config, const
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_get_orient_config(struct bmi090l_orient_cfg *config, const struct bmi090l_dev *dev);
+int8_t bmi090la_get_orient_config(struct bmi090l_orient_cfg *config, struct bmi090l_dev *dev);
 
 /*!
  * \ingroup bmi090laApiInt
  * \page bmi090la_api_bmi090la_get_orient_output bmi090la_get_orient_output
  * \code
- * int8_t bmi090la_get_orient_output(struct bmi090l_orient_out *orient_out, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_get_orient_output(struct bmi090l_orient_out *orient_out, struct bmi090l_dev *dev);
  * \endcode
- * @details This internal API gets the output values of orientation: portrait-
+ * @details This API gets the output values of orientation: portrait-
  * landscape and face up-down.
  *
- * @param[out] orient_out      : Structure pointer to the orientation data.
+ * @param[out] orient_out      : Structure instance of bmi090l_orient_out
  * @param[in]  dev             : Structure instance of bmi090l_dev.
  *
  *
@@ -810,7 +785,29 @@ int8_t bmi090la_get_orient_config(struct bmi090l_orient_cfg *config, const struc
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_get_orient_output(struct bmi090l_orient_out *orient_out, const struct bmi090l_dev *dev);
+int8_t bmi090la_get_orient_output(struct bmi090l_orient_out *orient_out, struct bmi090l_dev *dev);
+
+/*!
+ * \ingroup bmi090laApiInt
+ * \page bmi090la_api_bmi090la_get_high_g_output bmi090la_get_high_g_output
+ * \code
+ * int8_t bmi090la_get_high_g_output(struct bmi090l_high_g_out *high_g_out, struct bmi090l_dev *dev);
+ * \endcode
+ * @details This API gets the output values of high_g: Axis and Direction
+ *
+ * @param[out] high_g_out      : Structure instance of bmi090l_high_g_out
+ * @param[in]  dev             : Structure instance of bmi090l_dev.
+ *
+ * Direction  |  Output
+ * -----------|-----------------
+ * 0x00       |  Positive axis
+ * 0x01       |  Negative axis
+ *
+ *  @return Result of API execution status
+ *  @retval 0 -> Success
+ *  @retval < 0 -> Fail
+ */
+int8_t bmi090la_get_high_g_output(struct bmi090l_high_g_out *high_g_out, struct bmi090l_dev *dev);
 
 /*!
  * \ingroup bmi090laApiInt
@@ -827,8 +824,8 @@ int8_t bmi090la_get_orient_output(struct bmi090l_orient_out *orient_out, const s
  *-----------------------------------------
  *   int_status    |     Interrupt
  *-----------------------------------------
- *      0x01       |    Fifo watermark
- *      0x02       |    Fifo full
+ *      0x01       |    Fifo full
+ *      0x02       |    Fifo watermark
  *      0x08       |    Accel data ready
  *------------------------------------------
  *@endverbatim
@@ -837,7 +834,7 @@ int8_t bmi090la_get_orient_output(struct bmi090l_orient_out *orient_out, const s
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_get_data_int_status(uint8_t *int_status, const struct bmi090l_dev *dev);
+int8_t bmi090la_get_data_int_status(uint8_t *int_status, struct bmi090l_dev *dev);
 
 /*!
  * \ingroup bmi090laApiInt
@@ -867,7 +864,54 @@ int8_t bmi090la_get_data_int_status(uint8_t *int_status, const struct bmi090l_de
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_get_feat_int_status(uint8_t *int_status, const struct bmi090l_dev *dev);
+int8_t bmi090la_get_feat_int_status(uint8_t *int_status, struct bmi090l_dev *dev);
+
+/**
+ * \ingroup bmi090l
+ * \defgroup bmi090laApiRemap Axis Remap
+ * @brief Functions of axis remapping of bmi09 sensor
+ */
+
+/*!
+ * \ingroup bmi090laApiRemap
+ * @brief Set / Get x, y and z axis re-mapping in the sensor
+ * \page bmi090la_api_bmi090la_set_remap_axes bmi090la_set_remap_axes
+ * \code
+ * int8_t bmi090la_set_remap_axes(const struct bmi090l_remap *remapped_axis, struct bmi090l_dev *dev);
+ * \endcode
+ * @details This API sets the re-mapped x, y and z axes to the sensor and
+ * updates them in the device structure.
+ *
+ * @param[in] remapped_axis    : Pointer to store axes re-mapping data.
+ * @param[in] dev              : Structure instance of bmi090l_dev.
+ *
+ * @return Result of API execution status.
+ *
+ * @return 0 -> Success
+ * @return < 0  -> Fail
+ *
+ */
+int8_t bmi090la_set_remap_axes(const struct bmi090l_remap *remapped_axis, struct bmi090l_dev *dev);
+
+/*!
+ * \ingroup bmi090laApiRemap
+ * \page bmi090l_api_bmi090la_get_remap_axes bmi090la_get_remap_axes
+ * \code
+ * int8_t bmi090la_get_remap_axes(struct bmi090l_remap *remapped_axis, struct bmi090l_dev *dev);
+ * \endcode
+ * @details This API gets the re-mapped x, y and z axes from the sensor and
+ * updates the values in the device structure.
+ *
+ * @param[out] remapped_axis   : Structure instance of bmi090l_remap
+ * @param[in] dev              : Structure instance of bmi090l_dev
+ *
+ * @return Result of API execution status.
+ *
+ * @return 0 -> Success
+ * @return < 0 -> Fail
+ *
+ */
+int8_t bmi090la_get_remap_axes(struct bmi090l_remap *remapped_axis, struct bmi090l_dev *dev);
 
 /**
  * \ingroup bmi090l
@@ -879,7 +923,7 @@ int8_t bmi090la_get_feat_int_status(uint8_t *int_status, const struct bmi090l_de
  * \ingroup bmi090laApiFIFO
  * \page bmi090la_api_bmi090la_set_fifo_config bmi090la_set_fifo_config
  * \code
- * int8_t bmi090la_set_fifo_config(const struct bmi090l_accel_fifo_config *config, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_set_fifo_config(const struct bmi090l_accel_fifo_config *config, struct bmi090l_dev *dev);
  * \endcode
  * @details This API sets the FIFO configuration in the sensor.
  *
@@ -890,13 +934,13 @@ int8_t bmi090la_get_feat_int_status(uint8_t *int_status, const struct bmi090l_de
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_set_fifo_config(const struct bmi090l_accel_fifo_config *config, const struct bmi090l_dev *dev);
+int8_t bmi090la_set_fifo_config(const struct bmi090l_accel_fifo_config *config, struct bmi090l_dev *dev);
 
 /*!
  * \ingroup bmi090laApiFIFO
  * \page bmi090la_api_bmi090la_get_fifo_config bmi090la_get_fifo_config
  * \code
- * int8_t bmi090la_get_fifo_config(struct bmi090l_accel_fifo_config *config, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_get_fifo_config(struct bmi090l_accel_fifo_config *config, struct bmi090l_dev *dev);
  * \endcode
  * @details This API gets the FIFO configuration from the sensor.
  *
@@ -907,13 +951,13 @@ int8_t bmi090la_set_fifo_config(const struct bmi090l_accel_fifo_config *config, 
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_get_fifo_config(struct bmi090l_accel_fifo_config *config, const struct bmi090l_dev *dev);
+int8_t bmi090la_get_fifo_config(struct bmi090l_accel_fifo_config *config, struct bmi090l_dev *dev);
 
 /*!
  * \ingroup bmi090laApiFIFO
  * \page bmi090la_api_bmi090la_read_fifo_data bmi090la_read_fifo_data
  * \code
- * int8_t bmi090la_read_fifo_data(struct bmi090l_fifo_frame *fifo, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_read_fifo_data(struct bmi090l_fifo_frame *fifo, struct bmi090l_dev *dev);
  * \endcode
  * @details This API reads FIFO data.
  *
@@ -926,13 +970,13 @@ int8_t bmi090la_get_fifo_config(struct bmi090l_accel_fifo_config *config, const 
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_read_fifo_data(struct bmi090l_fifo_frame *fifo, const struct bmi090l_dev *dev);
+int8_t bmi090la_read_fifo_data(struct bmi090l_fifo_frame *fifo, struct bmi090l_dev *dev);
 
 /*!
  * \ingroup bmi090laApiFIFO
  * \page bmi090la_api_bmi090la_get_fifo_length bmi090la_get_fifo_length
  * \code
- * int8_t bmi090la_get_fifo_length(uint16_t *fifo_length, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_get_fifo_length(uint16_t *fifo_length, struct bmi090l_dev *dev);
  * \endcode
  * @details This API gets the length of FIFO data available in the sensor in
  * bytes.
@@ -948,13 +992,13 @@ int8_t bmi090la_read_fifo_data(struct bmi090l_fifo_frame *fifo, const struct bmi
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_get_fifo_length(uint16_t *fifo_length, const struct bmi090l_dev *dev);
+int8_t bmi090la_get_fifo_length(uint16_t *fifo_length, struct bmi090l_dev *dev);
 
 /*!
  * \ingroup bmi090laApiFIFO
  * \page bmi090la_api_bmi090la_get_fifo_wm bmi090la_get_fifo_wm
  * \code
- * int8_t bmi090la_get_fifo_wm(uint16_t *wm, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_get_fifo_wm(uint16_t *wm, struct bmi090l_dev *dev);
  * \endcode
  * @details This API gets the FIFO water mark level which is set in the sensor.
  *
@@ -965,13 +1009,13 @@ int8_t bmi090la_get_fifo_length(uint16_t *fifo_length, const struct bmi090l_dev 
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_get_fifo_wm(uint16_t *wm, const struct bmi090l_dev *dev);
+int8_t bmi090la_get_fifo_wm(uint16_t *wm, struct bmi090l_dev *dev);
 
 /*!
  * \ingroup bmi090laApiFIFO
  * \page bmi090la_api_bmi090la_set_fifo_wm bmi090la_set_fifo_wm
  * \code
- * int8_t bmi090la_set_fifo_wm(uint16_t wm, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_set_fifo_wm(uint16_t wm, struct bmi090l_dev *dev);
  * \endcode
  * @details This API sets the FIFO water mark level which is set in the sensor.
  *
@@ -982,7 +1026,7 @@ int8_t bmi090la_get_fifo_wm(uint16_t *wm, const struct bmi090l_dev *dev);
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_set_fifo_wm(uint16_t wm, const struct bmi090l_dev *dev);
+int8_t bmi090la_set_fifo_wm(uint16_t wm, struct bmi090l_dev *dev);
 
 /*!
  * \ingroup bmi090laApiFIFO
@@ -1017,7 +1061,7 @@ int8_t bmi090la_extract_accel(struct bmi090l_sensor_data *accel_data,
  * \ingroup bmi090laApiFIFO
  * \page bmi090la_api_bmi090la_get_fifo_down_sample bmi090la_get_fifo_down_sample
  * \code
- * int8_t bmi090la_get_fifo_down_sample(uint8_t *fifo_downs, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_get_fifo_down_sample(uint8_t *fifo_downs, struct bmi090l_dev *dev);
  * \endcode
  * @details This API gets the down sampling rate, configured for FIFO
  * accelerometer.
@@ -1029,13 +1073,13 @@ int8_t bmi090la_extract_accel(struct bmi090l_sensor_data *accel_data,
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_get_fifo_down_sample(uint8_t *fifo_downs, const struct bmi090l_dev *dev);
+int8_t bmi090la_get_fifo_down_sample(uint8_t *fifo_downs, struct bmi090l_dev *dev);
 
 /*!
  * \ingroup bmi090laApiFIFO
  * \page bmi090la_api_bmi090la_set_fifo_down_sample bmi090la_set_fifo_down_sample
  * \code
- * int8_t bmi090la_set_fifo_down_sample(uint8_t fifo_downs, const struct bmi090l_dev *dev);
+ * int8_t bmi090la_set_fifo_down_sample(uint8_t fifo_downs, struct bmi090l_dev *dev);
  * \endcode
  * @details This API sets the down sampling rate for FIFO accelerometer FIFO data.
  *
@@ -1046,7 +1090,7 @@ int8_t bmi090la_get_fifo_down_sample(uint8_t *fifo_downs, const struct bmi090l_d
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090la_set_fifo_down_sample(uint8_t fifo_downs, const struct bmi090l_dev *dev);
+int8_t bmi090la_set_fifo_down_sample(uint8_t fifo_downs, struct bmi090l_dev *dev);
 
 /*********************** BMI09 Gyroscope function prototypes ****************************/
 
@@ -1085,7 +1129,7 @@ int8_t bmi090lg_init(struct bmi090l_dev *dev);
  * \ingroup bmi090lgApiRegs
  * \page bmi090lg_api_bmi090lg_get_regs bmi090lg_get_regs
  * \code
- * int8_t bmi090lg_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, const struct bmi090l_dev *dev);
+ * int8_t bmi090lg_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint32_t len, struct bmi090l_dev *dev);
  * \endcode
  * @details This API reads the data from the given register address of gyro sensor.
  *
@@ -1098,13 +1142,13 @@ int8_t bmi090lg_init(struct bmi090l_dev *dev);
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090lg_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, const struct bmi090l_dev *dev);
+int8_t bmi090lg_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint32_t len, struct bmi090l_dev *dev);
 
 /*!
  * \ingroup bmi090lgApiRegs
  * \page bmi090lg_api_bmi090lg_set_regs bmi090lg_set_regs
  * \code
- * int8_t bmi090lg_set_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, const struct bmi090l_dev *dev);
+ * int8_t bmi090lg_set_regs(uint8_t reg_addr,const uint8_t *reg_data, uint32_t len, struct bmi090l_dev *dev);
  * \endcode
  * @details This API writes the given data to the register address
  *  of gyro sensor.
@@ -1119,7 +1163,7 @@ int8_t bmi090lg_get_regs(uint8_t reg_addr, uint8_t *reg_data, uint16_t len, cons
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090lg_set_regs(uint8_t reg_addr, const uint8_t *reg_data, uint16_t len, const struct bmi090l_dev *dev);
+int8_t bmi090lg_set_regs(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len, struct bmi090l_dev *dev);
 
 /**
  * \ingroup bmi090l
@@ -1131,7 +1175,7 @@ int8_t bmi090lg_set_regs(uint8_t reg_addr, const uint8_t *reg_data, uint16_t len
  * \ingroup bmi090lgApiSoftreset
  * \page bmi090lg_api_bmi090lg_soft_reset bmi090lg_soft_reset
  * \code
- * int8_t bmi090lg_soft_reset(const struct bmi090l_dev *dev);
+ * int8_t bmi090lg_soft_reset(struct bmi090l_dev *dev);
  * \endcode
  * @details This API resets the gyro sensor.
  *
@@ -1141,7 +1185,7 @@ int8_t bmi090lg_set_regs(uint8_t reg_addr, const uint8_t *reg_data, uint16_t len
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090lg_soft_reset(const struct bmi090l_dev *dev);
+int8_t bmi090lg_soft_reset(struct bmi090l_dev *dev);
 
 /**
  * \ingroup bmi090l
@@ -1174,7 +1218,7 @@ int8_t bmi090lg_get_meas_conf(struct bmi090l_dev *dev);
  * \ingroup bmi090lgApiConfig
  * \page bmi090lg_api_bmi090lg_set_meas_conf bmi090lg_set_meas_conf
  * \code
- * int8_t bmi090lg_set_meas_conf(const struct bmi090l_dev *dev);
+ * int8_t bmi090lg_set_meas_conf(struct bmi090l_dev *dev);
  * \endcode
  * @details This API sets the output data rate, range and bandwidth
  *  of gyro sensor.
@@ -1190,7 +1234,7 @@ int8_t bmi090lg_get_meas_conf(struct bmi090l_dev *dev);
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090lg_set_meas_conf(const struct bmi090l_dev *dev);
+int8_t bmi090lg_set_meas_conf(struct bmi090l_dev *dev);
 
 /**
  * \ingroup bmi090l
@@ -1229,7 +1273,7 @@ int8_t bmi090lg_get_power_mode(struct bmi090l_dev *dev);
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090lg_set_power_mode(const struct bmi090l_dev *dev);
+int8_t bmi090lg_set_power_mode(struct bmi090l_dev *dev);
 
 /**
  * \ingroup bmi090l
@@ -1241,7 +1285,7 @@ int8_t bmi090lg_set_power_mode(const struct bmi090l_dev *dev);
  * \ingroup bmi090lgApiData
  * \page bmi090lg_api_bmi090lg_get_data bmi090lg_get_data
  * \code
- * int8_t bmi090lg_get_data(struct bmi090l_sensor_data *gyro, const struct bmi090l_dev *dev);
+ * int8_t bmi090lg_get_data(struct bmi090l_sensor_data *gyro, struct bmi090l_dev *dev);
  * \endcode
  * @details This API reads the gyro data from the sensor,
  *  store it in the bmi090l_sensor_data structure instance
@@ -1254,7 +1298,7 @@ int8_t bmi090lg_set_power_mode(const struct bmi090l_dev *dev);
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090lg_get_data(struct bmi090l_sensor_data *gyro, const struct bmi090l_dev *dev);
+int8_t bmi090lg_get_data(struct bmi090l_sensor_data *gyro, struct bmi090l_dev *dev);
 
 /**
  * \ingroup bmi090l
@@ -1266,7 +1310,7 @@ int8_t bmi090lg_get_data(struct bmi090l_sensor_data *gyro, const struct bmi090l_
  * \ingroup bmi090lgApiIntConfig
  * \page bmi090lg_api_bmi090lg_set_int_config bmi090lg_set_int_config
  * \code
- * int8_t bmi090lg_set_int_config(const struct bmi090l_gyro_int_channel_cfg *int_config, const struct bmi090l_dev *dev);
+ * int8_t bmi090lg_set_int_config(const struct bmi090l_gyro_int_channel_cfg *int_config, struct bmi090l_dev *dev);
  * \endcode
  * @details This API configures the necessary gyro interrupt
  *  based on the user settings in the bmi090l_gyro_int_channel_cfg
@@ -1280,7 +1324,7 @@ int8_t bmi090lg_get_data(struct bmi090l_sensor_data *gyro, const struct bmi090l_
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090lg_set_int_config(const struct bmi090l_gyro_int_channel_cfg *int_config, const struct bmi090l_dev *dev);
+int8_t bmi090lg_set_int_config(const struct bmi090l_gyro_int_channel_cfg *int_config, struct bmi090l_dev *dev);
 
 /**
  * \ingroup bmi090l
@@ -1303,7 +1347,7 @@ int8_t bmi090lg_set_int_config(const struct bmi090l_gyro_int_channel_cfg *int_co
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090lg_perform_selftest(const struct bmi090l_dev *dev);
+int8_t bmi090lg_perform_selftest(struct bmi090l_dev *dev);
 
 /**
  * \ingroup bmi090l
@@ -1334,7 +1378,152 @@ int8_t bmi090lg_perform_selftest(const struct bmi090l_dev *dev);
  *  @retval 0 -> Success
  *  @retval < 0 -> Fail
  */
-int8_t bmi090lg_get_data_int_status(uint8_t *int_status, const struct bmi090l_dev *dev);
+int8_t bmi090lg_get_data_int_status(uint8_t *int_status, struct bmi090l_dev *dev);
+
+/**
+ * \ingroup bmi08ag
+ * \defgroup bmi090lgApiFIFO FIFO
+ * @brief Access and extract FIFO gyro data
+ */
+
+/*!
+ * \ingroup bmi090lgApiFIFO
+ * \page bmi090lg_api_bmi090lg_get_fifo_config bmi090lg_get_fifo_config
+ * \code
+ * int8_t bmi090lg_get_fifo_config(struct bmi090l_gyr_fifo_config *fifo_conf, struct bmi090l_dev *dev);
+ * \endcode
+ * @details This API is used to get the fifo configurations like fifo mode, fifo data select, etc
+ *
+ * @param[in] fifo_conf  : Structure pointer to fifo configurations
+ * @param[in] dev        : Structure instance of bmi090l_dev.
+ *
+ * @return Result of API execution status
+ * @retval 0 -> Success
+ * @retval >0 -> Warning
+ * @retval <0 -> Fail
+ */
+int8_t bmi090lg_get_fifo_config(struct bmi090l_gyr_fifo_config *fifo_conf, struct bmi090l_dev *dev);
+
+/*!
+ * \ingroup bmi090lgApiFIFO
+ * \page bmi090lg_api_bmi090lg_set_fifo_config bmi090lg_set_fifo_config
+ * \code
+ * int8_t bmi090lg_set_fifo_config(const struct bmi090l_gyr_fifo_config *fifo_conf, struct bmi090l_dev *dev);
+ * \endcode
+ * @details This API is used to set the fifo configurations like fifo mode, fifo data select, etc
+ *
+ * @param[in] fifo_conf  : Structure pointer to fifo configurations
+ * @param[in] dev        : Structure instance of bmi090l_dev.
+ *
+ * @return Result of API execution status
+ * @retval 0 -> Success
+ * @retval >0 -> Warning
+ * @retval <0 -> Fail
+ */
+int8_t bmi090lg_set_fifo_config(const struct bmi090l_gyr_fifo_config *fifo_conf, struct bmi090l_dev *dev);
+
+/*!
+ * \ingroup bmi090lgApiFIFO
+ * \page bmi090lg_api_bmi090lg_get_fifo_length bmi090lg_get_fifo_length
+ * \code
+ * int8_t bmi090lg_get_fifo_length(const struct bmi090l_gyr_fifo_config *fifo_config, struct bmi090l_fifo_frame *fifo);
+ * \endcode
+ * @details This API is used to get fifo length
+ *
+ * @param[in] fifo_config  : Structure instance of bmi090l_gyr_fifo_config
+ * @param[in] fifo         : Structure instance of bmi090l_fifo_frame.
+ *
+ * @return Result of API execution status
+ * @retval 0 -> Success
+ * @retval >0 -> Warning
+ * @retval <0 -> Fail
+ */
+int8_t bmi090lg_get_fifo_length(const struct bmi090l_gyr_fifo_config *fifo_config, struct bmi090l_fifo_frame *fifo);
+
+/*!
+ * \ingroup bmi090lgApiFIFO
+ * \page bmi090lg_api_bmi090lg_read_fifo_data bmi090lg_read_fifo_data
+ * \code
+ * int8_t bmi090lg_read_fifo_data(const struct bmi090l_fifo_frame *fifo, struct bmi090l_dev *dev);
+ * \endcode
+ * @details This API reads FIFO data.
+ *
+ * @param[in, out] fifo       : Structure instance of bmi090l_fifo_frame
+ * @param[in]      dev        : Structure instance of bmi090l_dev.
+ *
+ * @return Result of API execution status
+ * @retval 0 -> Success
+ * @retval >0 -> Warning
+ * @retval <0 -> Fail
+ */
+int8_t bmi090lg_read_fifo_data(const struct bmi090l_fifo_frame *fifo, struct bmi090l_dev *dev);
+
+/*!
+ * \ingroup bmi090lgApiFIFO
+ * \page bmi090lg_api_bmi090lg_extract_gyro bmi090lg_extract_gyro
+ * \code
+ * void bmi090lg_extract_gyro(struct bmi090l_sensor_data *gyro_data,
+ *                            const uint16_t *gyro_length,
+ *                            const struct bmi090l_gyr_fifo_config *fifo_conf,
+ *                            const struct bmi090l_fifo_frame *fifo);
+ * \endcode
+ * @details This API parses and extracts the gyroscope frames from FIFO data read by the
+ * "bmi090lg_read_fifo_data" API and stores it in the "gyro_data"
+ * structure instance.
+ *
+ * @param[out]    gyro_data    : Structure instance of bmi090l_sensor_data
+ *                               where the parsed data bytes are stored.
+ * @param[in,out] gyro_length  : Number of gyroscope frames.
+ * @param[in,out] fifo_conf    : Structure instance of bmi090l_gyr_fifo_config
+ * @param[in,out] fifo         : Structure instance of bmi090l_fifo_frame
+ *
+ * @return Result of API execution status
+ * @retval 0 -> Success
+ * @retval >0 -> Warning
+ * @retval <0 -> Fail
+ */
+void bmi090lg_extract_gyro(struct bmi090l_sensor_data *gyro_data,
+                           const uint16_t *gyro_length,
+                           const struct bmi090l_gyr_fifo_config *fifo_conf,
+                           const struct bmi090l_fifo_frame *fifo);
+
+/*!
+ * \ingroup bmi090lgApiFIFO
+ * \page bmi090lg_api_bmi090lg_get_fifo_overrun bmi090lg_get_fifo_overrun
+ * \code
+ * int8_t bmi090lg_get_fifo_overrun(uint8_t *fifo_overrun, struct bmi090l_dev *dev);
+ * \endcode
+ * @details This API is used to get the fifo over run
+ *  in the register 0x0E bit 7
+ *
+ * @param[in,out] fifo_overrun  : The value of fifo over run
+ * @param[in]     dev           : Structure instance of bmi090l_dev.
+ *
+ * @return Result of API execution status
+ * @retval 0 -> Success
+ * @retval >0 -> Warning
+ * @retval <0 -> Fail
+ */
+int8_t bmi090lg_get_fifo_overrun(uint8_t *fifo_overrun, struct bmi090l_dev *dev);
+
+/*!
+ * \ingroup bmi090lgApiFIFO
+ * \page bmi090lg_api_bmi090lg_enable_watermark bmi090lg_enable_watermark
+ * \code
+ * int8_t bmi090lg_enable_watermark(uint8_t enable, struct bmi090l_dev *dev);
+ * \endcode
+ * @details This API is used to set fifo watermark enable/disable
+ *  in the register 0x1E bit 7
+ *
+ * @param[in,out] enable        : The value of fifo watermark enable/disable
+ * @param[in]     dev           : Structure instance of bmi090l_dev.
+ *
+ * @return Result of API execution status
+ * @retval 0 -> Success
+ * @retval >0 -> Warning
+ * @retval <0 -> Fail
+ */
+int8_t bmi090lg_enable_watermark(uint8_t enable, struct bmi090l_dev *dev);
 
 #ifdef __cplusplus
 }

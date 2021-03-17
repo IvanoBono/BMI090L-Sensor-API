@@ -1,8 +1,8 @@
 COINES_INSTALL_PATH ?= ../../../..
 
-EXAMPLE_FILE = interrupt_streaming.c
+EXAMPLE_FILE = axis_remap.c
 
-API_LOCATION = ../..
+API_LOCATION ?= ../..
 
 C_SRCS += \
 $(API_LOCATION)/bmi090la.c \
@@ -12,7 +12,5 @@ $(API_LOCATION)/bmi090lg.c \
 INCLUDEPATHS += \
 $(API_LOCATION) \
 ../common
-
-TARGET ?= MCU_APP20
 
 include $(COINES_INSTALL_PATH)/coines.mk

@@ -3,19 +3,18 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
- * @file    bmi090l_high_g_interrupt.c
+ * @file    high_g.c
  * @brief   Test code to demonstrate on how to configure and use high-g
  *
  */
 
 #include <stdio.h>
-#include "coines.h"
 #include <stdlib.h>
 #include "bmi090l.h"
 #include "common.h"
 
 /*********************************************************************/
-/* function declarations */
+/*                       Function Declarations                       */
 /*********************************************************************/
 
 /*!
@@ -24,7 +23,7 @@
 static void init_bmi090l(struct bmi090l_dev *bmi090ldev);
 
 /*********************************************************************/
-/* functions */
+/*                          Functions                                */
 /*********************************************************************/
 
 /*!
@@ -125,6 +124,7 @@ static void configure_bmi090l_high_g_interrupt(struct bmi090l_dev *bmi090ldev)
 int main(int argc, char *argv[])
 {
     struct bmi090l_dev bmi090l;
+    struct bmi090l_high_g_out high_g_out = { 0 };
     int8_t rslt;
     uint8_t status = 0;
     uint8_t interrupt_count = 0;
@@ -142,16 +142,41 @@ int main(int argc, char *argv[])
     configure_bmi090l_high_g_interrupt(&bmi090l);
 
     printf("Perform motion to detect High-g\n");
+    printf("Direction Value : 1 for negative axis, 0 for positive axis\n\n");
 
     while (1)
     {
         rslt = bmi090la_get_feat_int_status(&status, &bmi090l);
+        bmi090l_check_rslt("bmi090la_get_feat_int_status", rslt);
+
         if (status & BMI090L_ACCEL_HIGH_G_INT)
         {
-            printf("High-g detected %d\n", interrupt_count);
+            rslt = bmi090la_get_high_g_output(&high_g_out, &bmi090l);
+            bmi090l_check_rslt("bmi090la_get_high_g_output", rslt);
+
+            printf("High-g detection %d :: \t", interrupt_count);
+
+            if (high_g_out.x == 1)
+            {
+                printf("Axis X in Direction %d\n", high_g_out.direction);
+            }
+            else if (high_g_out.y == 1)
+            {
+                printf("Axis Y in Direction %d\n", high_g_out.direction);
+            }
+            else if (high_g_out.z == 1)
+            {
+                printf("Axis Z in Direction %d\n", high_g_out.direction);
+            }
+            else
+            {
+                printf("Invalid Output\n");
+            }
+
             interrupt_count++;
             if (interrupt_count == 10)
             {
+                printf("High-g testing done. Exiting! \n");
                 break;
             }
         }

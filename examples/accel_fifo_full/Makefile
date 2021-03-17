@@ -1,6 +1,6 @@
 COINES_INSTALL_PATH ?= ../../../..
 
-EXAMPLE_FILE = no_motion.c
+EXAMPLE_FILE = accel_fifo_full.c
 
 API_LOCATION ?= ../..
 

@@ -9,12 +9,15 @@
  */
 
 #include <stdio.h>
-#include "coines.h"
 #include <stdlib.h>
-#include "bmi090l.h"
 
-/*! bmi090l shuttle id*/
-#define BMI090L_SHUTTLE_ID  0x86
+#include "common.h"
+
+/*! BMI090L shuttle id */
+#define BMI090L_SHUTTLE_ID  UINT16_C(0x86)
+
+uint8_t acc_dev_add;
+uint8_t gyro_dev_add;
 
 /*!
  * I2C read function map to COINES platform
@@ -73,42 +76,45 @@ void bmi090l_check_rslt(const char api_name[], int8_t rslt)
             /* Do nothing */
             break;
         case BMI090L_E_NULL_PTR:
-            printf("Error [%d] : Null pointer\r\n", rslt);
+            printf("API [%s] Error [%d] : Null pointer\r\n", api_name, rslt);
             break;
         case BMI090L_E_COM_FAIL:
-            printf("Error [%d] : Communication failure\r\n", rslt);
+            printf("API [%s] Error [%d] : Communication failure\r\n", api_name, rslt);
             break;
         case BMI090L_E_INVALID_CONFIG:
-            printf("Error [%d] : Invalid configuration\r\n", rslt);
+            printf("API [%s] Error [%d] : Invalid configuration\r\n", api_name, rslt);
             break;
         case BMI090L_E_DEV_NOT_FOUND:
-            printf("Error [%d] : Device not found\r\n", rslt);
+            printf("API [%s] Error [%d] : Device not found\r\n", api_name, rslt);
             break;
         case BMI090L_E_OUT_OF_RANGE:
-            printf("Error [%d] : Out of Range\r\n", rslt);
+            printf("API [%s] Error [%d] : Out of Range\r\n", api_name, rslt);
             break;
         case BMI090L_E_INVALID_INPUT:
-            printf("Error [%d] : Invalid Input\r\n", rslt);
+            printf("API [%s] Error [%d] : Invalid Input\r\n", api_name, rslt);
             break;
         case BMI090L_E_CONFIG_STREAM_ERROR:
-            printf("Error [%d] : Config Stream error\r\n", rslt);
+            printf("API [%s] Error [%d] : Config Stream error\r\n", api_name, rslt);
             break;
         case BMI090L_E_RD_WR_LENGTH_INVALID:
-            printf("Error [%d] : Invalid Read-write length\r\n", rslt);
+            printf("API [%s] Error [%d] : Invalid Read-write length\r\n", api_name, rslt);
             break;
         case BMI090L_E_FEATURE_NOT_SUPPORTED:
-            printf("Error [%d] : Feature not supported\r\n", rslt);
+            printf("API [%s] Error [%d] : Feature not supported\r\n", api_name, rslt);
+            break;
+        case BMI090L_W_FIFO_EMPTY:
+            printf("API [%s] Warning [%d] : FIFO empty\r\n", api_name, rslt);
             break;
         default:
-            printf("Error [%d] : Unknown error code\r\n", rslt);
+            printf("API [%s] Error [%d] : Unknown error code\r\n", api_name, rslt);
             break;
     }
 }
 
 int8_t bmi090l_interface_init(struct bmi090l_dev *bmi090ldev, uint8_t intf)
 {
-    struct coines_board_info board_info;
     int8_t rslt = BMI090L_OK;
+    struct coines_board_info board_info;
 
     if (bmi090ldev != NULL)
     {
@@ -135,7 +141,7 @@ int8_t bmi090l_interface_init(struct bmi090l_dev *bmi090ldev, uint8_t intf)
 
         /* Switch VDD for sensor off */
         coines_set_shuttleboard_vdd_vddio_config(0, 0);
-        coines_delay_msec(10);
+        coines_delay_msec(200);
 
         /* Bus configuration : I2C */
         if (intf == BMI090L_I2C_INTF)
@@ -145,14 +151,12 @@ int8_t bmi090l_interface_init(struct bmi090l_dev *bmi090ldev, uint8_t intf)
             bmi090ldev->write = bmi090l_i2c_write;
             bmi090ldev->read = bmi090l_i2c_read;
 
-            bmi090ldev->accel_id = (unsigned char) BMI090L_ACCEL_I2C_ADDR_PRIMARY;
-            bmi090ldev->gyro_id = (unsigned char) BMI090L_GYRO_I2C_ADDR_PRIMARY;
+            acc_dev_add = (unsigned char) BMI090L_ACCEL_I2C_ADDR_PRIMARY;
+            gyro_dev_add = (unsigned char) BMI090L_GYRO_I2C_ADDR_PRIMARY;
             bmi090ldev->intf = BMI090L_I2C_INTF;
 
-            /* set the sensor interface as I2C with 400kHz speed
-             * Use I2C Fast mode (400kHz) for reliable operation with high ODR/sampling time */
-            coines_config_i2c_bus(COINES_I2C_BUS_0, COINES_I2C_FAST_MODE);
-            coines_delay_msec(10);
+            coines_config_i2c_bus(COINES_I2C_BUS_0, COINES_I2C_STANDARD_MODE);
+            coines_delay_msec(100);
 
             /* PS pin is made high for selecting I2C protocol*/
             coines_set_pin_config(COINES_SHUTTLE_PIN_9, COINES_PIN_DIRECTION_OUT, COINES_PIN_VALUE_HIGH);
@@ -166,8 +170,8 @@ int8_t bmi090l_interface_init(struct bmi090l_dev *bmi090ldev, uint8_t intf)
             bmi090ldev->read = bmi090l_spi_read;
 
             bmi090ldev->intf = BMI090L_SPI_INTF;
-            bmi090ldev->accel_id = COINES_SHUTTLE_PIN_8;
-            bmi090ldev->gyro_id = COINES_SHUTTLE_PIN_14;
+            acc_dev_add = COINES_SHUTTLE_PIN_8;
+            gyro_dev_add = COINES_SHUTTLE_PIN_14;
 
             /* CS pin is made high for selecting SPI protocol*/
             coines_set_pin_config(COINES_SHUTTLE_PIN_8, COINES_PIN_DIRECTION_OUT, COINES_PIN_VALUE_HIGH);
@@ -178,14 +182,16 @@ int8_t bmi090l_interface_init(struct bmi090l_dev *bmi090ldev, uint8_t intf)
             /* PS pin is made low for selecting SPI protocol*/
             coines_set_pin_config(COINES_SHUTTLE_PIN_9, COINES_PIN_DIRECTION_OUT, COINES_PIN_VALUE_LOW);
 
-            coines_delay_msec(10);
+            coines_delay_msec(100);
             coines_config_spi_bus(COINES_SPI_BUS_0, COINES_SPI_SPEED_5_MHZ, COINES_SPI_MODE3);
         }
 
+        bmi090ldev->intf_ptr_accel = &acc_dev_add;
+        bmi090ldev->intf_ptr_gyro = &gyro_dev_add;
         bmi090ldev->delay_us = bmi090l_delay_us;
         bmi090ldev->read_write_len = 32;
 
-        coines_delay_msec(10);
+        coines_delay_msec(200);
 
         /* Switch VDD for sensor on */
         coines_set_shuttleboard_vdd_vddio_config(3300, 3300);
@@ -203,5 +209,14 @@ int8_t bmi090l_interface_init(struct bmi090l_dev *bmi090ldev, uint8_t intf)
 
 void bmi090l_coines_deinit(void)
 {
+    fflush(stdout);
+
+    coines_set_shuttleboard_vdd_vddio_config(0, 0);
+    coines_delay_msec(100);
+
+    /* Coines interface reset */
+    coines_soft_reset();
+    coines_delay_msec(100);
+
     coines_close_comm_intf(COINES_COMM_INTF_USB);
 }

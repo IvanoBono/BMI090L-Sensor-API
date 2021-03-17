@@ -2,7 +2,7 @@ COINES_INSTALL_PATH ?= ../../../..
 
 EXAMPLE_FILE = read_sensor_data.c
 
-API_LOCATION = ../..
+API_LOCATION ?= ../..
 
 C_SRCS += \
 $(API_LOCATION)/bmi090la.c \

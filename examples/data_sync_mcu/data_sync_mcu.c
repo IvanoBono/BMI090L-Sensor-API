@@ -3,13 +3,13 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
- * @file    bmi090l_read_synchronized_data_mcu.c
+ * @file    data_sync.c
  * @brief   Test code to read synchronized sensor from BMI090L
  *
  */
 
 /*********************************************************************/
-/* system header files */
+/*                     System header files                           */
 /*********************************************************************/
 #include <stdio.h>
 #include <stdlib.h>
@@ -17,14 +17,13 @@
 #include <string.h>
 
 /*********************************************************************/
-/* own header files */
+/*                       Own header files                            */
 /*********************************************************************/
-#include "coines.h"
 #include "bmi090l.h"
 #include "common.h"
 
 /*********************************************************************/
-/* function declarations */
+/*                       Function Declarations                       */
 /*********************************************************************/
 
 /*!
@@ -33,7 +32,7 @@
 static void init_bmi090l(struct bmi090l_dev *bmi090ldev);
 
 /*********************************************************************/
-/* functions */
+/*                          Functions                                */
 /*********************************************************************/
 
 /*!
@@ -160,7 +159,7 @@ static void enable_bmi090l_data_synchronization_interrupt(struct bmi090l_dev *bm
     #elif defined(MCU_APP30)
     int_config.gyro_int_config_1.int_channel = BMI090L_INT_CHANNEL_4;
     #endif
-    int_config.gyro_int_config_1.int_type = BMI090L_GYRO_DATA_RDY_INT;
+    int_config.gyro_int_config_1.int_type = BMI090L_GYRO_INT_DATA_RDY;
     int_config.gyro_int_config_1.int_pin_cfg.enable_int_pin = BMI090L_ENABLE;
     int_config.gyro_int_config_1.int_pin_cfg.lvl = BMI090L_INT_ACTIVE_HIGH;
     int_config.gyro_int_config_1.int_pin_cfg.output_mode = BMI090L_INT_MODE_PUSH_PULL;
@@ -170,7 +169,7 @@ static void enable_bmi090l_data_synchronization_interrupt(struct bmi090l_dev *bm
     #elif defined(MCU_APP30)
     int_config.gyro_int_config_2.int_channel = BMI090L_INT_CHANNEL_3;
     #endif
-    int_config.gyro_int_config_2.int_type = BMI090L_GYRO_DATA_RDY_INT;
+    int_config.gyro_int_config_2.int_type = BMI090L_GYRO_INT_DATA_RDY;
     int_config.gyro_int_config_2.int_pin_cfg.enable_int_pin = BMI090L_DISABLE;
     int_config.gyro_int_config_2.int_pin_cfg.lvl = BMI090L_INT_ACTIVE_HIGH;
     int_config.gyro_int_config_2.int_pin_cfg.output_mode = BMI090L_INT_MODE_PUSH_PULL;
@@ -235,7 +234,7 @@ static void disable_bmi090l_data_synchronization_interrupt(struct bmi090l_dev *b
     #elif defined(MCU_APP30)
         int_config.gyro_int_config_1.int_channel = BMI090L_INT_CHANNEL_4;
     #endif
-        int_config.gyro_int_config_1.int_type = BMI090L_GYRO_DATA_RDY_INT;
+        int_config.gyro_int_config_1.int_type = BMI090L_GYRO_INT_DATA_RDY;
         int_config.gyro_int_config_1.int_pin_cfg.lvl = BMI090L_INT_ACTIVE_HIGH;
         int_config.gyro_int_config_1.int_pin_cfg.output_mode = BMI090L_INT_MODE_PUSH_PULL;
         int_config.gyro_int_config_1.int_pin_cfg.enable_int_pin = BMI090L_DISABLE;
@@ -245,7 +244,7 @@ static void disable_bmi090l_data_synchronization_interrupt(struct bmi090l_dev *b
     #elif defined(MCU_APP30)
         int_config.gyro_int_config_2.int_channel = BMI090L_INT_CHANNEL_3;
     #endif
-        int_config.gyro_int_config_2.int_type = BMI090L_GYRO_DATA_RDY_INT;
+        int_config.gyro_int_config_2.int_type = BMI090L_GYRO_INT_DATA_RDY;
         int_config.gyro_int_config_2.int_pin_cfg.enable_int_pin = BMI090L_DISABLE;
         int_config.gyro_int_config_2.int_pin_cfg.lvl = BMI090L_INT_ACTIVE_HIGH;
         int_config.gyro_int_config_2.int_pin_cfg.output_mode = BMI090L_INT_MODE_PUSH_PULL;
@@ -283,7 +282,6 @@ int main(int argc, char *argv[])
 
     /* Initialize the sensors */
     init_bmi090l(&bmi090l);
-    coines_delay_msec(200);
 
     /* Enable data ready interrupts*/
     enable_bmi090l_data_synchronization_interrupt(&bmi090l);
@@ -299,14 +297,14 @@ int main(int argc, char *argv[])
         if (status & BMI090L_ACCEL_DATA_SYNC_INT)
         {
             bmi090la_get_synchronized_data(&bmi090l_accel, &bmi090l_gyro, &bmi090l);
-            printf("ax:%d \t ay:%d \t az:%d \t gx:%d \t gy:%d \t gz:%d \t ts:%lu\n",
+            printf("ax:%d \t ay:%d \t az:%d \t gx:%d \t gy:%d \t gz:%d \t t(ms):%lu\n",
                    bmi090l_accel.x,
                    bmi090l_accel.y,
                    bmi090l_accel.z,
                    bmi090l_gyro.x,
                    bmi090l_gyro.y,
                    bmi090l_gyro.z,
-                   coines_get_millis() - start_time);
+                   coines_get_millis());
 
         }
     }

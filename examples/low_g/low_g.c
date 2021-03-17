@@ -3,19 +3,18 @@
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
- * @file    bmi090l_low_g_interrupt.c
+ * @file    low_g.c
  * @brief   Test code to demonstrate on how to configure and use low-g
  *
  */
 
 #include <stdio.h>
-#include "coines.h"
 #include <stdlib.h>
 #include "bmi090l.h"
 #include "common.h"
 
 /*********************************************************************/
-/* function declarations */
+/*                       Function Declarations                       */
 /*********************************************************************/
 
 /*!
@@ -24,7 +23,7 @@
 static void init_bmi090l(struct bmi090l_dev *bmi090ldev);
 
 /*********************************************************************/
-/* functions */
+/*                          Functions                                */
 /*********************************************************************/
 
 /*!
@@ -149,6 +148,7 @@ int main(int argc, char *argv[])
             interrupt_count++;
             if (interrupt_count == 10)
             {
+                printf("Low-g testing done. Exiting! \n");
                 break;
             }
         }

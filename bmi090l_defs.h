@@ -31,8 +31,8 @@
  * POSSIBILITY OF SUCH DAMAGE.
  *
  * @file       bmi090l_defs.h
- * @date       2020-09-04
- * @version    v1.0.3
+ * @date       2021-03-17
+ * @version    v1.1.3
  *
  */
 
@@ -91,15 +91,18 @@
 #define FALSE                     UINT8_C(0)
 #endif
 
-/** \name Enable BMI09 accel sensor */
-#define BMI090L_FEATURE_BMI09     UINT8_C(1)
-
+/**
+ * BMI090L_INTF_RET_TYPE is the read/write interface return type which can be overwritten by the build system.
+ */
 #ifndef BMI090L_INTF_RET_TYPE
 #define BMI090L_INTF_RET_TYPE     int8_t
 #endif
 
+/**
+ * The last error code from read/write interface is stored in the device structure as intf_rslt.
+ */
 #ifndef BMI090L_INTF_RET_SUCCESS
-#define BMI090L_INTF_RET_SUCCESS  0
+#define BMI090L_INTF_RET_SUCCESS  INT8_C(0)
 #endif
 
 /*************************** BMI09 Accelerometer Macros *****************************/
@@ -109,6 +112,9 @@
 
 /**\name    Accel Chip Id register */
 #define BMI090L_REG_ACCEL_CHIP_ID                    UINT8_C(0x00)
+
+/** \name Enable BMI09 accel sensor */
+#define BMI090L_FEATURE_BMI09                        UINT8_C(0x01)
 
 /**\name    Accel Error condition register */
 #define BMI090L_REG_ACCEL_ERR                        UINT8_C(0x02)
@@ -162,7 +168,7 @@
 #define BMI090L_REG_ACCEL_GP_4                       UINT8_C(0x27)
 
 /**\name    Orientation result register*/
-#define BMI090L_REG_ORIENT_RES                       UINT8_C(0x29)
+#define BMI090L_REG_ORIENT_HIGHG_OUT                 UINT8_C(0x29)
 
 /**\name    Accel Internal status register */
 #define BMI090L_REG_ACCEL_INTERNAL_STAT              UINT8_C(0x2A)
@@ -226,10 +232,13 @@
 #define BMI090L_ACCEL_ANY_MOT_INT                    UINT8_C(0x02)
 #define BMI090L_ACCEL_HIGH_G_INT                     UINT8_C(0x04)
 #define BMI090L_ACCEL_LOW_G_INT                      UINT8_C(0x08)
-#define BMI090L_ACCEL_ORIENT_INT                     UINT8_C(0x16)
-#define BMI090L_ACCEL_NO_MOT_INT                     UINT8_C(0x32)
+#define BMI090L_ACCEL_ORIENT_INT                     UINT8_C(0x10)
+#define BMI090L_ACCEL_NO_MOT_INT                     UINT8_C(0x20)
+#define BMI090L_ACCEL_ERR_INT                        UINT8_C(0x80)
 
 #define BMI090L_GYRO_DATA_READY_INT                  UINT8_C(0x80)
+#define BMI090L_GYRO_FIFO_WM_INT                     UINT8_C(0x10)
+#define BMI090L_GYRO_FIFO_FULL_INT                   UINT8_C(0x10)
 
 /**\name    Accel Bandwidth */
 #define BMI090L_ACCEL_BW_OSR4                        UINT8_C(0x00)
@@ -266,18 +275,20 @@
 #define BMI090L_ACCEL_POWER_ENABLE                   UINT8_C(0x04)
 
 /**\name    Accel internal interrupt pin mapping */
-#define BMI090L_ACCEL_INTA_DISABLE                   UINT8_C(0x00)
-#define BMI090L_ACCEL_INTA_ENABLE                    UINT8_C(0x01)
-#define BMI090L_ACCEL_INTB_DISABLE                   UINT8_C(0x00)
-#define BMI090L_ACCEL_INTB_ENABLE                    UINT8_C(0x02)
-#define BMI090L_ACCEL_INTC_DISABLE                   UINT8_C(0x00)
-#define BMI090L_ACCEL_INTC_ENABLE                    UINT8_C(0x04)
-#define BMI090L_ACCEL_INTD_DISABLE                   UINT8_C(0x00)
-#define BMI090L_ACCEL_INTD_ENABLE                    UINT8_C(0x08)
-#define BMI090L_ACCEL_INTE_DISABLE                   UINT8_C(0x00)
-#define BMI090L_ACCEL_INTE_ENABLE                    UINT8_C(0x10)
-#define BMI090L_ACCEL_INTF_DISABLE                   UINT8_C(0x00)
-#define BMI090L_ACCEL_INTF_ENABLE                    UINT8_C(0x20)
+#define BMI090L_ACCEL_DATA_SYNC_INT_DISABLE          UINT8_C(0x00)
+#define BMI090L_ACCEL_DATA_SYNC_INT_ENABLE           UINT8_C(0x01)
+#define BMI090L_ACCEL_ANY_MOT_INT_DISABLE            UINT8_C(0x00)
+#define BMI090L_ACCEL_ANY_MOT_INT_ENABLE             UINT8_C(0x02)
+#define BMI090L_ACCEL_HIGH_G_INT_DISABLE             UINT8_C(0x00)
+#define BMI090L_ACCEL_HIGH_G_INT_ENABLE              UINT8_C(0x04)
+#define BMI090L_ACCEL_LOW_G_INT_DISABLE              UINT8_C(0x00)
+#define BMI090L_ACCEL_LOW_G_INT_ENABLE               UINT8_C(0x08)
+#define BMI090L_ACCEL_ORIENT_INT_DISABLE             UINT8_C(0x00)
+#define BMI090L_ACCEL_ORIENT_INT_ENABLE              UINT8_C(0x10)
+#define BMI090L_ACCEL_NO_MOT_INT_DISABLE             UINT8_C(0x00)
+#define BMI090L_ACCEL_NO_MOT_INT_ENABLE              UINT8_C(0x20)
+#define BMI090L_ACCEL_ERR_INT_DISABLE                UINT8_C(0x00)
+#define BMI090L_ACCEL_ERR_INT_ENABLE                 UINT8_C(0x80)
 
 /**\name    Accel soft-reset delay */
 #define BMI090L_ACCEL_SOFTRESET_DELAY_MS             UINT8_C(1)
@@ -335,6 +346,12 @@
 #define BMI090L_ACCEL_INT1_DRDY_POS                  UINT8_C(2)
 #define BMI090L_ACCEL_INT2_DRDY_POS                  UINT8_C(6)
 
+/**\name    Axis Remap Feature size */
+#define BMI090L_FEATURE_SIZE                         UINT8_C(0x1E)
+
+/**\name    Accel remap start address */
+#define BMI090L_ADDR_AXES_REMAP_START                UINT8_C(0x1C)
+
 /*************************** BMI09 Gyroscope Macros *****************************/
 /** Register map */
 /* Gyro registers */
@@ -363,6 +380,9 @@
 /**\name    Gyro Interrupt status register */
 #define BMI090L_REG_GYRO_INT_STAT_1                  UINT8_C(0x0A)
 
+/**\name    Gyro FIFO status register */
+#define BMI090L_REG_GYRO_FIFO_STATUS                 UINT8_C(0x0E)
+
 /**\name    Gyro Range register */
 #define BMI090L_REG_GYRO_RANGE                       UINT8_C(0x0F)
 
@@ -384,8 +404,20 @@
 /**\name    Gyro Interrupt Map register */
 #define BMI090L_REG_GYRO_INT3_INT4_IO_MAP            UINT8_C(0x18)
 
+/**\name    Gyro FIFO watermark enable register */
+#define BMI090L_REG_GYRO_FIFO_WM_ENABLE              UINT8_C(0x1E)
+
 /**\name    Gyro self-test register */
 #define BMI090L_REG_GYRO_SELF_TEST                   UINT8_C(0x3C)
+
+/**\name    Gyro Fifo Config 0 register */
+#define BMI090L_REG_GYRO_FIFO_CONFIG0                UINT8_C(0x3D)
+
+/**\name    Gyro Fifo Config 1 register */
+#define BMI090L_REG_GYRO_FIFO_CONFIG1                UINT8_C(0x3E)
+
+/**\name    Gyro Fifo Data register */
+#define BMI090L_REG_GYRO_FIFO_DATA                   UINT8_C(0x3F)
 
 /**\name    Gyro unique chip identifier */
 #define BMI090L_GYRO_CHIP_ID                         UINT8_C(0x0F)
@@ -420,11 +452,18 @@
 /**\name    Gyro data ready interrupt enable value */
 #define BMI090L_GYRO_DRDY_INT_DISABLE_VAL            UINT8_C(0x00)
 #define BMI090L_GYRO_DRDY_INT_ENABLE_VAL             UINT8_C(0x80)
+#define BMI090L_GYRO_FIFO_INT_DISABLE_VAL            UINT8_C(0x00)
+#define BMI090L_GYRO_FIFO_INT_ENABLE_VAL             UINT8_C(0x40)
+#define BMI090L_GYRO_FIFO_WM_ENABLE_VAL              UINT8_C(0x80)
+#define BMI090L_GYRO_FIFO_WM_DISABLE_VAL             UINT8_C(0x00)
 
 /**\name    Gyro data ready map values */
 #define BMI090L_GYRO_MAP_DRDY_TO_INT3                UINT8_C(0x01)
 #define BMI090L_GYRO_MAP_DRDY_TO_INT4                UINT8_C(0x80)
 #define BMI090L_GYRO_MAP_DRDY_TO_BOTH_INT3_INT4      UINT8_C(0x81)
+#define BMI090L_GYRO_MAP_FIFO_INT3                   UINT8_C(0x04)
+#define BMI090L_GYRO_MAP_FIFO_INT4                   UINT8_C(0x20)
+#define BMI090L_GYRO_MAP_FIFO_BOTH_INT3_INT4         UINT8_C(0x24)
 
 /**\name    Gyro soft-reset delay */
 #define BMI090L_GYRO_SOFTRESET_DELAY                 UINT8_C(30)
@@ -439,6 +478,12 @@
 
 /** Position definitions for range, bandwidth and power */
 #define BMI090L_GYRO_POWER_POS                       UINT8_C(5)
+
+/**\name    Mask definitions for BMI090L_GYRO_INT_CTRL_REG register */
+#define BMI090L_GYRO_DATA_EN_MASK                    UINT8_C(0x80)
+
+/**\name    Position definitions for BMI090L_GYRO_INT_CTRL_REG register */
+#define BMI090L_GYRO_DATA_EN_POS                     UINT8_C(7)
 
 /**\name    Mask definitions for BMI090L_GYRO_INT3_INT4_IO_CONF_REG register */
 #define BMI090L_GYRO_INT3_LVL_MASK                   UINT8_C(0x01)
@@ -485,17 +530,36 @@
 #define BMI090L_GYRO_SELF_TEST_RESULT_POS            UINT8_C(2)
 #define BMI090L_GYRO_SELF_TEST_FUNCTION_POS          UINT8_C(3)
 
-/**\name    Mask definitions for INT3_INT4_IO_MAP register */
-#define BMI090L_GYRO_INT4_DATA_MASK                  UINT8_C(0x80)
-#define BMI090L_GYRO_INT4_FIFO_MASK                  UINT8_C(0x20)
-#define BMI090L_GYRO_INT3_FIFO_MASK                  UINT8_C(0x04)
-#define BMI090L_GYRO_INT3_DATA_MASK                  UINT8_C(0x01)
+/**\name    Gyro Fifo configurations */
+#define BMI090L_GYRO_FIFO_OVERRUN_MASK               UINT8_C(0x80)
+#define BMI090L_GYRO_FIFO_OVERRUN_POS                UINT8_C(0x07)
+#define BMI090L_GYRO_FIFO_MODE_MASK                  UINT8_C(0xC0)
+#define BMI090L_GYRO_FIFO_MODE_POS                   UINT8_C(0x06)
+#define BMI090L_GYRO_FIFO_TAG_MASK                   UINT8_C(0x80)
+#define BMI090L_GYRO_FIFO_TAG_POS                    UINT8_C(0x07)
+#define BMI090L_GYRO_FIFO_DATA_SELECT_MASK           UINT8_C(0x03)
+#define BMI090L_GYRO_FIFO_FRAME_COUNT_MASK           UINT8_C(0x7F)
+#define BMI090L_GYRO_FIFO_WM_LEVEL_MASK              UINT8_C(0x7F)
 
-/**\name    Position definitions for INT3_INT4_IO_MAP register */
-#define BMI090L_GYRO_INT4_DATA_POS                   UINT8_C(7)
-#define BMI090L_GYRO_INT4_FIFO_POS                   UINT8_C(5)
-#define BMI090L_GYRO_INT3_FIFO_POS                   UINT8_C(2)
-#define BMI090L_GYRO_INT3_DATA_POS                   UINT8_C(0)
+/*! @name Gyro Fifo interrupt map */
+#define BMI090L_GYRO_FIFO_INT3_MASK                  UINT8_C(0x04)
+#define BMI090L_GYRO_FIFO_INT3_POS                   UINT8_C(0x02)
+#define BMI090L_GYRO_FIFO_INT4_MASK                  UINT8_C(0x20)
+#define BMI090L_GYRO_FIFO_INT4_POS                   UINT8_C(0x05)
+
+/**\name   Gyro FIFO definitions */
+#define BMI090L_GYRO_FIFO_TAG_ENABLED                UINT8_C(0x01)
+#define BMI090L_GYRO_FIFO_TAG_DISABLED               UINT8_C(0x00)
+#define BMI090L_GYRO_FIFO_MODE_BYPASS                UINT8_C(0x00)
+#define BMI090L_GYRO_FIFO_MODE                       UINT8_C(0x01)
+#define BMI090L_GYRO_FIFO_MODE_STREAM                UINT8_C(0x02)
+#define BMI090L_GYRO_FIFO_XYZ_AXIS_ENABLED           UINT8_C(0x00)
+#define BMI090L_GYRO_FIFO_X_AXIS_ENABLED             UINT8_C(0x01)
+#define BMI090L_GYRO_FIFO_Y_AXIS_ENABLED             UINT8_C(0x02)
+#define BMI090L_GYRO_FIFO_Z_AXIS_ENABLED             UINT8_C(0x03)
+#define BMI090L_GYRO_FIFO_XYZ_AXIS_FRAME_SIZE        UINT8_C(0x06)
+#define BMI090L_GYRO_FIFO_SINGLE_AXIS_FRAME_SIZE     UINT8_C(0x02)
+#define BMI090L_GYRO_FIFO_1KB_BUFFER                 UINT16_C(1024)
 
 /*************************** Common Macros for both Accel and Gyro *****************************/
 /**\name    SPI read/write mask to configure address */
@@ -516,6 +580,7 @@
 #define BMI090L_E_INVALID_CONFIG                     INT8_C(-8)
 #define BMI090L_E_FEATURE_NOT_SUPPORTED              INT8_C(-9)
 #define BMI090L_E_SELF_TEST                          INT8_C(-10)
+#define BMI090L_E_REMAP_ERROR                        INT8_C(-11)
 
 /***\name    Soft-reset Value */
 #define BMI090L_SOFT_RESET_CMD                       UINT8_C(0xB6)
@@ -529,10 +594,9 @@
 #define BMI090L_W_PARTIAL_READ                       INT8_C(2)
 
 /**\name    Constant values macros */
-#define BMI090L_SENSOR_DATA_SYNC_TIME_MS             UINT8_C(1)
-#define BMI090L_DELAY_BETWEEN_WRITES_MS              UINT8_C(1)
 #define BMI090L_SELF_TEST_DELAY_MS                   UINT8_C(3)
 #define BMI090L_POWER_CONFIG_DELAY                   UINT8_C(5)
+#define BMI090L_ACCEL_ENABLE_DELAY                   UINT8_C(40)
 #define BMI090L_SENSOR_SETTLE_TIME_MS                UINT8_C(30)
 #define BMI090L_SELF_TEST_DATA_READ_MS               UINT8_C(50)
 #define BMI090L_ASIC_INIT_TIME_MS                    UINT8_C(150)
@@ -668,6 +732,164 @@
 #define BMI090L_SET_HIGH_BYTE                        UINT16_C(0xFF00)
 #define BMI090L_SET_LOW_NIBBLE                       UINT8_C(0x0F)
 
+/**\name     Feature start Addresses  */
+#define BMI090L_ACCEL_ANYMOTION_ADR                  UINT8_C(0x00)
+#define BMI090L_ACCEL_DATA_SYNC_ADR                  UINT8_C(0x02)
+#define BMI090L_HIGH_G_START_ADR                     UINT8_C(0x03)
+#define BMI090L_LOW_G_START_ADR                      UINT8_C(0x06)
+#define BMI090L_ORIENT_START_ADR                     UINT8_C(0x09)
+#define BMI090L_NO_MOTION_START_ADR                  UINT8_C(0x0B)
+
+/**\name    Accel Any-motion Macros  */
+#define BMI090L_ACCEL_ANYMOTION_LEN                  UINT8_C(0x02)
+#define BMI090L_ACCEL_ANYMOTION_THRESHOLD_MASK       UINT16_C(0x07FF)
+#define BMI090L_ACCEL_ANYMOTION_THRESHOLD_SHIFT      UINT8_C(0x00)
+#define BMI090L_ACCEL_ANYMOTION_NOMOTION_SEL_MASK    UINT16_C(0x0800)
+#define BMI090L_ACCEL_ANYMOTION_NOMOTION_SEL_SHIFT   UINT8_C(0x0B)
+#define BMI090L_ACCEL_ANYMOTION_DURATION_MASK        UINT16_C(0x1FFF)
+#define BMI090L_ACCEL_ANYMOTION_DURATION_SHIFT       UINT8_C(0x00)
+#define BMI090L_ACCEL_ANYMOTION_X_EN_MASK            UINT16_C(0x2000)
+#define BMI090L_ACCEL_ANYMOTION_X_EN_SHIFT           UINT8_C(0x0D)
+#define BMI090L_ACCEL_ANYMOTION_Y_EN_MASK            UINT16_C(0x4000)
+#define BMI090L_ACCEL_ANYMOTION_Y_EN_SHIFT           UINT8_C(0x0E)
+#define BMI090L_ACCEL_ANYMOTION_Z_EN_MASK            UINT16_C(0x8000)
+#define BMI090L_ACCEL_ANYMOTION_Z_EN_SHIFT           UINT8_C(0x0F)
+
+/**\name    Accel Data Sync Macros  */
+#define BMI090L_ACCEL_DATA_SYNC_LEN                  UINT8_C(0x01)
+#define BMI090L_ACCEL_DATA_SYNC_MODE_MASK            UINT16_C(0x0003)
+#define BMI090L_ACCEL_DATA_SYNC_MODE_SHIFT           UINT16_C(0x0000)
+
+#define BMI090L_ACCEL_DATA_SYNC_MODE_OFF             UINT8_C(0x00)
+#define BMI090L_ACCEL_DATA_SYNC_MODE_400HZ           UINT8_C(0x01)
+#define BMI090L_ACCEL_DATA_SYNC_MODE_1000HZ          UINT8_C(0x02)
+#define BMI090L_ACCEL_DATA_SYNC_MODE_2000HZ          UINT8_C(0x03)
+
+/**\name     Mask definitions for high-g feature configuration */
+#define BMI090L_HIGH_G_THRES_MASK                    UINT16_C(0x7FFF)
+#define BMI090L_HIGH_G_HYST_MASK                     UINT16_C(0x0FFF)
+#define BMI090L_HIGH_G_X_SEL_MASK                    UINT16_C(0x1000)
+#define BMI090L_HIGH_G_Y_SEL_MASK                    UINT16_C(0x2000)
+#define BMI090L_HIGH_G_Z_SEL_MASK                    UINT16_C(0x4000)
+#define BMI090L_HIGH_G_ENABLE_MASK                   UINT16_C(0x8000)
+#define BMI090L_HIGH_G_DUR_MASK                      UINT16_C(0x0FFF)
+#define BMI090L_HIGH_G_OUT_CONF_MASK                 UINT16_C(0xF000)
+
+/**\name    Bit position definitions for high-g feature configuration */
+#define BMI090L_HIGH_G_THRES_POS                     UINT8_C(0x00)
+#define BMI090L_HIGH_G_HYST_POS                      UINT8_C(0x00)
+#define BMI090L_HIGH_G_OUT_CONF_POS                  UINT8_C(0x0C)
+#define BMI090L_HIGH_G_X_SEL_POS                     UINT8_C(0x0C)
+#define BMI090L_HIGH_G_Y_SEL_POS                     UINT8_C(0x0D)
+#define BMI090L_HIGH_G_Z_SEL_POS                     UINT8_C(0x0E)
+#define BMI090L_HIGH_G_ENABLE_POS                    UINT8_C(0x0F)
+#define BMI090L_HIGH_G_DUR_POS                       UINT8_C(0x00)
+#define BMI090L_HIGH_G_AXIS_X_POS                    UINT8_C(0x03)
+#define BMI090L_HIGH_G_AXIS_Y_POS                    UINT8_C(0x04)
+#define BMI090L_HIGH_G_AXIS_Z_POS                    UINT8_C(0x05)
+#define BMI090L_HIGH_G_AXIS_DIRECTION_POS            UINT8_C(0x06)
+
+#define BMI090L_HIGH_G_AXIS_X_MASK                   UINT8_C(0x08)
+#define BMI090L_HIGH_G_AXIS_Y_MASK                   UINT8_C(0x10)
+#define BMI090L_HIGH_G_AXIS_Z_MASK                   UINT8_C(0x20)
+#define BMI090L_HIGH_G_AXIS_DIRECTION_MASK           UINT8_C(0x80)
+
+/**\name     Mask definitions for low-g feature configuration */
+#define BMI090L_LOW_G_THRES_MASK                     UINT16_C(0x7FFF)
+#define BMI090L_LOW_G_HYST_MASK                      UINT16_C(0x0FFF)
+#define BMI090L_LOW_G_DUR_MASK                       UINT16_C(0x0FFF)
+#define BMI090L_LOW_G_ENABLE_MASK                    UINT16_C(0x1000)
+
+/**\name    Bit position definitions for low-g feature configuration */
+#define BMI090L_LOW_G_THRES_POS                      UINT16_C(0x00)
+#define BMI090L_LOW_G_HYST_POS                       UINT16_C(0x00)
+#define BMI090L_LOW_G_DUR_POS                        UINT16_C(0x00)
+#define BMI090L_LOW_G_ENABLE_POS                     UINT16_C(0x0C)
+
+/**\name    Mask definitions for orientation feature configuration */
+#define BMI090L_ORIENT_ENABLE_MASK                   UINT16_C(0x0001)
+#define BMI090L_ORIENT_UP_DOWN_MASK                  UINT16_C(0x0002)
+#define BMI090L_ORIENT_SYMM_MODE_MASK                UINT16_C(0x000C)
+#define BMI090L_ORIENT_BLOCK_MODE_MASK               UINT16_C(0x0030)
+#define BMI090L_ORIENT_THETA_MASK                    UINT16_C(0x0FC0)
+#define BMI090L_ORIENT_HYST_MASK                     UINT16_C(0x07FF)
+#define BMI090L_ORIENT_PORTRAIT_LANDSCAPE_MASK       UINT8_C(0x03)
+#define BMI090L_ORIENT_FACEUP_DOWN_MASK              UINT8_C(0x04)
+
+/**\name    Bit position definitions for orientation feature configuration */
+#define BMI090L_ORIENT_ENABLE_POS                    UINT8_C(0x00)
+#define BMI090L_ORIENT_UP_DOWN_POS                   UINT8_C(0x01)
+#define BMI090L_ORIENT_SYMM_MODE_POS                 UINT8_C(0x02)
+#define BMI090L_ORIENT_BLOCK_MODE_POS                UINT8_C(0x04)
+#define BMI090L_ORIENT_THETA_POS                     UINT8_C(0x06)
+#define BMI090L_ORIENT_HYST_POS                      UINT8_C(0x00)
+#define BMI090L_ORIENT_PORTRAIT_LANDSCAPE_POS        UINT8_C(0x00)
+#define BMI090L_ORIENT_FACEUP_DOWN_POS               UINT8_C(0x02)
+
+/**\name    Macros for orientation feature output */
+#define BMI090L_ORIENT_PORTRAIT_UPRIGHT              UINT8_C(0x00)
+#define BMI090L_ORIENT_LANDSCAPE_LEFT                UINT8_C(0x01)
+#define BMI090L_ORIENT_PORTRAIT_UPSIDE_DOWN          UINT8_C(0x02)
+#define BMI090L_ORIENT_LANDSCAPE_RIGHT               UINT8_C(0x03)
+#define BMI090L_ORIENT_FACE_UP                       UINT8_C(0x00)
+#define BMI090L_ORIENT_FACE_DOWN                     UINT8_C(0x01)
+
+/**\name    Mask definitions for no-motion feature configuration */
+#define BMI090L_NO_MOTION_THRESHOLD_MASK             UINT16_C(0x07FF)
+#define BMI090L_NO_MOTION_SEL_MASK                   UINT16_C(0x0800)
+#define BMI090L_NO_MOTION_DURATION_MASK              UINT16_C(0x1FFF)
+#define BMI090L_NO_MOTION_X_EN_MASK                  UINT16_C(0x2000)
+#define BMI090L_NO_MOTION_Y_EN_MASK                  UINT16_C(0x4000)
+#define BMI090L_NO_MOTION_Z_EN_MASK                  UINT16_C(0x8000)
+
+/**\name    Bit position definitions for no-motion feature configuration */
+#define BMI090L_NO_MOTION_THRESHOLD_POS              UINT8_C(0)
+#define BMI090L_NO_MOTION_SEL_POS                    UINT8_C(11)
+#define BMI090L_NO_MOTION_DURATION_POS               UINT8_C(0)
+#define BMI090L_NO_MOTION_X_EN_POS                   UINT8_C(13)
+#define BMI090L_NO_MOTION_Y_EN_POS                   UINT8_C(14)
+#define BMI090L_NO_MOTION_Z_EN_POS                   UINT8_C(15)
+
+/*********************************************************************/
+/*! @name       Macro Definitions for Axes re-mapping                */
+/*********************************************************************/
+
+/**\name Enable/Disable Selections */
+#define BMI090L_X_AXIS                               UINT8_C(0)
+#define BMI090L_Y_AXIS                               UINT8_C(1)
+#define BMI090L_Z_AXIS                               UINT8_C(2)
+
+/**\name Define values of axis and its sign for re-map settings */
+#define BMI090L_MAP_X_AXIS                           UINT8_C(0x00)
+#define BMI090L_MAP_Y_AXIS                           UINT8_C(0x01)
+#define BMI090L_MAP_Z_AXIS                           UINT8_C(0x02)
+#define BMI090L_MAP_POSITIVE                         UINT8_C(0x00)
+#define BMI090L_MAP_NEGATIVE                         UINT8_C(0x01)
+
+/*! @name Macros for the user-defined values of axes and their polarities */
+#define BMI090L_X                                    UINT8_C(0x01)
+#define BMI090L_NEG_X                                UINT8_C(0x09)
+#define BMI090L_Y                                    UINT8_C(0x02)
+#define BMI090L_NEG_Y                                UINT8_C(0x0A)
+#define BMI090L_Z                                    UINT8_C(0x04)
+#define BMI090L_NEG_Z                                UINT8_C(0x0C)
+#define BMI090L_AXIS_MASK                            UINT8_C(0x07)
+#define BMI090L_AXIS_SIGN                            UINT8_C(0x08)
+
+/**\name Mask definitions for axes re-mapping */
+#define BMI090L_X_AXIS_MASK                          UINT8_C(0x03)
+#define BMI090L_X_AXIS_SIGN_MASK                     UINT8_C(0x04)
+#define BMI090L_Y_AXIS_MASK                          UINT8_C(0x18)
+#define BMI090L_Y_AXIS_SIGN_MASK                     UINT8_C(0x20)
+#define BMI090L_Z_AXIS_MASK                          UINT8_C(0xC0)
+#define BMI090L_Z_AXIS_SIGN_MASK                     UINT8_C(0x01)
+
+/**\name Bit position for axes re-mapping */
+#define BMI090L_X_AXIS_SIGN_POS                      UINT8_C(0x02)
+#define BMI090L_Y_AXIS_POS                           UINT8_C(0x03)
+#define BMI090L_Y_AXIS_SIGN_POS                      UINT8_C(0x05)
+#define BMI090L_Z_AXIS_POS                           UINT8_C(0x06)
+
 /**\name Macro to SET and GET BITS of a register */
 #define BMI090L_SET_BITS(reg_var, bitname, val) \
     ((reg_var & ~(bitname##_MASK)) | \
@@ -683,6 +905,13 @@
 #define BMI090L_GET_BITS_POS_0(reg_var, bitname)     (reg_var & (bitname##_MASK))
 
 #define BMI090L_SET_BIT_VAL_0(reg_var, bitname)      (reg_var & ~(bitname##_MASK))
+
+/**\name BIT SLICE GET AND SET FUNCTIONS */
+#define BMI090L_GET_BITSLICE(regvar, bitname)        ((regvar & bitname##_MASK) >> \
+                                                      bitname##_POS)
+
+#define BMI090L_SET_BITSLICE(regvar, bitname, val)   ((regvar & ~bitname##_MSK) | \
+                                                      ((val << bitname##_POS) & bitname##_MASK))
 
 /**\name     Macro definition for difference between 2 values */
 #define BMI090L_GET_DIFF(x, y)                       ((x) - (y))
@@ -712,16 +941,48 @@ enum bmi090l_intf {
 /*!
  * @brief Bus communication function pointer which should be mapped to
  * the platform specific read and write functions of the user
- *
- *  @note : dev_addr is used for I2C read/write operations only.
- *          For SPI read/write operations this is dummy variable.
  */
-typedef BMI090L_INTF_RET_TYPE (*bmi090l_read_fptr_t)(uint8_t reg_addr, uint8_t *data, uint32_t len, void *intf_ptr);
-typedef BMI090L_INTF_RET_TYPE (*bmi090l_write_fptr_t)(uint8_t reg_addr, const uint8_t *data, uint32_t len,
+
+/*!
+ * @brief Bus communication function pointer which should be mapped to
+ * the platform specific read functions of the user
+ *
+ * @param[in]     reg_addr : 8bit register address of the sensor
+ * @param[out]    reg_data : Data from the specified address
+ * @param[in]     len      : Length of the reg_data array
+ * @param[in,out] intf_ptr : Void pointer that can enable the linking of descriptors
+ *                           for interface related callbacks
+ * @retval 0 for Success
+ * @retval Non-zero for Failure
+ */
+typedef BMI090L_INTF_RET_TYPE (*bmi090l_read_fptr_t)(uint8_t reg_addr, uint8_t *reg_data, uint32_t len, void *intf_ptr);
+
+/*!
+ * @brief Bus communication function pointer which should be mapped to
+ * the platform specific write functions of the user
+ *
+ * @param[in]     reg_addr : 8bit register address of the sensor
+ * @param[out]    reg_data : Data to the specified address
+ * @param[in]     len      : Length of the reg_data array
+ * @param[in,out] intf_ptr : Void pointer that can enable the linking of descriptors
+ *                           for interface related callbacks
+ * @retval 0 for Success
+ * @retval Non-zero for Failure
+ *
+ */
+typedef BMI090L_INTF_RET_TYPE (*bmi090l_write_fptr_t)(uint8_t reg_addr, const uint8_t *reg_data, uint32_t len,
                                                       void *intf_ptr);
 
-/**\name    Delay function pointer */
-typedef void (*bmi090l_delay_fptr_t)(uint32_t period, void *intf_ptr);
+/*!
+ * @brief Delay function pointer which should be mapped to
+ * delay function of the user
+ *
+ * @param[in] period              : Delay in microseconds.
+ * @param[in, out] intf_ptr       : Void pointer that can enable the linking of descriptors
+ *                                  for interface related call backs
+ *
+ */
+typedef void (*bmi090l_delay_us_fptr_t)(uint32_t period, void *intf_ptr);
 
 /**\name    Structure Definitions */
 
@@ -785,21 +1046,6 @@ struct bmi090l_err_reg
     uint8_t err_code;
 };
 
-#define BMI090L_ACCEL_ANYMOTION_ADR                 UINT8_C(0x00)
-#define BMI090L_ACCEL_ANYMOTION_LEN                 UINT8_C(0x02)
-#define BMI090L_ACCEL_ANYMOTION_THRESHOLD_MASK      UINT16_C(0x07FF)
-#define BMI090L_ACCEL_ANYMOTION_THRESHOLD_SHIFT     UINT8_C(0x00)
-#define BMI090L_ACCEL_ANYMOTION_NOMOTION_SEL_MASK   UINT16_C(0x0800)
-#define BMI090L_ACCEL_ANYMOTION_NOMOTION_SEL_SHIFT  UINT8_C(0x0B)
-#define BMI090L_ACCEL_ANYMOTION_DURATION_MASK       UINT16_C(0x1FFF)
-#define BMI090L_ACCEL_ANYMOTION_DURATION_SHIFT      UINT8_C(0x00)
-#define BMI090L_ACCEL_ANYMOTION_X_EN_MASK           UINT16_C(0x2000)
-#define BMI090L_ACCEL_ANYMOTION_X_EN_SHIFT          UINT8_C(0x0D)
-#define BMI090L_ACCEL_ANYMOTION_Y_EN_MASK           UINT16_C(0x4000)
-#define BMI090L_ACCEL_ANYMOTION_Y_EN_SHIFT          UINT8_C(0x0E)
-#define BMI090L_ACCEL_ANYMOTION_Z_EN_MASK           UINT16_C(0x8000)
-#define BMI090L_ACCEL_ANYMOTION_Z_EN_SHIFT          UINT8_C(0x0F)
-
 /*!
  *  @brief Anymotion config structure
  */
@@ -808,8 +1054,8 @@ struct bmi090l_anymotion_cfg
     /* 11 bit threshold of anymotion detection (threshold = X mg * 2,048 (5.11 format)) */
     uint16_t threshold;
 
-    /* 1 bit select between any- and nomotion behavior */
-    uint16_t nomotion_sel;
+    /*! Enable any-motion feature */
+    uint16_t enable;
 
     /* 13 bit set the duration for any- and nomotion (time = duration * 20ms (@50Hz)) */
     uint16_t duration;
@@ -824,16 +1070,6 @@ struct bmi090l_anymotion_cfg
     uint16_t z_en;
 };
 
-#define BMI090L_ACCEL_DATA_SYNC_ADR          UINT8_C(0x02)
-#define BMI090L_ACCEL_DATA_SYNC_LEN          UINT8_C(0x01)
-#define BMI090L_ACCEL_DATA_SYNC_MODE_MASK    UINT16_C(0x0003)
-#define BMI090L_ACCEL_DATA_SYNC_MODE_SHIFT   UINT16_C(0x0000)
-
-#define BMI090L_ACCEL_DATA_SYNC_MODE_OFF     UINT8_C(0x00)
-#define BMI090L_ACCEL_DATA_SYNC_MODE_400HZ   UINT8_C(0x01)
-#define BMI090L_ACCEL_DATA_SYNC_MODE_1000HZ  UINT8_C(0x02)
-#define BMI090L_ACCEL_DATA_SYNC_MODE_2000HZ  UINT8_C(0x03)
-
 /*!
  *  @brief Data Sync config structure
  */
@@ -842,27 +1078,6 @@ struct bmi090l_data_sync_cfg
     /*! Mode (0 = off, 1 = 400Hz, 2 = 1kHz, 3 = 2kHz) */
     uint8_t mode;
 };
-
-/*! @name Mask definitions for BMI08x high-g feature configuration */
-#define BMI090L_HIGH_G_START_ADR      UINT8_C(0x03)
-#define BMI090L_HIGH_G_THRES_MASK     UINT16_C(0x7FFF)
-#define BMI090L_HIGH_G_HYST_MASK      UINT16_C(0x0FFF)
-#define BMI090L_HIGH_G_X_SEL_MASK     UINT16_C(0x1000)
-#define BMI090L_HIGH_G_Y_SEL_MASK     UINT16_C(0x2000)
-#define BMI090L_HIGH_G_Z_SEL_MASK     UINT16_C(0x4000)
-#define BMI090L_HIGH_G_ENABLE_MASK    UINT16_C(0x8000)
-#define BMI090L_HIGH_G_DUR_MASK       UINT16_C(0x0FFF)
-#define BMI090L_HIGH_G_OUT_CONF_MASK  UINT16_C(0xF000)
-
-/*! @name Bit position definitions for BMI08x high-g feature configuration */
-#define BMI090L_HIGH_G_THRES_POS      UINT8_C(0x00)
-#define BMI090L_HIGH_G_HYST_POS       UINT8_C(0x00)
-#define BMI090L_HIGH_G_OUT_CONF_POS   UINT8_C(0x0C)
-#define BMI090L_HIGH_G_X_SEL_POS      UINT8_C(0x0C)
-#define BMI090L_HIGH_G_Y_SEL_POS      UINT8_C(0x0D)
-#define BMI090L_HIGH_G_Z_SEL_POS      UINT8_C(0x0E)
-#define BMI090L_HIGH_G_ENABLE_POS     UINT8_C(0x0F)
-#define BMI090L_HIGH_G_DUR_POS        UINT8_C(0x00)
 
 /*! @name Structure to define high-g configuration */
 struct bmi090l_high_g_cfg
@@ -887,21 +1102,7 @@ struct bmi090l_high_g_cfg
 
     /*!  Duration interval */
     uint16_t duration;
-
-    /*! Enable bits for enabling output into the register status bits */
-    uint16_t out_conf;
 };
-
-#define BMI090L_LOW_G_START_ADR    UINT8_C(0x06)
-#define BMI090L_LOW_G_THRES_MASK   UINT16_C(0x7FFF)
-#define BMI090L_LOW_G_HYST_MASK    UINT16_C(0x0FFF)
-#define BMI090L_LOW_G_DUR_MASK     UINT16_C(0x0FFF)
-#define BMI090L_LOW_G_ENABLE_MASK  UINT16_C(0x1000)
-
-#define BMI090L_LOW_G_THRES_POS    UINT16_C(0x00)
-#define BMI090L_LOW_G_HYST_POS     UINT16_C(0x00)
-#define BMI090L_LOW_G_DUR_POS      UINT16_C(0x00)
-#define BMI090L_LOW_G_ENABLE_POS   UINT16_C(0x0C)
 
 /*! @name Structure to define low-g configuration */
 struct bmi090l_low_g_cfg
@@ -920,23 +1121,20 @@ struct bmi090l_low_g_cfg
 
 };
 
-#define BMI090L_ORIENT_START_ADR        UINT8_C(0x09)
+struct bmi090l_high_g_out
+{
+    /*! High G detected on x-axis */
+    uint8_t x;
 
-/*! @name Mask definitions for BMI08x orientation feature configuration */
-#define BMI090L_ORIENT_ENABLE_MASK      UINT16_C(0x0001)
-#define BMI090L_ORIENT_UP_DOWN_MASK     UINT16_C(0x0002)
-#define BMI090L_ORIENT_SYMM_MODE_MASK   UINT16_C(0x000C)
-#define BMI090L_ORIENT_BLOCK_MODE_MASK  UINT16_C(0x0030)
-#define BMI090L_ORIENT_THETA_MASK       UINT16_C(0x0FC0)
-#define BMI090L_ORIENT_HYST_MASK        UINT16_C(0x07FF)
+    /*! High G detected on y-axis */
+    uint8_t y;
 
-/*! @name Bit position definitions for BMI2 orientation feature configuration */
-#define BMI090L_ORIENT_ENABLE_POS       UINT8_C(0x00)
-#define BMI090L_ORIENT_UP_DOWN_POS      UINT8_C(0x01)
-#define BMI090L_ORIENT_SYMM_MODE_POS    UINT8_C(0x02)
-#define BMI090L_ORIENT_BLOCK_MODE_POS   UINT8_C(0x04)
-#define BMI090L_ORIENT_THETA_POS        UINT8_C(0x06)
-#define BMI090L_ORIENT_HYST_POS         UINT8_C(0x00)
+    /*! High G detected on z-axis */
+    uint8_t z;
+
+    /*! Axis direction on which High G detected */
+    uint8_t direction;
+};
 
 struct bmi090l_orient_cfg
 {
@@ -959,20 +1157,6 @@ struct bmi090l_orient_cfg
     uint16_t enable;
 };
 
-#define BMI090L_ORIENT_PORTRAIT_LANDSCAPE_POS   UINT8_C(0x00)
-#define BMI090L_ORIENT_FACEUP_DOWN_POS          UINT8_C(0x02)
-
-#define BMI090L_ORIENT_PORTRAIT_LANDSCAPE_MASK  UINT8_C(0x03)
-#define BMI090L_ORIENT_FACEUP_DOWN_MASK         UINT8_C(0x04)
-
-#define BMI090L_ORIENT_PORTRAIT_UPRIGHT         UINT8_C(0x00)
-#define BMI090L_ORIENT_LANDSCAPE_LEFT           UINT8_C(0x01)
-#define BMI090L_ORIENT_PORTRAIT_UPSIDE_DOWN     UINT8_C(0x02)
-#define BMI090L_ORIENT_LANDSCAPE_RIGHT          UINT8_C(0x03)
-
-#define BMI090L_ORIENT_FACE_UP                  UINT8_C(0x00)
-#define BMI090L_ORIENT_FACE_DOWN                UINT8_C(0x01)
-
 struct bmi090l_orient_out
 {
     /*! Orientation portrait landscape */
@@ -981,22 +1165,6 @@ struct bmi090l_orient_out
     /*! Orientation face-up down  */
     uint8_t faceup_down;
 };
-
-#define BMI090L_NO_MOTION_START_ADR       UINT8_C(0x0B)
-
-#define BMI090L_NO_MOTION_THRESHOLD_MASK  UINT16_C(0x07FF)
-#define BMI090L_NO_MOTION_SEL_MASK        UINT16_C(0x0800)
-#define BMI090L_NO_MOTION_DURATION_MASK   UINT16_C(0x1FFF)
-#define BMI090L_NO_MOTION_X_EN_MASK       UINT16_C(0x2000)
-#define BMI090L_NO_MOTION_Y_EN_MASK       UINT16_C(0x4000)
-#define BMI090L_NO_MOTION_Z_EN_MASK       UINT16_C(0x8000)
-
-#define BMI090L_NO_MOTION_THRESHOLD_POS   UINT8_C(0)
-#define BMI090L_NO_MOTION_SEL_POS         UINT8_C(11)
-#define BMI090L_NO_MOTION_DURATION_POS    UINT8_C(0)
-#define BMI090L_NO_MOTION_X_EN_POS        UINT8_C(13)
-#define BMI090L_NO_MOTION_Y_EN_POS        UINT8_C(14)
-#define BMI090L_NO_MOTION_Z_EN_POS        UINT8_C(15)
 
 struct bmi090l_no_motion_cfg
 {
@@ -1018,6 +1186,41 @@ struct bmi090l_no_motion_cfg
     /*! Enable no-motion feature */
     uint16_t enable;
 
+};
+
+/*! @name Structure to store the re-mapped axis */
+struct bmi090l_remap
+{
+    /*! Re-mapped x-axis */
+    uint8_t x;
+
+    /*! Re-mapped y-axis */
+    uint8_t y;
+
+    /*! Re-mapped z-axis */
+    uint8_t z;
+};
+
+/*! @name Structure to store the value of re-mapped axis and its sign */
+struct bmi090l_axes_remap
+{
+    /*! Re-mapped x-axis */
+    uint8_t x_axis;
+
+    /*! Re-mapped y-axis */
+    uint8_t y_axis;
+
+    /*! Re-mapped z-axis */
+    uint8_t z_axis;
+
+    /*! Re-mapped x-axis sign */
+    uint8_t x_axis_sign;
+
+    /*! Re-mapped y-axis sign */
+    uint8_t y_axis_sign;
+
+    /*! Re-mapped z-axis sign */
+    uint8_t z_axis_sign;
 };
 
 /*!
@@ -1050,9 +1253,9 @@ enum bmi090l_accel_int_types {
     /* Accel synchronized data ready interrupt */
     BMI090L_ACCEL_SYNC_INPUT,
     /* Accel FIFO watermark interrupt */
-    BMI090L_FIFO_WM_INT,
+    BMI090L_ACCEL_INT_FIFO_WM,
     /* Accel FIFO full interrupt */
-    BMI090L_FIFO_FULL_INT,
+    BMI090L_ACCEL_INT_FIFO_FULL,
     /* Accel anymotion interrupt*/
     BMI090L_ANYMOTION_INT,
     /* Accel high-g interrupt */
@@ -1062,7 +1265,9 @@ enum bmi090l_accel_int_types {
     /* Accel orient interrupt */
     BMI090L_ORIENT_INT,
     /* Accel no-motion interrupt */
-    BMI090L_NO_MOTION_INT
+    BMI090L_NO_MOTION_INT,
+    /* Accel Error interrupt */
+    BMI090L_ERROR_INT
 };
 
 /*!
@@ -1070,7 +1275,11 @@ enum bmi090l_accel_int_types {
  */
 enum bmi090l_gyro_int_types {
     /* Gyro data ready interrupt */
-    BMI090L_GYRO_DATA_RDY_INT
+    BMI090L_GYRO_INT_DATA_RDY,
+    /* Gyro FIFO watermark interrupt */
+    BMI090L_GYRO_INT_FIFO_WM,
+    /* Gyro FIFO full interrupt */
+    BMI090L_GYRO_INT_FIFO_FULL
 };
 
 /*!
@@ -1169,19 +1378,22 @@ struct bmi090l_accel_fifo_config
 /*!
  *  @brief gyro fifo configurations
  */
-struct bmi090l_gyro_fifo_config
+struct bmi090l_gyr_fifo_config
 {
     /*! Configure the fifo mode (0 = Stream mode, 1 = FIFO mode) */
     uint8_t mode;
 
-    /*! To enable the gyro */
-    uint8_t gyro_en;
+    /*! Selection of axis for data */
+    uint8_t data_select;
 
-    /*! To enable the interrupt_1 */
-    uint8_t int3_en;
+    /*! Tag to include/exclude interrupt in FIFO data bytes */
+    uint8_t tag;
 
-    /*! To enable the interrupt_2 */
-    uint8_t int4_en;
+    /*! Frame count of fifo data */
+    uint8_t frame_count;
+
+    /*! Water-mark level for FIFO */
+    uint16_t wm_level;
 };
 
 /*! @name Structure to define FIFO frame configuration */
@@ -1194,7 +1406,10 @@ struct bmi090l_fifo_frame
     uint16_t length;
 
     /*! Enables type of data to be streamed - accelerometer */
-    uint16_t data_enable;
+    uint16_t acc_data_enable;
+
+    /*! Enables type of data to be streamed - gyroscope */
+    uint16_t gyr_data_enable;
 
     /*! To index accelerometer bytes */
     uint16_t acc_byte_start_idx;
@@ -1211,20 +1426,17 @@ struct bmi090l_fifo_frame
     /*! Type of data interrupt to be mapped */
     uint8_t data_int_map;
 
-    /*! Water-mark level for water-mark interrupt */
-    uint16_t wm_lvl;
-
     /*! Accelerometer frame length */
     uint8_t acc_frm_len;
 
     /*! Gyro frame length */
     uint8_t gyr_frm_len;
 
-    /*! Accelerometer frame length */
-    uint8_t all_frm_len;
-
     /*! FIFO accelerometer configurations */
     struct bmi090l_accel_fifo_config fifo_conf;
+
+    /*! FIFO gyroscope configurations */
+    struct bmi090l_gyr_fifo_config gyr_fifo_conf;
 };
 
 /*!
@@ -1239,13 +1451,16 @@ struct bmi090l_dev
     /*! Gyro chip Id */
     uint8_t gyro_chip_id;
 
-    /*! Accel device Id */
-    uint8_t accel_id;
+    /*! Interface function pointer used to enable the device address for I2C and chip selection for SPI */
+    void *intf_ptr_accel;
 
-    /*! Gyro device Id */
-    uint8_t gyro_id;
+    /*! Interface function pointer used to enable the device address for I2C and chip selection for SPI */
+    void *intf_ptr_gyro;
 
-    /*! 0 - I2C , 1 - SPI Interface */
+    /*! Interface Selection
+     * For SPI, interface = BMI090L_SPI_INTF
+     * For I2C, interface = BMI090L_I2C_INTF
+     **/
     enum bmi090l_intf intf;
 
     /*! Decide SPI or I2C read mechanism */
@@ -1257,16 +1472,15 @@ struct bmi090l_dev
     /*! Structure to configure gyro sensor  */
     struct bmi090l_cfg gyro_cfg;
 
+    /*! Structure to maintain a copy of the re-mapped axis */
+    struct bmi090l_axes_remap remap;
+
     /*! Config stream data buffer address will be assigned */
     const uint8_t *config_file_ptr;
 
     /*! Max read/write length (maximum supported length is 32).
      * To be set by the user */
     uint8_t read_write_len;
-
-    void *intf_ptr;
-
-    BMI090L_INTF_RET_TYPE intf_rslt;
 
     /*! Read function pointer */
     bmi090l_read_fptr_t read;
@@ -1275,7 +1489,10 @@ struct bmi090l_dev
     bmi090l_write_fptr_t write;
 
     /*! Delay function pointer */
-    bmi090l_delay_fptr_t delay_us;
+    bmi090l_delay_us_fptr_t delay_us;
+
+    /*! Variable to store result of read/write function */
+    BMI090L_INTF_RET_TYPE intf_rslt;
 };
 
 #endif /* BMI090L_DEFS_H_ */

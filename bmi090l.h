@@ -1,40 +1,40 @@
 /**
- * Copyright (c) 2020 Bosch Sensortec GmbH. All rights reserved.
- *
- * BSD-3-Clause
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- *
- * 3. Neither the name of the copyright holder nor the names of its
- *    contributors may be used to endorse or promote products derived from
- *    this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
- * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- *
- * @file       bmi090l.h
- * @date       2021-03-17
- * @version    v1.1.3
- *
- */
+* Copyright (c) 2021 Bosch Sensortec GmbH. All rights reserved.
+*
+* BSD-3-Clause
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions are met:
+*
+* 1. Redistributions of source code must retain the above copyright
+*    notice, this list of conditions and the following disclaimer.
+*
+* 2. Redistributions in binary form must reproduce the above copyright
+*    notice, this list of conditions and the following disclaimer in the
+*    documentation and/or other materials provided with the distribution.
+*
+* 3. Neither the name of the copyright holder nor the names of its
+*    contributors may be used to endorse or promote products derived from
+*    this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+* COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+* IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+* POSSIBILITY OF SUCH DAMAGE.
+*
+* @file       bmi090l.h
+* @date       2021-04-15
+* @version    v1.1.6
+*
+*/
 
 /*! \file bmi090l.h
  * \brief Sensor Driver for BMI090L family of sensors */
@@ -1381,7 +1381,7 @@ int8_t bmi090lg_perform_selftest(struct bmi090l_dev *dev);
 int8_t bmi090lg_get_data_int_status(uint8_t *int_status, struct bmi090l_dev *dev);
 
 /**
- * \ingroup bmi08ag
+ * \ingroup bmi090l
  * \defgroup bmi090lgApiFIFO FIFO
  * @brief Access and extract FIFO gyro data
  */
@@ -1524,6 +1524,31 @@ int8_t bmi090lg_get_fifo_overrun(uint8_t *fifo_overrun, struct bmi090l_dev *dev)
  * @retval <0 -> Fail
  */
 int8_t bmi090lg_enable_watermark(uint8_t enable, struct bmi090l_dev *dev);
+
+/**
+ * \ingroup bmi090l
+ * \defgroup bmi090laApiVersion Major and Minor Revision
+ * @brief Reads major and minor revision of sensor
+ */
+
+/*!
+ * \ingroup bmi090laApiVersion
+ * \page bmi090l_api_bmi090la_get_version_config bmi090la_get_version_config
+ * \code
+ *int8_t bmi090la_get_version_config(uint16_t *config_major, uint16_t *config_minor, struct bmi090l_dev *dev);
+ * \endcode
+ * @details This API is used to get the config file major and minor information.
+ *
+ * @param[in] dev              : Structure instance of bmi090l_dev.
+ * @param[out] config_major    : Pointer to data buffer to store the config major.
+ * @param[out] config_minor    : Pointer to data buffer to store the config minor.
+ *
+ *  @return Result of API execution status
+ * @retval 0 -> Success
+ * @retval >0 -> Warning
+ * @retval <0 -> Fail
+ */
+int8_t bmi090la_get_version_config(uint16_t *config_major, uint16_t *config_minor, struct bmi090l_dev *dev);
 
 #ifdef __cplusplus
 }

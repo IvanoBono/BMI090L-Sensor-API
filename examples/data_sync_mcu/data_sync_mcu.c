@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2020 Bosch Sensortec GmbH
+ * Copyright (C) 2021 Bosch Sensortec GmbH
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
@@ -23,13 +23,24 @@
 #include "common.h"
 
 /*********************************************************************/
+/*                         Global variables                          */
+/*********************************************************************/
+unsigned char data_sync_int = false;
+unsigned int count = 0;
+
+/*********************************************************************/
 /*                       Function Declarations                       */
 /*********************************************************************/
 
 /*!
- * @brief    This internal API is used to initialize the bmi08x sensor
+ * @brief    This internal API is used to initialize the bmi090l sensor
  */
 static void init_bmi090l(struct bmi090l_dev *bmi090ldev);
+
+/*!
+ * @brief    bmi090l data sync. interrupt callback
+ */
+void bmi090l_data_sync_int();
 
 /*********************************************************************/
 /*                          Functions                                */
@@ -87,7 +98,7 @@ static void init_bmi090l(struct bmi090l_dev *bmi090ldev)
 
     printf("Uploading BMI090L data synchronization feature config !\n");
 
-    /*API uploads the bmi08x config file onto the device*/
+    /*API uploads the bmi090l config file onto the device*/
     if (rslt == BMI090L_OK)
     {
         rslt = bmi090la_apply_config_file(bmi090ldev);
@@ -101,7 +112,7 @@ static void init_bmi090l(struct bmi090l_dev *bmi090ldev)
             bmi090ldev->gyro_cfg.range = BMI090L_GYRO_RANGE_2000_DPS;
 
             /*! Mode (0 = off, 1 = 400Hz, 2 = 1kHz, 3 = 2kHz) */
-            sync_cfg.mode = BMI090L_ACCEL_DATA_SYNC_MODE_2000HZ;
+            sync_cfg.mode = BMI090L_ACCEL_DATA_SYNC_MODE_400HZ;
             rslt = bmi090la_configure_data_synchronization(sync_cfg, bmi090ldev);
         }
     }
@@ -278,36 +289,51 @@ int main(int argc, char *argv[])
      *         For I2C : BMI090L_I2C_INTF
      *         For SPI : BMI090L_SPI_INTF
      */
-    rslt = bmi090l_interface_init(&bmi090l, BMI090L_I2C_INTF);
+    rslt = bmi090l_interface_init(&bmi090l, BMI090L_SPI_INTF);
 
     /* Initialize the sensors */
     init_bmi090l(&bmi090l);
 
+#if defined(MCU_APP20)
+    coines_attach_interrupt(COINES_SHUTTLE_PIN_20, bmi090l_data_sync_int, COINES_PIN_INTERRUPT_FALLING_EDGE);
+#elif defined(MCU_APP30)
+    coines_attach_interrupt(COINES_MINI_SHUTTLE_PIN_1_6, bmi090l_data_sync_int, COINES_PIN_INTERRUPT_FALLING_EDGE);
+#endif
+
     /* Enable data ready interrupts*/
     enable_bmi090l_data_synchronization_interrupt(&bmi090l);
-    uint32_t start_time = coines_get_millis();
 
-    uint8_t status = 0;
+    uint32_t start_time = coines_get_millis();
 
     /* Run data synchronization for 1s before disabling interrupts */
     while (coines_get_millis() - start_time < 1000)
     {
-        rslt = bmi090la_get_feat_int_status(&status, &bmi090l);
-
-        if (status & BMI090L_ACCEL_DATA_SYNC_INT)
+        if (data_sync_int == true)
         {
-            bmi090la_get_synchronized_data(&bmi090l_accel, &bmi090l_gyro, &bmi090l);
-            printf("ax:%d \t ay:%d \t az:%d \t gx:%d \t gy:%d \t gz:%d \t t(ms):%lu\n",
-                   bmi090l_accel.x,
-                   bmi090l_accel.y,
-                   bmi090l_accel.z,
-                   bmi090l_gyro.x,
-                   bmi090l_gyro.y,
-                   bmi090l_gyro.z,
-                   coines_get_millis());
+            data_sync_int = false;
 
+            bmi090la_get_synchronized_data(&bmi090l_accel, &bmi090l_gyro, &bmi090l);
+            count++;
+
+            /*
+             * Wait time to collect the accel samples for the datasync feature
+             */
+            if (count >= 2)
+            {
+                printf("ax:%d \t ay:%d \t az:%d \t gx:%d \t gy:%d \t gz:%d \t t(ms):%lu\n",
+                       bmi090l_accel.x,
+                       bmi090l_accel.y,
+                       bmi090l_accel.z,
+                       bmi090l_gyro.x,
+                       bmi090l_gyro.y,
+                       bmi090l_gyro.z,
+                       coines_get_millis());
+            }
         }
     }
+
+    /* Reset count value */
+    count = 0;
 
     /* Disable data ready interrupts */
     disable_bmi090l_data_synchronization_interrupt(&bmi090l);
@@ -315,4 +341,10 @@ int main(int argc, char *argv[])
     bmi090l_coines_deinit();
 
     return rslt;
+}
+
+/* bmi090l data sync interrupt callback */
+void bmi090l_data_sync_int()
+{
+    data_sync_int = true;
 }

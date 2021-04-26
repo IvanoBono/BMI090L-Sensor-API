@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2020 Bosch Sensortec GmbH
+ * Copyright (C) 2021 Bosch Sensortec GmbH
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
@@ -132,7 +132,7 @@ static void init_bmi090l(struct bmi090l_dev *bmi090ldev)
     bmi090ldev->accel_cfg.odr = BMI090L_ACCEL_ODR_100_HZ;
     bmi090ldev->accel_cfg.range = BMI090L_ACCEL_RANGE_3G;
 
-    bmi090ldev->accel_cfg.power = BMI090L_ACCEL_PM_ACTIVE; /*user_accel_power_modes[user_bmi088_accel_low_power]; */
+    bmi090ldev->accel_cfg.power = BMI090L_ACCEL_PM_ACTIVE;
     bmi090ldev->accel_cfg.bw = BMI090L_ACCEL_BW_NORMAL; /* Bandwidth and OSR are same */
 
     bmi090la_set_power_mode(bmi090ldev);

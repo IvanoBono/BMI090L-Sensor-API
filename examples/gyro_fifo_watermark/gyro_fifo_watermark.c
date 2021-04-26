@@ -1,5 +1,5 @@
 /**\
- * Copyright (c) 2020 Bosch Sensortec GmbH. All rights reserved.
+ * Copyright (c) 2021 Bosch Sensortec GmbH. All rights reserved.
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
@@ -62,31 +62,25 @@ static void init_bmi090l(struct bmi090l_dev *bmi090ldev)
         exit(COINES_E_FAILURE);
     }
 
-    /* Max read/write length (maximum supported length is 32).
-     * To be set by the user */
-    bmi090ldev->read_write_len = 32;
+    if (rslt == BMI090L_OK)
+    {
+        /* Max read/write length (maximum supported length is 32).
+         * To be set by the user */
+        bmi090ldev->read_write_len = 32;
 
-    /* Set accel power mode */
-    bmi090ldev->accel_cfg.power = BMI090L_ACCEL_PM_ACTIVE;
-    rslt = bmi090la_set_power_mode(bmi090ldev);
+        bmi090ldev->gyro_cfg.power = BMI090L_GYRO_PM_NORMAL;
+        rslt = bmi090lg_set_power_mode(bmi090ldev);
+    }
 
     if (rslt == BMI090L_OK)
     {
-        bmi090ldev->gyro_cfg.power = BMI090L_GYRO_PM_NORMAL;
-        bmi090lg_set_power_mode(bmi090ldev);
+        bmi090ldev->gyro_cfg.odr = BMI090L_GYRO_BW_32_ODR_100_HZ;
+        bmi090ldev->gyro_cfg.range = BMI090L_GYRO_RANGE_125_DPS;
+        bmi090ldev->gyro_cfg.bw = BMI090L_GYRO_BW_32_ODR_100_HZ;
+
+        rslt = bmi090lg_set_meas_conf(bmi090ldev);
+        bmi090l_check_rslt("bmi090lg_set_meas_conf", rslt);
     }
-
-    bmi090ldev->gyro_cfg.odr = BMI090L_GYRO_BW_32_ODR_100_HZ;
-    bmi090ldev->gyro_cfg.range = BMI090L_GYRO_RANGE_125_DPS;
-    bmi090ldev->gyro_cfg.bw = BMI090L_GYRO_BW_32_ODR_100_HZ;
-    bmi090ldev->gyro_cfg.power = BMI090L_GYRO_PM_NORMAL;
-
-    rslt = bmi090lg_set_power_mode(bmi090ldev);
-    bmi090l_check_rslt("bmi090lg_set_power_mode", rslt);
-
-    rslt = bmi090lg_set_meas_conf(bmi090ldev);
-    bmi090l_check_rslt("bmi090lg_set_meas_conf", rslt);
-
 }
 
 /*!
@@ -193,7 +187,7 @@ int main(void)
      * For I2C : BMI090L_I2C_INTF
      * For SPI : BMI090L_SPI_INTF
      */
-    rslt = bmi090l_interface_init(&bmi090l, BMI090L_SPI_INTF);
+    rslt = bmi090l_interface_init(&bmi090l, BMI090L_I2C_INTF);
     bmi090l_check_rslt("bmi090l_interface_init", rslt);
 
     init_bmi090l(&bmi090l);

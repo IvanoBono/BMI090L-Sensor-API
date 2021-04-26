@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2020 Bosch Sensortec GmbH
+ * Copyright (C) 2021 Bosch Sensortec GmbH
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
@@ -132,7 +132,7 @@ int main(int argc, char *argv[])
      *         For I2C : BMI090L_I2C_INTF
      *         For SPI : BMI090L_SPI_INTF
      */
-    rslt = bmi090l_interface_init(&bmi090l, BMI090L_I2C_INTF);
+    rslt = bmi090l_interface_init(&bmi090l, BMI090L_SPI_INTF);
     bmi090l_check_rslt("bmi090l_interface_init", rslt);
 
     /* Initialize the sensors */

@@ -1,5 +1,5 @@
 /**
- * Copyright (C) 2020 Bosch Sensortec GmbH
+ * Copyright (C) 2021 Bosch Sensortec GmbH
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
@@ -24,7 +24,7 @@
 #define BMI090L_FIFO_RAW_DATA_USER_LENGTH        UINT16_C(1024)
 
 /* Watermark level */
-#define BMI090L_FIFO_WATERMARK_LEVEL             UINT8_C(350)
+#define BMI090L_FIFO_WATERMARK_LEVEL             UINT16_C(350)
 
 /* Number of Gyro frames to be extracted from FIFO */
 #define BMI090L_FIFO_EXTRACTED_DATA_FRAME_COUNT  UINT8_C(50)

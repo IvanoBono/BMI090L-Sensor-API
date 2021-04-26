@@ -1,40 +1,40 @@
 /**
- * Copyright (c) 2020 Bosch Sensortec GmbH. All rights reserved.
- *
- * BSD-3-Clause
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright
- *    notice, this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright
- *    notice, this list of conditions and the following disclaimer in the
- *    documentation and/or other materials provided with the distribution.
- *
- * 3. Neither the name of the copyright holder nor the names of its
- *    contributors may be used to endorse or promote products derived from
- *    this software without specific prior written permission.
- *
- * THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
- * "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
- * LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
- * FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
- * COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
- * INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
- * (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
- * SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
- * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- *
- * @file       bmi090l_defs.h
- * @date       2021-03-17
- * @version    v1.1.3
- *
- */
+* Copyright (c) 2021 Bosch Sensortec GmbH. All rights reserved.
+*
+* BSD-3-Clause
+*
+* Redistribution and use in source and binary forms, with or without
+* modification, are permitted provided that the following conditions are met:
+*
+* 1. Redistributions of source code must retain the above copyright
+*    notice, this list of conditions and the following disclaimer.
+*
+* 2. Redistributions in binary form must reproduce the above copyright
+*    notice, this list of conditions and the following disclaimer in the
+*    documentation and/or other materials provided with the distribution.
+*
+* 3. Neither the name of the copyright holder nor the names of its
+*    contributors may be used to endorse or promote products derived from
+*    this software without specific prior written permission.
+*
+* THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
+* "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
+* LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS
+* FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE
+* COPYRIGHT HOLDER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT,
+* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES
+* (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR
+* SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+* HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+* STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+* IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+* POSSIBILITY OF SUCH DAMAGE.
+*
+* @file       bmi090l_defs.h
+* @date       2021-04-15
+* @version    v1.1.6
+*
+*/
 
 #ifndef BMI090L_DEFS_H_
 #define BMI090L_DEFS_H_
@@ -352,6 +352,16 @@
 /**\name    Accel remap start address */
 #define BMI090L_ADDR_AXES_REMAP_START                UINT8_C(0x1C)
 
+/**\name    Mask definition for config version */
+#define BMI090L_CONFIG_MAJOR_MASK                    UINT16_C(0x3C0)
+#define BMI090L_CONFIG_MINOR_MASK                    UINT8_C(0x3F)
+
+/**\name    Bit position for major version from config */
+#define BMI090L_CONFIG_MAJOR_POS                     UINT8_C(0x06)
+
+/**\name    Config ID start address */
+#define BMI090L_ADDR_CONFIG_ID_START                 UINT8_C(0x1A)
+
 /*************************** BMI09 Gyroscope Macros *****************************/
 /** Register map */
 /* Gyro registers */
@@ -470,6 +480,9 @@
 
 /**\name    Gyro power mode config delay */
 #define BMI090L_GYRO_POWER_MODE_CONFIG_DELAY         UINT8_C(30)
+
+/**\name    Gyro set config delay */
+#define BMI090L_GYRO_SET_CONFIG_DELAY                UINT8_C(10)
 
 /** Mask definitions for range, bandwidth and power */
 #define BMI090L_GYRO_RANGE_MASK                      UINT8_C(0x07)
@@ -596,7 +609,7 @@
 /**\name    Constant values macros */
 #define BMI090L_SELF_TEST_DELAY_MS                   UINT8_C(3)
 #define BMI090L_POWER_CONFIG_DELAY                   UINT8_C(5)
-#define BMI090L_ACCEL_ENABLE_DELAY                   UINT8_C(40)
+#define BMI090L_SET_ACCEL_CONF_DELAY                 UINT8_C(40)
 #define BMI090L_SENSOR_SETTLE_TIME_MS                UINT8_C(30)
 #define BMI090L_SELF_TEST_DATA_READ_MS               UINT8_C(50)
 #define BMI090L_ASIC_INIT_TIME_MS                    UINT8_C(150)

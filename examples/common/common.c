@@ -1,9 +1,9 @@
 /**
- * Copyright (C) 2020 Bosch Sensortec GmbH
+ * Copyright (C) 2021 Bosch Sensortec GmbH
  *
  * SPDX-License-Identifier: BSD-3-Clause
  *
- * @file    common.h
+ * @file    common.c
  * @brief   Common file for BMI090L examples
  *
  */

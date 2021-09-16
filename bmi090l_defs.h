@@ -31,8 +31,8 @@
 * POSSIBILITY OF SUCH DAMAGE.
 *
 * @file       bmi090l_defs.h
-* @date       2021-04-15
-* @version    v1.1.6
+* @date       2021-06-22
+* @version    v1.1.7
 *
 */
 
@@ -605,6 +605,9 @@
 /*! @name To define warnings for FIFO activity */
 #define BMI090L_W_FIFO_EMPTY                         INT8_C(1)
 #define BMI090L_W_PARTIAL_READ                       INT8_C(2)
+
+/**\name  Maximum length to read */
+#define BMI090L_MAX_LEN                              UINT8_C(128)
 
 /**\name    Constant values macros */
 #define BMI090L_SELF_TEST_DELAY_MS                   UINT8_C(3)
@@ -1438,12 +1441,6 @@ struct bmi090l_fifo_frame
 
     /*! Type of data interrupt to be mapped */
     uint8_t data_int_map;
-
-    /*! Accelerometer frame length */
-    uint8_t acc_frm_len;
-
-    /*! Gyro frame length */
-    uint8_t gyr_frm_len;
 
     /*! FIFO accelerometer configurations */
     struct bmi090l_accel_fifo_config fifo_conf;

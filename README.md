@@ -28,4 +28,4 @@ BMI090L is a high-performance longevity Inertial Measurement. Unit (IMU) with ex
 - [Community support page](https://community.bosch-sensortec.com)
 
 ---
-#### Copyright (C) 2020 Bosch Sensortec GmbH
+#### Copyright (C) 2021 Bosch Sensortec GmbH

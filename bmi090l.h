@@ -31,8 +31,8 @@
 * POSSIBILITY OF SUCH DAMAGE.
 *
 * @file       bmi090l.h
-* @date       2021-04-15
-* @version    v1.1.6
+* @date       2021-06-22
+* @version    v1.1.7
 *
 */
 

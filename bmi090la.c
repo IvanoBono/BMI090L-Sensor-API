@@ -31,8 +31,8 @@
 * POSSIBILITY OF SUCH DAMAGE.
 *
 * @file       bmi090la.c
-* @date       2021-04-15
-* @version    v1.1.6
+* @date       2021-06-22
+* @version    v1.1.7
 *
 */
 
@@ -1678,6 +1678,9 @@ int8_t bmi090la_read_fifo_data(struct bmi090l_fifo_frame *fifo, struct bmi090l_d
     /* Variable to define error */
     int8_t rslt;
 
+    /* Variable to store available fifo length */
+    uint16_t fifo_length;
+
     /* Array to store FIFO configuration data */
     uint8_t config_data = 0;
 
@@ -1689,8 +1692,29 @@ int8_t bmi090la_read_fifo_data(struct bmi090l_fifo_frame *fifo, struct bmi090l_d
         /* Clear the FIFO data structure */
         reset_fifo_frame_structure(fifo);
 
-        /* Read FIFO data */
-        rslt = bmi090la_get_regs(addr, fifo->data, fifo->length, dev);
+        if (dev->intf == BMI090L_SPI_INTF)
+        {
+            /* SPI mask added */
+            addr = addr | BMI090L_SPI_RD_MASK;
+        }
+
+        /* Read available fifo length */
+        rslt = bmi090la_get_fifo_length(&fifo_length, dev);
+
+        if (rslt == BMI090L_OK)
+        {
+            fifo->length = fifo_length + dev->dummy_byte;
+
+            /* Read FIFO data */
+            dev->intf_rslt = dev->read(addr, fifo->data, (uint32_t)fifo->length, dev->intf_ptr_accel);
+
+            /* If interface read fails, update rslt variable with communication failure */
+            if (dev->intf_rslt != BMI090L_INTF_RET_SUCCESS)
+            {
+                rslt = BMI090L_E_COM_FAIL;
+            }
+        }
+
         if (rslt == BMI090L_OK)
         {
             /* Get the set FIFO frame configurations */
@@ -1804,6 +1828,15 @@ int8_t bmi090la_extract_accel(struct bmi090l_sensor_data *accel_data,
     rslt = null_ptr_check(dev);
     if ((rslt == BMI090L_OK) && (accel_data != NULL) && (accel_length != NULL) && (fifo != NULL))
     {
+        /* Check if this is the first iteration of data unpacking
+         * if yes, then consider dummy byte on SPI
+         */
+        if (fifo->acc_byte_start_idx == 0)
+        {
+            /* Dummy byte included */
+            fifo->acc_byte_start_idx = dev->dummy_byte;
+        }
+
         /* Parsing the FIFO data in header mode */
         rslt = extract_acc_header_mode(accel_data, accel_length, fifo);
     }
@@ -2629,8 +2662,7 @@ static int8_t get_regs(uint8_t reg_addr, uint8_t *reg_data, uint32_t len, struct
 {
     int8_t rslt = BMI090L_OK;
     uint32_t indx;
-    uint32_t temp_len = len + dev->dummy_byte;
-    uint8_t temp_buff[temp_len];
+    uint8_t temp_buff[BMI090L_MAX_LEN];
 
     if (dev->intf == BMI090L_SPI_INTF)
     {
@@ -2639,7 +2671,7 @@ static int8_t get_regs(uint8_t reg_addr, uint8_t *reg_data, uint32_t len, struct
     }
 
     /* Read the data from the register */
-    dev->intf_rslt = dev->read(reg_addr, temp_buff, temp_len, dev->intf_ptr_accel);
+    dev->intf_rslt = dev->read(reg_addr, temp_buff, (len + dev->dummy_byte), dev->intf_ptr_accel);
 
     if (dev->intf_rslt == BMI090L_INTF_RET_SUCCESS)
     {
@@ -3401,7 +3433,7 @@ static int8_t unpack_skipped_frame(uint16_t *data_indx, struct bmi090l_fifo_fram
     int8_t rslt = BMI090L_OK;
 
     /* Validate data indx */
-    if ((*data_indx) >= fifo->length)
+    if (((*data_indx) + BMI090L_FIFO_SKIP_FRM_LENGTH) > fifo->length)
     {
         /* Update the data indx to the last byte */
         (*data_indx) = fifo->length;
@@ -3486,7 +3518,7 @@ static int8_t unpack_accel_frame(struct bmi090l_sensor_data *acc,
         case BMI090L_FIFO_HEADER_ACC_FRM:
 
             /* Partially read, then skip the data */
-            if (((*idx) + fifo->acc_frm_len) > fifo->length)
+            if (((*idx) + BMI090L_FIFO_ACCEL_LENGTH) > fifo->length)
             {
                 /* Update the data indx as complete */
                 (*idx) = fifo->length;

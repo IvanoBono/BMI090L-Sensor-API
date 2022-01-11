@@ -2607,7 +2607,7 @@ int8_t bmi090la_get_version_config(uint16_t *config_major, uint16_t *config_mino
         {
             /* Get word to calculate config file identification */
             lsb = feature_config[index++];
-            msb = feature_config[index++];
+            msb = feature_config[index];
 
             lsb_msb = (uint16_t)(msb << 8 | lsb);
 
@@ -3494,7 +3494,7 @@ static void unpack_accel_data(struct bmi090l_sensor_data *acc,
 
     /* Accelerometer raw z data */
     data_lsb = fifo->data[data_start_indx++];
-    data_msb = fifo->data[data_start_indx++];
+    data_msb = fifo->data[data_start_indx];
     acc->z = (int16_t)((data_msb << 8) | data_lsb);
 }
 
